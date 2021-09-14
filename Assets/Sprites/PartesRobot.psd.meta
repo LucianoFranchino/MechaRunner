@@ -1,0 +1,304 @@
+fileFormatVersion: 2
+guid: bfe8cd15c17dd5440b44771507df3f5b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1673173175609931176
+    second: PartesRobot_0
+  - first:
+      213: 3786831084436535004
+    second: PartesRobot_1
+  - first:
+      213: 8290478352425373380
+    second: PartesRobot_2
+  - first:
+      213: 9135516786625154114
+    second: PartesRobot_3
+  - first:
+      213: -4209726567945787783
+    second: PartesRobot_4
+  - first:
+      213: -4793360725655659322
+    second: PartesRobot_5
+  - first:
+      213: -8868443946704184895
+    second: PartesRobot_6
+  - first:
+      213: 6306594492678252525
+    second: PartesRobot_7
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PartesRobot_0
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 412
+        width: 48
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c23f9260f848d345b6f5e78e99bf890
+      internalID: 1673173175609931176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_1
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 335
+        width: 158
+        height: 156
+      alignment: 9
+      pivot: {x: 0.51625776, y: 0.4670678}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a142e9a7430829e4fa37125c0516489e
+      internalID: 3786831084436535004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_2
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 141
+        width: 152
+        height: 194
+      alignment: 9
+      pivot: {x: 0.5450653, y: 0.04981263}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d854fd138d8c2264781984d97ba9b778
+      internalID: 8290478352425373380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_3
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 150
+        width: 111
+        height: 175
+      alignment: 9
+      pivot: {x: 0.87797916, y: 0.8865304}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ced79af7e0c4994a9b0af5b9cfa9cac
+      internalID: 9135516786625154114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_4
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 171
+        width: 128
+        height: 164
+      alignment: 9
+      pivot: {x: 0.13208485, y: 0.8654677}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d65b03c5a7809ff40ac15fc9e55deb1d
+      internalID: -4209726567945787783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_5
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 25
+        width: 73
+        height: 95
+      alignment: 9
+      pivot: {x: 0.4765414, y: 0.95966494}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6a5d9a0f529e07448914ec594a8b976
+      internalID: -4793360725655659322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_6
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 0
+        width: 75
+        height: 120
+      alignment: 9
+      pivot: {x: 0.4543339, y: 0.9566604}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2e2ddb3b2705e646af25e2e1e5405a3
+      internalID: -8868443946704184895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PartesRobot_7
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 36
+        width: 42
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb06bb29d8fdac14290329453b3d08eb
+      internalID: 6306594492678252525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 0c3c61c4f44f88140a4616371c9d20d7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

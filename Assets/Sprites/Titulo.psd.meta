@@ -1,0 +1,1120 @@
+fileFormatVersion: 2
+guid: dad70beec7ce5304580d96d3b1b10dbf
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6680050650163475411
+    second: Titulo_0
+  - first:
+      213: -8703404932657416651
+    second: Titulo_1
+  - first:
+      213: -1443021122773484504
+    second: Titulo_2
+  - first:
+      213: 6370048617186109915
+    second: Titulo_3
+  - first:
+      213: -7631804483834624710
+    second: Titulo_4
+  - first:
+      213: 9024161547221678829
+    second: Titulo_5
+  - first:
+      213: -5627769482314591170
+    second: Titulo_6
+  - first:
+      213: 6371055099882024796
+    second: Titulo_7
+  - first:
+      213: -4633121078509028979
+    second: Titulo_8
+  - first:
+      213: -6569262730428012980
+    second: Titulo_9
+  - first:
+      213: -4698928561201516049
+    second: Titulo_10
+  - first:
+      213: 4062237919375446796
+    second: Titulo_11
+  - first:
+      213: -5679897698930426700
+    second: Titulo_12
+  - first:
+      213: 1815822430380389185
+    second: Titulo_13
+  - first:
+      213: 3504881107482723044
+    second: Titulo_14
+  - first:
+      213: -8465647958102384154
+    second: Titulo_15
+  - first:
+      213: -6491606281821321243
+    second: Titulo_16
+  - first:
+      213: -8119652685398489427
+    second: Titulo_17
+  - first:
+      213: 3667789651454905267
+    second: Titulo_18
+  - first:
+      213: 8988277659175031932
+    second: Titulo_19
+  - first:
+      213: -2201057661322547083
+    second: Titulo_20
+  - first:
+      213: -1316767848295920261
+    second: Titulo_21
+  - first:
+      213: 566776473335499424
+    second: Titulo_22
+  - first:
+      213: -8109396158577465794
+    second: Titulo_23
+  - first:
+      213: -1146527293358397930
+    second: Titulo_24
+  - first:
+      213: 6598817345843424567
+    second: Titulo_25
+  - first:
+      213: -4451155812683506300
+    second: Titulo_26
+  - first:
+      213: 1178754909348408100
+    second: Titulo_27
+  - first:
+      213: 2877524231393451473
+    second: Titulo_28
+  - first:
+      213: 3308767657794387563
+    second: Titulo_29
+  - first:
+      213: 6397965053515762216
+    second: Titulo_30
+  - first:
+      213: -7166291936368592882
+    second: Titulo_31
+  - first:
+      213: 7356553198631901624
+    second: Titulo_32
+  - first:
+      213: 4109686116272971235
+    second: Titulo_33
+  - first:
+      213: 6800264964988690366
+    second: Titulo_34
+  - first:
+      213: -3487733824224685114
+    second: Titulo_35
+  - first:
+      213: 6962987760254756314
+    second: Titulo_36
+  - first:
+      213: 3315226717044876725
+    second: Titulo_37
+  - first:
+      213: 8754717953033129849
+    second: Titulo_38
+  - first:
+      213: 7389880787798026186
+    second: Titulo_39
+  - first:
+      213: 8324279969436571211
+    second: Titulo_40
+  - first:
+      213: 412239732223957739
+    second: Titulo_41
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Titulo_0
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 751
+        width: 78
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 748ade53a97705040ab4dbfbcdda1aa8
+      internalID: 6680050650163475411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_1
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 751
+        width: 63
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9716f3e509fbff468965823a0d68450
+      internalID: -8703404932657416651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_2
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 751
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efc2c4871e6b98e4b84b8375fa62ef26
+      internalID: -1443021122773484504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_3
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 751
+        width: 114
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd234fe57d6b14a45a08769503164918
+      internalID: 6370048617186109915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_4
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 751
+        width: 70
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f041baabdd240e042ab80bbf96167a27
+      internalID: -7631804483834624710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_5
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 751
+        width: 23
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 145fb2135959dbb43a85158ea42bcf05
+      internalID: 9024161547221678829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_6
+      rect:
+        serializedVersion: 2
+        x: 623
+        y: 751
+        width: 133
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dd1ec659dd593545ad5a775249509c4
+      internalID: -5627769482314591170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_7
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 751
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b6c890dad2d12142b6af4a76cfa46ce
+      internalID: 6371055099882024796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_8
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 751
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02b748364bf4c704ab160d1d01cc2c69
+      internalID: -4633121078509028979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_9
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 751
+        width: 73
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f007f8d66d3b6404c9d131804b0a80c8
+      internalID: -6569262730428012980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_10
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 751
+        width: 21
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6e5aed96262b914b9c59cdbc24118f5
+      internalID: -4698928561201516049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_11
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 751
+        width: 73
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a27f827dfa9c3ac49a2a860142dcfc9c
+      internalID: 4062237919375446796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_12
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 751
+        width: 21
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10a97247ee6c34045941e2f069cfe44c
+      internalID: -5679897698930426700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_13
+      rect:
+        serializedVersion: 2
+        x: 1247
+        y: 751
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a0ad9c9c82164843aaede48c39d5924
+      internalID: 1815822430380389185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_14
+      rect:
+        serializedVersion: 2
+        x: 1364
+        y: 751
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb365d4d4043a7c4dbe69046e01e7157
+      internalID: 3504881107482723044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_15
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 503
+        width: 78
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3ecd766e13429f40be3f2d79bb1bc87
+      internalID: -8465647958102384154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_16
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 503
+        width: 63
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6a171822d174c246a52ff061f52bdcc
+      internalID: -6491606281821321243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_17
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 503
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa40484717f30f54abdffde95a4317f0
+      internalID: -8119652685398489427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_18
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 287
+        width: 78
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe599d6fa9008284a9e85865b2e1de74
+      internalID: 3667789651454905267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_19
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 287
+        width: 63
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7a35a140eb88bc40b8cd8d9fdfbe3cb
+      internalID: 8988277659175031932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_20
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 287
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daf565c5ecc2a7646b03f571b643874a
+      internalID: -2201057661322547083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_21
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 67
+        width: 79
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebec8283357742a4189eab24b8368d2f
+      internalID: -1316767848295920261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_22
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 67
+        width: 63
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb029210b40991e40a86923c22ead591
+      internalID: 566776473335499424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_23
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 67
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aec04684fbd9c834aa59c2c73a7ac429
+      internalID: -8109396158577465794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_24
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 67
+        width: 113
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb13e08c0d4e02f4f992ea472f874780
+      internalID: -1146527293358397930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_25
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 67
+        width: 71
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 250248e0d9b755c4383dba601cdae5d6
+      internalID: 6598817345843424567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_26
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 67
+        width: 23
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9cf562eec956fb4194b55f4874d637a
+      internalID: -4451155812683506300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_27
+      rect:
+        serializedVersion: 2
+        x: 615
+        y: 67
+        width: 133
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d65dd5f7342339e43bc23a86dc104ff5
+      internalID: 1178754909348408100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_28
+      rect:
+        serializedVersion: 2
+        x: 766
+        y: 67
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d20735a84fba624eaefadc5847daa82
+      internalID: 2877524231393451473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_29
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 67
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2387c5f680e84f44966df0f5fb0b77c
+      internalID: 3308767657794387563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_30
+      rect:
+        serializedVersion: 2
+        x: 1006
+        y: 67
+        width: 74
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8131a02a046775d4ca97052515e83321
+      internalID: 6397965053515762216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_31
+      rect:
+        serializedVersion: 2
+        x: 1084
+        y: 67
+        width: 21
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b79c9dac1b229c44a26021d28d55148
+      internalID: -7166291936368592882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_32
+      rect:
+        serializedVersion: 2
+        x: 1122
+        y: 67
+        width: 74
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff75f6e4c71f0c24daef443f9bd7508a
+      internalID: 7356553198631901624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_33
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 67
+        width: 21
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31864c3d08abf8f4a9367326814b362a
+      internalID: 4109686116272971235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_34
+      rect:
+        serializedVersion: 2
+        x: 1239
+        y: 67
+        width: 100
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6dc3512964238942b9ee51c345f642d
+      internalID: 6800264964988690366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_35
+      rect:
+        serializedVersion: 2
+        x: 1356
+        y: 67
+        width: 103
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2131ae71390bc5e48bea013be3c5553f
+      internalID: -3487733824224685114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_36
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 729
+        width: 1394
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88f94a93261bd6a47a068a8857528edb
+      internalID: 6962987760254756314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_37
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 729
+        width: 331
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a99fba05d738bd4b919b10c97c6f66b
+      internalID: 3315226717044876725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_38
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 705
+        width: 1481
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 316e7ed3438719b42a848db81a6922b9
+      internalID: 8754717953033129849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_39
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 489
+        width: 296
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d270ee570277ff40a6be59e94b05382
+      internalID: 7389880787798026186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_40
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 268
+        width: 299
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe657f141dcfb7c44933dc3e4a9218a5
+      internalID: 8324279969436571211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Titulo_41
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 56
+        width: 1409
+        height: 161
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d06ea6c4193ba5428306bc18d0a1f0b
+      internalID: 412239732223957739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 73f4461cb202ffc489653f9e8281ce11
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
