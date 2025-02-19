@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
             Debug.Log("reinicio"); 
         }
         
-        if (doubleJump && rb.velocity.y == 0)
+        if (doubleJump && rb.linearVelocity.y == 0)
             doubleJump = false;
     }
 
@@ -95,9 +95,9 @@ public class Player : MonoBehaviour
         
         animator.Play("Jump");
         Instantiate(jumpSound, transform.position, Quaternion.identity);
-        if (rb.velocity.y == 0)
+        if (rb.linearVelocity.y == 0)
             rb.AddForce(Vector2.up * force);
-        else if (rb.velocity.y != 0 && !doubleJump)
+        else if (rb.linearVelocity.y != 0 && !doubleJump)
             DoubleJump();
         
     }
