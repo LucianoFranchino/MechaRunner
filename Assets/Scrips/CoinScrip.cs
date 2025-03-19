@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class CoinScrip : MonoBehaviour
 {
-
-    public GameObject coinSound;
-
-    public GameObject powerSound;
+    [SerializeField] private AudioClip coinSound;
+    [SerializeField] private AudioClip powerSound;
     private enum Type { Coin, CoinMultiplierPU, ScoreMultiplierPU, SuperShoot, SecondChance }
     [SerializeField] private Type type;
     public void OnTriggerEnter2D(Collider2D col)
@@ -19,22 +17,22 @@ public class CoinScrip : MonoBehaviour
             {
                 case Type.Coin:
                 col.GetComponent<CoinCounter>().GetCoin();
-                Instantiate(coinSound, transform.position, Quaternion.identity);
+                AudioManager.instance.PlayAudio(coinSound);
                 break;
 
                 case Type.CoinMultiplierPU:
                 col.GetComponent<CoinCounter>().PUPMult();
-                Instantiate(powerSound, transform.position, Quaternion.identity);
+                AudioManager.instance.PlayAudio(powerSound);
                 break;
 
                 case Type.ScoreMultiplierPU:
                 FindObjectOfType<ScoreManager>().PUPMult();
-                Instantiate(powerSound, transform.position, Quaternion.identity);
+                AudioManager.instance.PlayAudio(powerSound);
                 break;
 
                 case Type.SuperShoot:
                 col.GetComponent<Weapon>().superFire = true;
-                Instantiate(powerSound, transform.position, Quaternion.identity);
+                AudioManager.instance.PlayAudio(powerSound);
                 break;
 
                 case Type.SecondChance:

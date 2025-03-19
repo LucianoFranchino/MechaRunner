@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public GameObject shootSound;
+    [SerializeField] private AudioClip shootSound;
     public Transform firePoint;
     public Animator animator;
     public GameObject bullet, bulletSuper;
@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
     public void Shoot()
     {
         Instantiate(superFire ? bulletSuper : bullet, firePoint.position, firePoint.rotation);
-        Instantiate(shootSound, transform.position, Quaternion.identity);
+        AudioManager.instance.PlayAudio(shootSound);
         superFire = false;
         animator.Play("Fire");
     }

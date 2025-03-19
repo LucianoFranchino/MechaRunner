@@ -6,9 +6,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-    [SerializeField]
+    [SerializeField] private AudioClip explocionSound;
     private CoinScrip coinM;
-    public GameObject explocionSound;
     public int enemyHealth = 2;
     public GameObject deathEfect;
     private float destroyTime =1;
@@ -20,7 +19,7 @@ public class Enemy : MonoBehaviour
         enemyHealth -= damage;
         if(enemyHealth <= 0)
         {
-            Instantiate(explocionSound, transform.position, Quaternion.identity);
+            AudioManager.instance.PlayAudio(explocionSound);
             Instantiate(deathEfect, transform.position, Quaternion.identity);
             Die();
         }

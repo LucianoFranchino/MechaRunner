@@ -6,9 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public GameObject hurtSound;
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip hurtSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip deathSound;
 
-    public GameObject jumpSound;
+    [Header("Player Settings")]
     public ParticleSystem dust;
     public GameObject pauseMenu;
     public Animator animator;
@@ -18,9 +21,6 @@ public class Player : MonoBehaviour
     public int health = 2;
     public ScoreManager score;
     public DeadthCreen deathMenu;
-    public AudioSource source;
-    
-    public GameObject deathSound;
 
     public bool secondChance;
 
@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     {
         CreateDust();
         Time.timeScale = 1;
-        if (!source) source = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -42,11 +41,6 @@ public class Player : MonoBehaviour
             doubleJump = false;
     }
 
-    public void SFX(AudioClip clip, float volume)
-    {
-        source.PlayOneShot(clip, volume);
-    }
-
     public void OnTriggerEnter2D(Collider2D choque)
     {
         if (choque.CompareTag("Enemy"))
@@ -58,8 +52,7 @@ public class Player : MonoBehaviour
     public void Damage()
     {
         animator.Play("Damage");
-        Instantiate(hurtSound, transform.position, Quaternion.identity);
-
+        AudioManager.instance.PlayAudio(hurtSound);
     }
 
     public void EnemyDamage(int dmg)
@@ -94,7 +87,7 @@ public class Player : MonoBehaviour
     {
         
         animator.Play("Jump");
-        Instantiate(jumpSound, transform.position, Quaternion.identity);
+        AudioManager.instance.PlayAudio (jumpSound);
         if (rb.linearVelocity.y == 0)
             rb.AddForce(Vector2.up * force);
         else if (rb.linearVelocity.y != 0 && !doubleJump)
@@ -111,9 +104,8 @@ public class Player : MonoBehaviour
 
     public void Death()
     {
-        Instantiate(deathSound, transform.position, Quaternion.identity);
+        AudioManager.instance.PlayAudio(deathSound);
         deathMenu.ToggleEndMenu();
-        
     }
     
     public void Pause()
