@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public Text scoreText, secondaryScore;
-    public Text hiScoreText;
+    public Text scoreText, finalScoreText, hiScoreText;
     public float scoreCount;
     public float pointsPerSecond;
     public bool scoreIncreasing;
@@ -27,7 +26,7 @@ public class ScoreManager : MonoBehaviour
 
         if (scoreIncreasing)
             scoreCount += (pointsPerSecond * multiplier) * Time.deltaTime;
-        scoreText.text = secondaryScore.text = "Score: " + Mathf.Round(scoreCount);
+        scoreText.text = finalScoreText.text = "YOUR SCORE: " + Mathf.Round(scoreCount);
     }
 
     public void PUPMult()
