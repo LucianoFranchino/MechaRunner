@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager instance;
+    //optimizar 
     public Text scoreText, finalScoreText, hiScoreText;
     public float scoreCount;
     public float pointsPerSecond;
@@ -13,6 +15,18 @@ public class ScoreManager : MonoBehaviour
     public float timer;
     public float baseTimeMultiplier = 5f, multBase = 2f;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         if (PlayerPrefs.HasKey("highscore"))

@@ -7,71 +7,81 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     [Header("Sound Effects")]
-    [SerializeField] private AudioClip hurtSound;
     [SerializeField] private AudioClip jumpSound;
-    [SerializeField] private AudioClip deathSound;
 
-    [Header("Player Settings")]
-    public ParticleSystem dust;
-    public GameObject pauseMenu;
-    public Animator animator;
-    public Rigidbody2D rb;
-    public float force;
-    private bool pause, doubleJump;
-    public int health = 2;
+    [Header("Player Jump")]
+    private Rigidbody2D rb;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float doubleJumpForce;
+    public LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float checkRadius = 0.2f;
+    [SerializeField] private float coyoteTime = 0.1f;
+    [SerializeField] private float lastGroundedTime;
+    private bool doubleJump;
+    [SerializeField] private ParticleSystem dust;
+
+
+    private Animator animator;
+    //Sacar de aca
     public ScoreManager score;
-    public DeadthCreen deathMenu;
+    public GameObject pauseMenu;
+    private bool pause;
 
-    public bool secondChance;
-
-  public void Start()
+    public void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         CreateDust();
         Time.timeScale = 1;
     }
     private void Update()
     {
+        JumpCheck();
         if (Input.GetKeyDown(KeyCode.J))
         {
             Reset();
-            Debug.Log("reinicio"); 
+            Debug.Log("reinicio");
         }
-        
-        if (doubleJump && rb.linearVelocity.y == 0)
-            doubleJump = false;
     }
 
-    public void OnTriggerEnter2D(Collider2D choque)
+    private void JumpCheck ()
     {
-        if (choque.CompareTag("Enemy"))
+        bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
+
+        if (isGrounded)
         {
-            Damage();
+            lastGroundedTime = Time.time;
+            doubleJump = true;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (isGrounded || (Time.time - lastGroundedTime <= coyoteTime))
+            {
+                Jump(jumpForce);
+            }
+            else if (doubleJump)
+            {
+                Jump(doubleJumpForce);
+                doubleJump = false;
+            }
         }
     }
-
-    public void Damage()
+    public void Jump(float force)
     {
-        animator.Play("Damage");
-        AudioManager.instance.PlayAudio(hurtSound);
+        rb.linearVelocity = new Vector2(rb.linearVelocityX, force);
+        animator.Play("Jump");
+        AudioManager.instance.PlayAudio(jumpSound);
     }
 
-    public void EnemyDamage(int dmg)
-    {
-        health -= dmg;
-        if (health <= 0 && !secondChance)
-        {
-            score.Save();
-            
-            Death();
-        }
-        else if (health <= 0 && secondChance)
-        {
-            health = 4;
-            // Efectitos lindos
-        }
-    }
+    //private void DoubleJump()
+    //{
+    //    rb.AddForce(Vector2.up * (jumpForce / 2f));
+    //    doubleJump = true;
+    //}
 
-        public void Restart()
+    public void Restart()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -83,31 +93,6 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public void Jump()
-    {
-        
-        animator.Play("Jump");
-        AudioManager.instance.PlayAudio (jumpSound);
-        if (rb.linearVelocity.y == 0)
-            rb.AddForce(Vector2.up * force);
-        else if (rb.linearVelocity.y != 0 && !doubleJump)
-            DoubleJump();
-        
-    }
-
-    private void DoubleJump()
-    {
-        rb.AddForce(Vector2.up * (force / 2f));
-        doubleJump = true;
-       
-    }
-
-    public void Death()
-    {
-        AudioManager.instance.PlayAudio(deathSound);
-        deathMenu.ToggleEndMenu();
-    }
-    
     public void Pause()
     {
         pause = !pause;
@@ -119,12 +104,14 @@ public class Player : MonoBehaviour
             Time.timeScale = 1;
     }
 
-    void CreateDust(){
+    void CreateDust()
+    {
         dust.Play();
     }
 
-    public void Reset(){
-        PlayerPrefs.SetInt("Coins", 0); 
+    public void Reset()
+    {
+        PlayerPrefs.SetInt("Coins", 0);
         PlayerPrefs.SetInt("highscore", 0);
     }
 }

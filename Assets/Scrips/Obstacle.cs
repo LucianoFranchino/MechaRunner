@@ -24,9 +24,7 @@ public class Obstacle : MonoBehaviour
         
             if (collision.CompareTag("Player"))
             {
-                collision.GetComponent<Player>().EnemyDamage(obstacleDamage);
-            
-                
+                collision.GetComponent<PlayerHealth>().PlayerDamage(obstacleDamage);      
             }
     }
 }

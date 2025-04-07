@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<Player>().EnemyDamage(enemyDamage);
+            other.GetComponent<PlayerHealth>().PlayerDamage(enemyDamage);
             
             Destroy(gameObject);
         }

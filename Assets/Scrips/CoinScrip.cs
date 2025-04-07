@@ -35,9 +35,9 @@ public class CoinScrip : MonoBehaviour
                 AudioManager.instance.PlayAudio(powerSound);
                 break;
 
-                case Type.SecondChance:
-                col.GetComponent<Player>().secondChance = true;
-                break;
+                //case Type.SecondChance:
+                //col.GetComponent<Player>().secondChance = true;
+                //break;
             }
             print("TENGO LA OBJECTO" + type);
             
