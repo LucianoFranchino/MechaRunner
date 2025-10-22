@@ -2,116 +2,212 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [Header("Sound Effects")]
-    [SerializeField] private AudioClip jumpSound;
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpForce = 15f;
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
 
-    [Header("Player Jump")]
-    private Rigidbody2D rb;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float doubleJumpForce;
-    public LayerMask groundLayer;
+    [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
-    [SerializeField] private float checkRadius = 0.2f;
-    [SerializeField] private float coyoteTime = 0.1f;
-    [SerializeField] private float lastGroundedTime;
-    private bool doubleJump;
-    [SerializeField] private ParticleSystem dust;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer;
 
+    [Header("Swipe Settings")]
+    [SerializeField] private float swipeThreshold = 50f;
 
-    private Animator animator;
-    //Sacar de aca
-    public ScoreManager score;
-    public GameObject pauseMenu;
-    private bool pause;
+    [Header("Double Jump")]
+    [SerializeField] private bool doubleJumpUnlocked = false;
 
-    public void Start()
+    [Header("Testing (Editor Only)")]
+    [SerializeField] private bool useMouseForTesting = true;
+
+    private Rigidbody2D rb;
+    private bool isGrounded;
+    private bool hasDoubleJumped;
+    private Vector2 swipeStartPos;
+    private Vector2 swipeEndPos;
+    private bool isSwiping;
+
+    // Referencias del Input System
+    private PlayerInput playerInput;
+    private InputAction touchPositionAction;
+    private InputAction touchPressAction;
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        CreateDust();
-        Time.timeScale = 1;
-    }
-    private void Update()
-    {
-        JumpCheck();
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            Reset();
-            Debug.Log("reinicio");
-        }
+        playerInput = GetComponent<PlayerInput>();
+
+        // Obtener las acciones del Input System
+        touchPositionAction = playerInput.actions["TouchPosition"];
+        touchPressAction = playerInput.actions["TouchPress"];
     }
 
-    private void JumpCheck ()
+    private void OnEnable()
     {
-        bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
+        touchPressAction.performed += OnTouchPress;
+        touchPressAction.canceled += OnTouchRelease;
+    }
+
+    private void OnDisable()
+    {
+        touchPressAction.performed -= OnTouchPress;
+        touchPressAction.canceled -= OnTouchRelease;
+    }
+
+    private void Update()
+    {
+        CheckGround();
 
         if (isGrounded)
         {
-            lastGroundedTime = Time.time;
-            doubleJump = true;
+            hasDoubleJumped = false;
         }
 
-        if (Input.GetButtonDown("Jump"))
+        // Testing con mouse en el Editor
+#if UNITY_EDITOR
+        if (useMouseForTesting)
         {
-            if (isGrounded || (Time.time - lastGroundedTime <= coyoteTime))
+            HandleMouseInput();
+        }
+#endif
+    }
+
+    private void FixedUpdate()
+    {
+        ApplyBetterJump();
+    }
+
+    private void OnTouchPress(InputAction.CallbackContext context)
+    {
+        swipeStartPos = touchPositionAction.ReadValue<Vector2>();
+        isSwiping = true;
+    }
+
+    private void OnTouchRelease(InputAction.CallbackContext context)
+    {
+        if (!isSwiping) return;
+
+        swipeEndPos = touchPositionAction.ReadValue<Vector2>();
+        DetectSwipe();
+        isSwiping = false;
+    }
+
+    private void DetectSwipe()
+    {
+        Vector2 swipeDelta = swipeEndPos - swipeStartPos;
+
+        // Swipe vertical debe ser mayor al horizontal
+        if (Mathf.Abs(swipeDelta.y) > Mathf.Abs(swipeDelta.x))
+        {
+            if (Mathf.Abs(swipeDelta.y) > swipeThreshold)
             {
-                Jump(jumpForce);
-            }
-            else if (doubleJump)
-            {
-                Jump(doubleJumpForce);
-                doubleJump = false;
+                if (swipeDelta.y > 0)
+                {
+                    // Swipe Up - Saltar
+                    Jump();
+                }
+                else
+                {
+                    // Swipe Down - Bajar rápido
+                    FastFall();
+                }
             }
         }
     }
-    public void Jump(float force)
+
+    private void Jump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocityX, force);
-        animator.Play("Jump");
-        AudioManager.instance.PlayAudio(jumpSound);
+        if (isGrounded)
+        {
+            // Salto normal desde el suelo
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+        else if (doubleJumpUnlocked && !hasDoubleJumped)
+        {
+            // Doble salto (solo si está desbloqueado)
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            hasDoubleJumped = true;
+        }
     }
 
-    //private void DoubleJump()
-    //{
-    //    rb.AddForce(Vector2.up * (jumpForce / 2f));
-    //    doubleJump = true;
-    //}
-
-    public void Restart()
+    private void FastFall()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Solo aplicar caída rápida si está en el aire
+        if (!isGrounded && rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce * 0.5f);
+        }
     }
 
-    public void Menu()
+    private void ApplyBetterJump()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(0);
+        // Hacer que la caída sea más pesada para un mejor "feel"
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+        }
+        else if (rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+        }
     }
 
-    public void Pause()
+    private void CheckGround()
     {
-        pause = !pause;
-        pauseMenu.SetActive(pause);
-        score.scoreIncreasing = !pause;
-        if (pause)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    void CreateDust()
+    // Método público para desbloquear el doble salto con power-up
+    public void UnlockDoubleJump()
     {
-        dust.Play();
+        doubleJumpUnlocked = true;
+        Debug.Log("¡Doble salto desbloqueado!");
     }
 
-    public void Reset()
+    // Método para bloquear el doble salto (opcional)
+    public void LockDoubleJump()
     {
-        PlayerPrefs.SetInt("Coins", 0);
-        PlayerPrefs.SetInt("highscore", 0);
+        doubleJumpUnlocked = false;
+        hasDoubleJumped = false;
     }
+
+    // Método para verificar si el doble salto está disponible
+    public bool IsDoubleJumpUnlocked()
+    {
+        return doubleJumpUnlocked;
+    }
+
+    // Visualización del ground check en el editor
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
+
+#if UNITY_EDITOR
+    // Método para testear con mouse en el Editor
+    private void HandleMouseInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            swipeStartPos = Input.mousePosition;
+            isSwiping = true;
+        }
+
+        if (Input.GetMouseButtonUp(0) && isSwiping)
+        {
+            swipeEndPos = Input.mousePosition;
+            DetectSwipe();
+            isSwiping = false;
+        }
+    }
+#endif
 }

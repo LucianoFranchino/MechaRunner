@@ -5,9 +5,8 @@ using UnityEngine;
 public class ParalaxBG : MonoBehaviour
 {
     public float speedBG;
-
-    public float endX;
-    public float startX;
+    [SerializeField] private float endX;
+    [SerializeField] private float startX;
 
     void Update()
     {
