@@ -5,10 +5,13 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
-  - Obstacule
   - PauseB
   - ScreenShake
   - Coin
+  - PowerUp
+  - Obstacle
+  - Bullet
+  - Obstacule
   layers:
   - Default
   - TransparentFX

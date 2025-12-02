@@ -27,7 +27,7 @@ public class pu_spawner : MonoBehaviour
         int posSpawn = Random.Range(0, positions.Length);
         
         GameObject x = Instantiate<GameObject>(powers[prefab], positions[posSpawn].transform.position, powers[prefab].transform.rotation);
-        x.GetComponent<Obstacle>().speed = speed;
+        //x.GetComponent<Obstacle>().movSpeed = speed;
         Destroy(x, destroyDelay);
         yield return new WaitForSeconds(delay);
         delay = Random.Range(minTime, maxTime);

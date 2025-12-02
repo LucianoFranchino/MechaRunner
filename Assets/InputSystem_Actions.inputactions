@@ -495,10 +495,10 @@
                 {
                     "name": "",
                     "id": "a00e88bb-a772-47de-8fd6-eb822af7c344",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Touch",
                     "action": "TouchPress",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -520,7 +520,7 @@
                     "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Touch",
                     "action": "TouchPosition",
                     "isComposite": false,
                     "isPartOfComposite": false

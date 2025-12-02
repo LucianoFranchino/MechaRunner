@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
         GameObject prefab = obstacles[Random.Range(0, obstacles.Length)];
         Vector2 pos = new Vector2(transform.position.x, prefab.transform.position.y);
         GameObject x = Instantiate<GameObject>(prefab, pos, prefab.transform.rotation);
-        x.GetComponent<Obstacle>().speed = speed;
+        //x.GetComponent<Obstacle>().speed = speed;
         Destroy(x, destroyDelay);
         yield return new WaitForSeconds(delay);
 

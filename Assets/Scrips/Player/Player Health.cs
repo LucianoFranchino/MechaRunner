@@ -4,16 +4,16 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int playerHealth = 2;
     [SerializeField] private DeadthCreen deathScreen;
-    private Animator animator;
+    //private Animator animator;
 
     [Header("Sound Effects")]
     [SerializeField] private AudioClip hurtSound;
     [SerializeField] private AudioClip deathSound;
 
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
+    //void Start()
+    //{
+    //    animator = GetComponent<Animator>();
+    //}
     //public void OnTriggerEnter2D(Collider2D choque)
     //{
     //    if (choque.CompareTag("Enemy"))
@@ -24,7 +24,7 @@ public class PlayerHealth : MonoBehaviour
     public void PlayerDamage(int damage)
     {
         playerHealth -= damage;
-        animator.Play("Damage");
+        //animator.Play("Damage");
         AudioManager.instance.PlayAudio(hurtSound);
         if(playerHealth <= 0)
         {
