@@ -11,7 +11,6 @@ TagManager:
   - PowerUp
   - Obstacle
   - Bullet
-  - Obstacule
   layers:
   - Default
   - TransparentFX
