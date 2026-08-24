@@ -26,7 +26,7 @@ public class CoinScrip : MonoBehaviour
                 break;
 
                 case Type.ScoreMultiplierPU:
-                FindObjectOfType<ScoreManager>().PUPMult();
+                FindFirstObjectByType<ScoreManager>().PUPMult();
                 AudioManager.instance.PlayAudio(powerSound);
                 break;
 
@@ -35,14 +35,11 @@ public class CoinScrip : MonoBehaviour
                 AudioManager.instance.PlayAudio(powerSound);
                 break;
 
-                //case Type.SecondChance:
-                //col.GetComponent<Player>().secondChance = true;
-                //break;
             }
-            print("TENGO LA OBJECTO" + type);
-            
+            print("TENGO EL OBJETO" + type);
 
-            Destroy(gameObject);
+
+            GetComponent<PooledObject>().Despawn();
         }
     }
 }

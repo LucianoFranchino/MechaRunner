@@ -102,6 +102,8 @@ GameObject:
   - component: {fileID: 6691766076435346573}
   - component: {fileID: -1921479185035354697}
   - component: {fileID: 8501084026874212224}
+  - component: {fileID: 6352844443337758564}
+  - component: {fileID: 1950935452938250812}
   m_Layer: 0
   m_Name: SpikesEnem
   m_TagString: Enemy
@@ -223,8 +225,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a116ab1588963c42a110a31d0ff62ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.25
+  movSpeed: 0
   obstacleDamage: 0
+  despawnDistanceX: -15
 --- !u!114 &8501084026874212224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +246,34 @@ MonoBehaviour:
     type: 3}
   enemyDamage: 1
   coin: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
+--- !u!114 &6352844443337758564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480063347915605934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8514a7e146fe8c24e9dde63f06999f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoReturnToPool: 0
+  autoReturnTime: 5
+--- !u!114 &1950935452938250812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480063347915605934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4f011dffe3a264c9cb50917b992105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultiplier: 0.9
+  despawnDistanceX: -15
 --- !u!1 &5525829644036604445
 GameObject:
   m_ObjectHideFlags: 0

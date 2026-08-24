@@ -1,30 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Bullet : MonoBehaviour
+[RequireComponent(typeof(PooledObject))]
+public class Bullet : MonoBehaviour, IPooleable
 {
-    public float speed = 20f;
-    public Rigidbody2D rb;
-    public int damage = 2;
+    [SerializeField] private float speed = 20f;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private int damage = 2;
 
-    // Start is called before the first frame update
-    void Start()
+    private PooledObject pooledObject;
+
+    private void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
+    public void OnSpawn()
     {
         rb.linearVelocity = transform.right * speed;
     }
 
-    void OnTriggerEnter2D(Collider2D hitInfo)
+    public void OnDespawn()
+    {
+        rb.linearVelocity = Vector2.zero;
+    }
+
+    private void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.gameObject.CompareTag("Enemy"))
         {
             hitInfo.GetComponent<Enemy>().TakeDamage(damage);
-            Destroy(gameObject);
+            pooledObject.Despawn();
         }
-        if (hitInfo.gameObject.CompareTag("Obstacle"))
+        else if (hitInfo.gameObject.CompareTag("Obstacle"))
         {
-            Destroy(gameObject);
+            pooledObject.Despawn();
         }
     }
-
 }

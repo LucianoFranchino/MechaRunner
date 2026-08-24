@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4469617169162737224}
   - component: {fileID: 5053927765114966061}
   - component: {fileID: -3437826110650966203}
+  - component: {fileID: 7379846989959248418}
+  - component: {fileID: 8809213352355572975}
   m_Layer: 9
   m_Name: Moneda
   m_TagString: Coin
@@ -215,5 +217,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a116ab1588963c42a110a31d0ff62ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  movSpeed: 0
   obstacleDamage: 0
+  despawnDistanceX: -15
+--- !u!114 &7379846989959248418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315509876435490909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8514a7e146fe8c24e9dde63f06999f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoReturnToPool: 0
+  autoReturnTime: 5
+--- !u!114 &8809213352355572975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315509876435490909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4f011dffe3a264c9cb50917b992105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultiplier: 1
+  despawnDistanceX: -15

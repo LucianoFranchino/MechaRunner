@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 5748264194670030623}
   - component: {fileID: 8010230983532547309}
   - component: {fileID: 6202282141944933621}
+  - component: {fileID: -2655199048261887644}
+  - component: {fileID: 819683598865378487}
   m_Layer: 0
   m_Name: Obs_Triple
   m_TagString: Obstacle
@@ -225,3 +227,31 @@ MonoBehaviour:
   movSpeed: 3
   obstacleDamage: 4
   despawnDistanceX: -10
+--- !u!114 &-2655199048261887644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135394581222731803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8514a7e146fe8c24e9dde63f06999f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoReturnToPool: 0
+  autoReturnTime: 5
+--- !u!114 &819683598865378487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3135394581222731803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4f011dffe3a264c9cb50917b992105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultiplier: 1
+  despawnDistanceX: -15

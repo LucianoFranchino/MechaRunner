@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8911421640158000251}
   - component: {fileID: 8733141212949434063}
   - component: {fileID: 5746071773000205254}
+  - component: {fileID: -1111762367562478714}
+  - component: {fileID: 7777571566983711862}
   m_Layer: 0
   m_Name: Obs_Platform
   m_TagString: Obstacle
@@ -95,6 +97,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.749455, y: 0.54755807}
   m_EdgeRadius: 0
+--- !u!114 &-1111762367562478714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4954763397182163781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8514a7e146fe8c24e9dde63f06999f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoReturnToPool: 0
+  autoReturnTime: 5
+--- !u!114 &7777571566983711862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4954763397182163781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4f011dffe3a264c9cb50917b992105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedMultiplier: 1
+  despawnDistanceX: -15
 --- !u!1 &7952856381513268426
 GameObject:
   m_ObjectHideFlags: 0

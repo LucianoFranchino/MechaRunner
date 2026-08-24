@@ -1,51 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Audio;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPooleable
 {
-
     [SerializeField] private AudioClip explocionSound;
-    private CoinScrip coinM;
-    public int enemyHealth = 2;
-    public GameObject deathEfect;
-    private float destroyTime =1;
-    public int enemyDamage = 1;
-    public GameObject coin;
+    [SerializeField] private int maxHealth = 2;
+    [SerializeField] private int enemyDamage = 1;
+    [SerializeField] private string coinPoolId = "Coin";
+    [SerializeField] private string deathEffectPoolId = "DeathFX";
+
+    private int currentHealth;
+    private PooledObject pooledObject;
+
+    private void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
+    public void OnSpawn()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void OnDespawn() { }
 
     public void TakeDamage(int damage)
     {
-        enemyHealth -= damage;
-        if(enemyHealth <= 0)
+        currentHealth -= damage;
+        if (currentHealth <= 0)
         {
             AudioManager.instance.PlayAudio(explocionSound);
-            Instantiate(deathEfect, transform.position, Quaternion.identity);
             Die();
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerHealth>().PlayerDamage(enemyDamage);
-            
-            Destroy(gameObject);
+            pooledObject.Despawn();
         }
     }
-    void DestroyObjectDelayed()
+
+    private void Die()
     {
-        // Kills the game object in 5 seconds after loading the object
-        Destroy(deathEfect, 1);
+        PoolManager.Instance.Spawn(coinPoolId, transform.position);
+        PoolManager.Instance.Spawn(deathEffectPoolId, transform.position);
+        pooledObject.Despawn();
     }
-    void Die()
-    {
-        Instantiate(coin, transform.position, Quaternion.identity);
-        Instantiate(deathEfect, transform.position, Quaternion.identity);
-        //coinM = FindObjectOfType<CoinScrip>();
-        Destroy(gameObject);
-        //Destroy(deathEfect); 
-    }
-    
 }

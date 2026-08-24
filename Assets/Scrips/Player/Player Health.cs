@@ -14,13 +14,13 @@ public class PlayerHealth : MonoBehaviour
     //{
     //    animator = GetComponent<Animator>();
     //}
-    //public void OnTriggerEnter2D(Collider2D choque)
-    //{
-    //    if (choque.CompareTag("Enemy"))
-    //    {
-    //        PlayerDamage(1);
-    //    }
-    //}
+    public void OnTriggerEnter2D(Collider2D choque)
+    {
+        if (choque.CompareTag("Enemy"))
+        {
+            PlayerDamage(1);
+        }
+    }
     public void PlayerDamage(int damage)
     {
         playerHealth -= damage;
