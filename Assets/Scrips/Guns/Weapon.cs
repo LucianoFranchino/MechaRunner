@@ -8,14 +8,14 @@ public class Weapon : MonoBehaviour
     [SerializeField] private string bulletPoolId = "Bullet";
     [SerializeField] private string bulletSuperPoolId = "BulletSuper";
 
-    public bool superFire;
-
     public void Shoot()
     {
-        string poolId = superFire ? bulletSuperPoolId : bulletPoolId;
+        bool superActive = PowerUpManager.Instance != null
+            && PowerUpManager.Instance.IsActive(PowerUpType.SuperShoot);
+
+        string poolId = superActive ? bulletSuperPoolId : bulletPoolId;
         PoolManager.Instance.Spawn(poolId, firePoint.position, firePoint.rotation);
         AudioManager.instance.PlayAudio(shootSound);
-        superFire = false;
         animator.Play("Fire");
     }
 }

@@ -1,27 +1,49 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class AudioManager: MonoBehaviour
 {
     public static AudioManager instance;
-    private AudioSource audioSource;
-    
+
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioClip backgroundMusic;
+
+    public bool SfxMuted { get; private set; }
+    public bool MusicMuted { get; private set; }
+
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }else
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
 
-        audioSource = GetComponent<AudioSource>();
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        musicSource.loop = true;
+        if (backgroundMusic != null)
+        {
+            musicSource.clip = backgroundMusic;
+            musicSource.Play();
+        }
     }
 
     public void PlayAudio(AudioClip sound)
     {
-        audioSource.PlayOneShot(sound);
+        sfxSource.PlayOneShot(sound);
+    }
+
+    public void ToggleSfxMute()
+    {
+        SfxMuted = !SfxMuted;
+        sfxSource.mute = SfxMuted;
+    }
+
+    public void ToggleMusicMute()
+    {
+        MusicMuted = !MusicMuted;
+        musicSource.mute = MusicMuted;
     }
 }

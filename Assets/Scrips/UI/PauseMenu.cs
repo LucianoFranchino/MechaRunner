@@ -4,35 +4,24 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
+    public static bool GameIsPaused { get; private set; }
 
-    public GameObject pauseMenuUI;
+    [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private ScoreManager scoreManager;
 
-    // Update is called once per frame
-    public void PauseButton()
-    {
-        if (GameIsPaused)
-        {
-            Resume();
-        }
-        else
-        {
-            Pause();
-        }
-        
-    }
-
-    void Resume()
+    public void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        if (scoreManager != null) scoreManager.scoreIncreasing = true;
     }
-    
-    void Pause()
+
+    public void Pause()
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        if (scoreManager != null) scoreManager.scoreIncreasing = false;
     }
 }

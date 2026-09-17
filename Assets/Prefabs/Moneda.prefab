@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 504455281}
   - component: {fileID: 4469617169162737224}
   - component: {fileID: 5053927765114966061}
-  - component: {fileID: -3437826110650966203}
   - component: {fileID: 7379846989959248418}
   - component: {fileID: 8809213352355572975}
   m_Layer: 9
@@ -205,21 +204,6 @@ MonoBehaviour:
   coinSound: {fileID: 8300000, guid: f9e6fac3c515ad14eb397d58d5646bd3, type: 3}
   powerSound: {fileID: 8300000, guid: 8e0ddb110dd66d0458dc818972338391, type: 3}
   type: 0
---- !u!114 &-3437826110650966203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 315509876435490909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a116ab1588963c42a110a31d0ff62ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movSpeed: 0
-  obstacleDamage: 0
-  despawnDistanceX: -15
 --- !u!114 &7379846989959248418
 MonoBehaviour:
   m_ObjectHideFlags: 0

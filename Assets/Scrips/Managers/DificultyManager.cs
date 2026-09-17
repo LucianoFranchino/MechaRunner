@@ -67,7 +67,7 @@ public class DificultyManager : MonoBehaviour
         }
 
         // Disminuir intervalo de spawn
-        if (currentSpawnInterval > minSpawnInterval)
+        if (currentGameSpeed < maxGameSpeed && currentSpawnInterval > minSpawnInterval)
         {
             currentSpawnInterval -= spawnIntervalDecrease;
             currentSpawnInterval = Mathf.Max(currentSpawnInterval, minSpawnInterval);

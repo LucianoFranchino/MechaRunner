@@ -1,41 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CoinCounter : MonoBehaviour
 {
     public int coinValue;
     public Text coinScore;
-    public float timer, multiplier = 1, baseTimeMultiplier = 5f, multBase = 2f;
+    [SerializeField] private float multiplierValue = 2f;
 
-    void Start()
+    private float multiplier = 1f;
+
+    private void Start()
     {
-        if(PlayerPrefs.HasKey("Coins")){
+        if (PlayerPrefs.HasKey("Coins"))
             coinValue = PlayerPrefs.GetInt("Coins");
-        }
 
-        coinScore.text = "" +  coinValue;
+        coinScore.text = "" + coinValue;
+
+        if (PowerUpManager.Instance != null)
+        {
+            PowerUpManager.Instance.Activated += OnPowerUpActivated;
+            PowerUpManager.Instance.Expired += OnPowerUpExpired;
+        }
     }
+
+    private void OnDestroy()
+    {
+        if (PowerUpManager.Instance != null)
+        {
+            PowerUpManager.Instance.Activated -= OnPowerUpActivated;
+            PowerUpManager.Instance.Expired -= OnPowerUpExpired;
+        }
+    }
+
     public void GetCoin()
     {
-        
-        coinScore.text = " " + coinValue;
         coinValue += 1 * (int)multiplier;
         coinScore.text = " " + coinValue;
         PlayerPrefs.SetInt("Coins", coinValue);
     }
 
-    void Update()
+    private void OnPowerUpActivated(PowerUpType type, float duration)
     {
-        if (timer > 0) timer -= Time.deltaTime;
-        else if (timer <= 0 && multiplier > 1) multiplier = 1;
+        if (type == PowerUpType.CoinMultiplier)
+            multiplier = multiplierValue;
     }
 
-    public void PUPMult()
+    private void OnPowerUpExpired(PowerUpType type)
     {
-        if (timer <= 0) timer += baseTimeMultiplier;
-        else timer = baseTimeMultiplier;
-        multiplier = multBase;
+        if (type == PowerUpType.CoinMultiplier)
+            multiplier = 1f;
     }
 }

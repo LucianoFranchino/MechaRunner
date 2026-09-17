@@ -451,7 +451,6 @@ GameObject:
   - component: {fileID: -3343672956439812838}
   - component: {fileID: -2305538219753342175}
   - component: {fileID: 4979514226007896956}
-  - component: {fileID: 4118637752221571323}
   - component: {fileID: -5163386390306349597}
   - component: {fileID: 6162906468102976898}
   - component: {fileID: -169666914568684101}
@@ -568,26 +567,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explocionSound: {fileID: 8300000, guid: aa94840c978ecea44a010e2a13e7c5ce, type: 3}
-  enemyHealth: 2
-  deathEfect: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
-    type: 3}
+  maxHealth: 2
   enemyDamage: 1
-  coin: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
---- !u!114 &4118637752221571323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8006273657135835026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a116ab1588963c42a110a31d0ff62ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movSpeed: 0
-  obstacleDamage: 2
-  despawnDistanceX: -15
+  coinPoolId: Coin
+  deathEffectPoolId: DeathFX
 --- !u!95 &-5163386390306349597
 Animator:
   serializedVersion: 7

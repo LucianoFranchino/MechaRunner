@@ -4,9 +4,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject pauseMenu;
-    public ScoreManager score;
-    private bool pause;
     public void Restart()
     {
         Time.timeScale = 1;
@@ -17,16 +14,5 @@ public class MenuManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
-    }
-
-    public void Pause()
-    {
-        pause = !pause;
-        pauseMenu.SetActive(pause);
-        score.scoreIncreasing = !pause;
-        if (pause)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;
     }
 }

@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
-    //optimizar 
+
     public Text scoreText, finalScoreText, hiScoreText;
     public float scoreCount;
     public float pointsPerSecond;
     public bool scoreIncreasing;
-    public float multiplier = 1f;
-    public float timer;
-    public float baseTimeMultiplier = 5f, multBase = 2f;
+    [SerializeField] private float multiplierValue = 2f;
+
+    private float multiplier = 1f;
 
     private void Awake()
     {
@@ -27,27 +25,45 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    void Start()
+
+    private void Start()
     {
         if (PlayerPrefs.HasKey("highscore"))
             hiScoreText.text = "Highscore: " + Mathf.Round(PlayerPrefs.GetFloat("highscore"));
+
+        if (PowerUpManager.Instance != null)
+        {
+            PowerUpManager.Instance.Activated += OnPowerUpActivated;
+            PowerUpManager.Instance.Expired += OnPowerUpExpired;
+        }
     }
 
-    void Update()
+    private void OnDestroy()
     {
-        if (timer > 0) timer -= Time.deltaTime;
-        else if (timer <= 0 && multiplier > 1) multiplier = 1;
+        if (PowerUpManager.Instance != null)
+        {
+            PowerUpManager.Instance.Activated -= OnPowerUpActivated;
+            PowerUpManager.Instance.Expired -= OnPowerUpExpired;
+        }
+    }
 
+    private void Update()
+    {
         if (scoreIncreasing)
             scoreCount += (pointsPerSecond * multiplier) * Time.deltaTime;
         scoreText.text = finalScoreText.text = "YOUR SCORE: " + Mathf.Round(scoreCount);
     }
 
-    public void PUPMult()
+    private void OnPowerUpActivated(PowerUpType type, float duration)
     {
-        if (timer <= 0) timer += baseTimeMultiplier;
-        else timer = baseTimeMultiplier;
-        multiplier = multBase;
+        if (type == PowerUpType.ScoreMultiplier)
+            multiplier = multiplierValue;
+    }
+
+    private void OnPowerUpExpired(PowerUpType type)
+    {
+        if (type == PowerUpType.ScoreMultiplier)
+            multiplier = 1f;
     }
 
     public void Save()
