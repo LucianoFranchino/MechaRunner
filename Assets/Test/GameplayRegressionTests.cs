@@ -49,6 +49,101 @@ public class GameplayRegressionTests
     }
 
     [UnityTest]
+    public IEnumerator Encuadre_DobleSaltoNoSaleDeLaCamara()
+    {
+        yield return LoadGame();
+        var player = GameObject.Find("NEW PLAYER DEMO");
+        var rb = player.GetComponent<Rigidbody2D>();
+        var sr = player.GetComponent<SpriteRenderer>();
+        var jump = typeof(Player).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
+        var cam = Camera.main;
+        float camTop = cam.transform.position.y + cam.orthographicSize;
+
+        yield return new WaitForSeconds(0.3f); // que quede apoyado
+        jump.Invoke(player.GetComponent<Player>(), null);
+        yield return new WaitForFixedUpdate();
+        while (rb.linearVelocity.y > 0f) yield return new WaitForFixedUpdate();
+        jump.Invoke(player.GetComponent<Player>(), null); // segundo salto en el apex: el peor caso
+
+        float maxTop = float.MinValue;
+        for (float t = 0; t < 1.5f; t += Time.fixedDeltaTime)
+        {
+            yield return new WaitForFixedUpdate();
+            maxTop = Mathf.Max(maxTop, sr.bounds.max.y);
+        }
+        Assert.Less(maxTop, camTop, $"El doble salto sale de cámara (tope {maxTop:F2}, cámara {camTop:F2})");
+    }
+
+    [UnityTest]
+    public IEnumerator Encuadre_EnemigoTerrestreLlegaAlJugadorSobreElPiso()
+    {
+        yield return LoadGame();
+        var framing = Object.FindFirstObjectByType<CameraFraming>();
+        var player = GameObject.Find("NEW PLAYER DEMO").transform;
+        Assert.Greater(framing.RightEdge, player.position.x);
+
+        // Se spawnea en el punto real (fuera del borde derecho)
+        var spawnX = framing.RightEdge + 2f;
+        var enemy = PoolManager.Instance.Spawn("Enemy", new Vector3(spawnX, -0.34f, 0f)).transform;
+        float minY = float.MaxValue;
+        for (float t = 0; t < 4f && enemy.gameObject.activeInHierarchy && enemy.position.x > player.position.x + 1.5f; t += Time.deltaTime)
+        {
+            minY = Mathf.Min(minY, enemy.position.y);
+            yield return null;
+        }
+        Assert.IsTrue(enemy.gameObject.activeInHierarchy, "El enemigo desapareció antes de llegar");
+        Assert.LessOrEqual(enemy.position.x, player.position.x + 1.5f, "El enemigo no llegó al jugador");
+        Assert.Greater(minY, -0.6f, "El enemigo se cayó por debajo del piso");
+    }
+
+    [UnityTest]
+    public IEnumerator Encuadre_ParallaxCubreSiempreLaVista()
+    {
+        yield return LoadGame();
+        var cam = Camera.main;
+        float halfW = cam.orthographicSize * cam.aspect;
+        float left = cam.transform.position.x - halfW, right = cam.transform.position.x + halfW;
+        var background = GameObject.Find("Background").transform;
+        var columns = GameObject.Find("Columns").transform;
+        // Las columnas tienen una separación de diseño entre segmentos (ya existía): ese hueco se permite.
+        var colSeg = columns.GetChild(0).GetComponent<SpriteRenderer>();
+        float colSpacing = Mathf.Abs(columns.GetChild(1).position.x - columns.GetChild(0).position.x);
+        float allowedColumnGap = colSpacing - colSeg.bounds.size.x + 0.01f;
+
+        Time.timeScale = 6f; // varios ciclos de reciclado en poco tiempo real
+        for (float t = 0; t < 3f; t += Time.unscaledDeltaTime)
+        {
+            float maxGapBg = LargestGapInView(background, left, right);
+            float maxGapCol = LargestGapInView(columns, left, right);
+            Assert.LessOrEqual(maxGapBg, 0.01f, "Background: queda un hueco visible");
+            Assert.LessOrEqual(maxGapCol, allowedColumnGap, "Columns: hueco mayor que la separación de diseño");
+            yield return null;
+        }
+        Time.timeScale = 1f;
+    }
+
+    // Mayor tramo de [left, right] que no cubre ningún segmento (sprites hijos directos) de la capa
+    private static float LargestGapInView(Transform layer, float left, float right)
+    {
+        var spans = new System.Collections.Generic.List<Vector2>();
+        foreach (Transform seg in layer)
+        {
+            var b = seg.GetComponent<SpriteRenderer>().bounds;
+            spans.Add(new Vector2(b.min.x, b.max.x));
+        }
+        spans.Sort((a, b) => a.x.CompareTo(b.x));
+        float covered = left, largest = 0f;
+        foreach (var s in spans)
+        {
+            if (s.x > covered) largest = Mathf.Max(largest, Mathf.Min(s.x, right) - covered);
+            covered = Mathf.Max(covered, s.y);
+            if (covered >= right) break;
+        }
+        if (covered < right) largest = Mathf.Max(largest, right - covered);
+        return largest;
+    }
+
+    [UnityTest]
     public IEnumerator Pool_AutoReturnFuncionaEnCadaReuso()
     {
         var managerGo = new GameObject("PoolManager_Test");
