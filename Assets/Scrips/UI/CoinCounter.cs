@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 
 /// <summary>
 /// Contador de monedas de la escena. Vive en un objeto de la escena (no en el
@@ -9,8 +9,10 @@ public class CoinCounter : MonoBehaviour
 {
     public static CoinCounter Instance { get; private set; }
 
+    public const string CoinsKey = "Coins";
+
     public int coinValue;
-    public Text coinScore;
+    public TMP_Text coinScore;
     [SerializeField] private float multiplierValue = 2f;
 
     private float multiplier = 1f;
@@ -27,10 +29,8 @@ public class CoinCounter : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("Coins"))
-            coinValue = PlayerPrefs.GetInt("Coins");
-
-        coinScore.text = "" + coinValue;
+        coinValue = PlayerPrefs.GetInt(CoinsKey, coinValue);
+        coinScore.SetText("{0}", coinValue);
 
         if (PowerUpManager.Instance != null)
         {
@@ -53,8 +53,8 @@ public class CoinCounter : MonoBehaviour
     public void GetCoin()
     {
         coinValue += Mathf.RoundToInt(multiplier);
-        coinScore.text = "" + coinValue;
-        PlayerPrefs.SetInt("Coins", coinValue);
+        coinScore.SetText("{0}", coinValue);
+        PlayerPrefs.SetInt(CoinsKey, coinValue);
     }
 
     private void OnPowerUpActivated(PowerUpType type, float duration)

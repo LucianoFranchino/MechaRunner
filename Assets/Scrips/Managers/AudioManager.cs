@@ -4,8 +4,8 @@ public class AudioManager: MonoBehaviour
 {
     public static AudioManager instance;
 
-    private const string SfxMutedKey = "SfxMuted";
-    private const string MusicMutedKey = "MusicMuted";
+    public const string SfxMutedKey = "SfxMuted";
+    public const string MusicMutedKey = "MusicMuted";
 
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioSource musicSource;
@@ -29,14 +29,32 @@ public class AudioManager: MonoBehaviour
         SfxMuted = PlayerPrefs.GetInt(SfxMutedKey, 0) == 1;
         MusicMuted = PlayerPrefs.GetInt(MusicMutedKey, 0) == 1;
         sfxSource.mute = SfxMuted;
-        musicSource.mute = MusicMuted;
 
-        musicSource.loop = true;
-        if (backgroundMusic != null)
+        // Una sola pista de música: si viene sonando desde el menú se adopta esa
+        // (sin cortes ni copias superpuestas); si se arrancó directo en esta escena, se usa la propia.
+        var persistent = MusicTransicion.Source;
+        if (persistent != null && persistent != musicSource)
         {
-            musicSource.clip = backgroundMusic;
-            musicSource.Play();
+            persistent.volume = musicSource.volume;
+            musicSource.Stop();
+            musicSource.enabled = false;
+            musicSource = persistent;
+            if (backgroundMusic != null && musicSource.clip != backgroundMusic)
+            {
+                musicSource.clip = backgroundMusic;
+                musicSource.Play();
+            }
         }
+        else
+        {
+            musicSource.loop = true;
+            if (backgroundMusic != null)
+            {
+                musicSource.clip = backgroundMusic;
+                musicSource.Play();
+            }
+        }
+        musicSource.mute = MusicMuted;
     }
 
     private void OnDestroy()

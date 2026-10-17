@@ -6,6 +6,8 @@ public class PauseMenu : MonoBehaviour
 
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private ScoreManager scoreManager;
+    [Tooltip("Controles táctiles de la partida (FIRE, pausa): se ocultan mientras está la pausa.")]
+    [SerializeField] private GameObject gameplayControls;
 
     private void Awake()
     {
@@ -39,6 +41,7 @@ public class PauseMenu : MonoBehaviour
         if (DeadthCreen.IsGameOver) return;
 
         pauseMenuUI.SetActive(false);
+        if (gameplayControls != null) gameplayControls.SetActive(true);
         Time.timeScale = 1f;
         GameIsPaused = false;
         if (scoreManager != null) scoreManager.scoreIncreasing = true;
@@ -49,6 +52,7 @@ public class PauseMenu : MonoBehaviour
         if (DeadthCreen.IsGameOver) return;
 
         pauseMenuUI.SetActive(true);
+        if (gameplayControls != null) gameplayControls.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
         if (scoreManager != null) scoreManager.scoreIncreasing = false;

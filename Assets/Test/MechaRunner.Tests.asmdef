@@ -3,6 +3,8 @@
     "rootNamespace": "",
     "references": [
         "MechaRunner",
+        "UnityEngine.UI",
+        "Unity.TextMeshPro",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
