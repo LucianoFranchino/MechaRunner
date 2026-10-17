@@ -6393,6 +6393,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 2
   deathScreen: {fileID: 1591002951}
+  invulnerabilityTime: 1
+  blinkInterval: 0.1
   hurtSound: {fileID: 8300000, guid: 93bdf8f6708c30544b6ea4c4a4ebcdaf, type: 3}
   deathSound: {fileID: 8300000, guid: df2683784dcb5364e9079e00386a6227, type: 3}
 --- !u!114 &316794025
@@ -8303,7 +8305,7 @@ MonoBehaviour:
   startSpawnInterval: 2
   minSpawnInterval: 0.8
   spawnIntervalDecrease: 0.12
-  showDebugInfo: 1
+  showDebugInfo: 0
 --- !u!1 &880057364
 GameObject:
   m_ObjectHideFlags: 0
@@ -8453,7 +8455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &902296356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8761,6 +8763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 971961461}
+  - component: {fileID: 971961462}
   m_Layer: 5
   m_Name: Coins
   m_TagString: Untagged
@@ -8789,6 +8792,21 @@ RectTransform:
   m_AnchoredPosition: {x: -0.02499, y: -0.39995}
   m_SizeDelta: {x: 100.05, y: 100.8}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &971961462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971961460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a444e4565c7df845915c0830dd6bdec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinValue: 0
+  coinScore: {fileID: 1102167222}
+  multiplierValue: 2
 --- !u!1 &1005884384
 GameObject:
   m_ObjectHideFlags: 0
@@ -9994,11 +10012,11 @@ MonoBehaviour:
     initialSize: 5
     maxSize: 10
     expandable: 1
-  - poolId: DeathFx
+  - poolId: DeathFX
     prefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
       type: 3}
     initialSize: 3
-    maxSize: 3
+    maxSize: 6
     expandable: 1
   - poolId: Bullet
     prefab: {fileID: 2440582175360884353, guid: 96ba90d7742daa244a78566d414f8fab,
@@ -10023,6 +10041,12 @@ MonoBehaviour:
       type: 3}
     initialSize: 3
     maxSize: 4
+    expandable: 1
+  - poolId: BulletSuper
+    prefab: {fileID: 1653885357122628049, guid: 91c28e5d7c321c0419af2b8ca0cef7ef,
+      type: 3}
+    initialSize: 5
+    maxSize: 10
     expandable: 1
 --- !u!4 &1468122945
 Transform:
@@ -11614,6 +11638,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 2
   deathScreen: {fileID: 1591002951}
+  invulnerabilityTime: 1
+  blinkInterval: 0.1
   hurtSound: {fileID: 8300000, guid: 93bdf8f6708c30544b6ea4c4a4ebcdaf, type: 3}
   deathSound: {fileID: 8300000, guid: df2683784dcb5364e9079e00386a6227, type: 3}
 --- !u!1 &2100688297
@@ -11646,7 +11672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolContainer: {fileID: 0}
-  showDebugInfo: 1
+  showDebugInfo: 0
 --- !u!4 &2100688299
 Transform:
   m_ObjectHideFlags: 0

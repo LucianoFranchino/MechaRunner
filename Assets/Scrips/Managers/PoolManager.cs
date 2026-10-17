@@ -21,8 +21,9 @@ public class PoolManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        // Sin DontDestroyOnLoad: los pools viven lo mismo que la escena, as√≠ al
+        // reiniciar no quedan enemigos/obst√°culos activos de la partida anterior.
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         // Crear contenedor si no existe
         if (poolContainer == null)
@@ -34,7 +35,7 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Crea un pool para un prefab especÌfico
+    /// Crea un pool para un prefab espec√≠fico
     /// </summary>
     public void CreatePool(string poolId, GameObject prefab, int initialSize = 10, int maxSize = 100, bool expandable = true)
     {
@@ -44,7 +45,7 @@ public class PoolManager : MonoBehaviour
             return;
         }
 
-        // Crear contenedor especÌfico para este pool
+        // Crear contenedor espec√≠fico para este pool
         GameObject poolObj = new GameObject($"Pool_{poolId}");
         poolObj.transform.SetParent(poolContainer);
 
@@ -62,7 +63,7 @@ public class PoolManager : MonoBehaviour
     {
         if (!pools.ContainsKey(poolId))
         {
-            Debug.LogError($"Pool '{poolId}' no existe. CrÈalo primero con CreatePool().");
+            Debug.LogError($"Pool '{poolId}' no existe. Cr√©alo primero con CreatePool().");
             return null;
         }
 
@@ -70,7 +71,7 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sobrecarga para spawn con solo posiciÛn
+    /// Sobrecarga para spawn con solo posici√≥n
     /// </summary>
     public GameObject Spawn(string poolId, Vector3 position)
     {
@@ -127,7 +128,7 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Obtiene informaciÛn de un pool
+    /// Obtiene informaci√≥n de un pool
     /// </summary>
     public (int available, int active, int total) GetPoolInfo(string poolId)
     {
@@ -141,6 +142,8 @@ public class PoolManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
+
         foreach (var pool in pools.Values)
         {
             pool.DestroyAll();

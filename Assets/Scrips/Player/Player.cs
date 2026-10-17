@@ -99,6 +99,9 @@ public class Player : MonoBehaviour
 
     private void DetectSwipe()
     {
+        // Ignorar gestos con el juego en pausa o en la pantalla de muerte
+        if (Time.timeScale == 0f) return;
+
         Vector2 swipeDelta = swipeEndPos - swipeStartPos;
 
         // Swipe vertical debe ser mayor al horizontal
@@ -137,10 +140,12 @@ public class Player : MonoBehaviour
 
     private void FastFall()
     {
-        // Solo aplicar caída rápida si está en el aire
-        if (!isGrounded && rb.linearVelocity.y > 0)
+        // Caída rápida en cualquier momento del aire (subiendo o bajando),
+        // sin frenar si ya cae más rápido que eso.
+        if (!isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -jumpForce * 0.5f);
+            float fastFallSpeed = -jumpForce * 0.5f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Min(rb.linearVelocity.y, fastFallSpeed));
         }
     }
 

@@ -15,15 +15,14 @@ public class ScoreManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        // Sin DontDestroyOnLoad: referencia textos de la escena, así que tiene que
+        // recrearse con ella. El highscore persiste en PlayerPrefs.
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+        instance = this;
     }
 
     private void Start()
@@ -40,6 +39,8 @@ public class ScoreManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (instance == this) instance = null;
+
         if (PowerUpManager.Instance != null)
         {
             PowerUpManager.Instance.Activated -= OnPowerUpActivated;
@@ -75,5 +76,8 @@ public class ScoreManager : MonoBehaviour
         }
         else
             PlayerPrefs.SetFloat("highscore", scoreCount);
+
+        // Forzar escritura a disco: en Android, si el SO mata la app no se llama a OnApplicationQuit.
+        PlayerPrefs.Save();
     }
 }

@@ -21,7 +21,7 @@ public class CoinScrip : MonoBehaviour
         switch (type)
         {
             case Type.Coin:
-                col.GetComponent<CoinCounter>().GetCoin();
+                if (CoinCounter.Instance != null) CoinCounter.Instance.GetCoin();
                 AudioManager.instance.PlayAudio(coinSound);
                 break;
 

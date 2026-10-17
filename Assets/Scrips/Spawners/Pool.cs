@@ -55,6 +55,12 @@ public class Pool
     {
         GameObject obj = null;
 
+        // Descartar objetos destruidos por fuera del pool (ej. un Destroy() accidental)
+        while (availableObjects.Count > 0 && availableObjects.Peek() == null)
+        {
+            availableObjects.Dequeue();
+        }
+
         // Intentar obtener un objeto disponible
         if (availableObjects.Count > 0)
         {
@@ -68,7 +74,7 @@ public class Pool
         }
         else
         {
-            Debug.LogWarning($"Pool '{poolId}' alcanzÛ su lÌmite m·ximo ({maxSize}) y no es expandible.");
+            Debug.LogWarning($"Pool '{poolId}' alcanz√≥ su l√≠mite m√°ximo ({maxSize}) y no es expandible.");
             return null;
         }
 
