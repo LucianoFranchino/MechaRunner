@@ -2,26 +2,26 @@ using UnityEngine;
 using MechaRunner.Environment;
 
 /// <summary>
-/// Una capa de parallax genÈrica: sirve para un fondo con sprites repetidos
+/// Una capa de parallax gen√©rica: sirve para un fondo con sprites repetidos
 /// o para un grupo de props (como las columnas) que scrollea en loop.
 /// No define su propia velocidad: la recibe de ParallaxController en cada Tick,
-/// asÌ todas las capas quedan sincronizadas entre sÌ y con DificultyManager.
+/// as√≠ todas las capas quedan sincronizadas entre s√≠ y con DificultyManager.
 /// </summary>
 public class ParallaxLayer : MonoBehaviour
 {
     [Header("Segmentos")]
-    [Tooltip("Los objetos que forman esta capa, ya ubicados uno al lado del otro en la escena (mÌnimo 2, para que el loop no se note).")]
+    [Tooltip("Los objetos que forman esta capa, ya ubicados uno al lado del otro en la escena (m√≠nimo 2, para que el loop no se note).")]
     [SerializeField] private Transform[] segments;
 
     [Tooltip("Distancia horizontal entre el origen de un segmento y el siguiente.")]
     [SerializeField] private float segmentWidth = 10f;
 
-    [Tooltip("PosiciÛn X (mundo) a partir de la cual un segmento se recicla al final de la fila. Debe quedar fuera de c·mara por la izquierda.")]
+    [Tooltip("Posici√≥n X (mundo) a partir de la cual un segmento se recicla al final de la fila. Debe quedar fuera de c√°mara por la izquierda.")]
     [SerializeField] private float recycleX = -12f;
 
     [Header("Profundidad")]
     [Range(0f, 1f)]
-    [Tooltip("0 = capa fija/muy lejana, 1 = se mueve a la misma velocidad que los obst·culos.")]
+    [Tooltip("0 = capa fija/muy lejana, 1 = se mueve a la misma velocidad que los obst√°culos.")]
     [SerializeField] private float parallaxMultiplier = 0.5f;
 
     private ParallaxLoopState loopState;

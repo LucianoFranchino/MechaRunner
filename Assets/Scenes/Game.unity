@@ -9981,32 +9981,32 @@ MonoBehaviour:
     prefab: {fileID: 2651986174515901776, guid: 7e8c20e2116ce1145ae29efaf6538401,
       type: 3}
     initialSize: 4
-    maxSize: 6
-    expandable: 0
+    maxSize: 8
+    expandable: 1
   - poolId: Box
     prefab: {fileID: 8329489835256858344, guid: 605cbe0844e2a874fa45dd02499570a8,
       type: 3}
     initialSize: 4
-    maxSize: 6
-    expandable: 0
+    maxSize: 8
+    expandable: 1
   - poolId: DoubleB
     prefab: {fileID: 8157309390313620035, guid: 189793019d18cda479112a6f86379ce4,
       type: 3}
     initialSize: 4
-    maxSize: 6
-    expandable: 0
+    maxSize: 8
+    expandable: 1
   - poolId: Enemy
     prefab: {fileID: 8006273657135835026, guid: 48a1c9af794c59247abbf24ac6cf361c,
       type: 3}
     initialSize: 3
-    maxSize: 3
-    expandable: 0
+    maxSize: 6
+    expandable: 1
   - poolId: FlyEnemy
     prefab: {fileID: 5480063347915605934, guid: 08690c3ea2f6daa49b9eb5a3ae0bc871,
       type: 3}
     initialSize: 2
-    maxSize: 2
-    expandable: 0
+    maxSize: 4
+    expandable: 1
   - poolId: Coin
     prefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
     initialSize: 5

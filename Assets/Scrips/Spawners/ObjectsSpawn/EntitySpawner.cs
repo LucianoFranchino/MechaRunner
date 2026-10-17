@@ -10,8 +10,8 @@ public class SpawnPoint
 }
 
 /// <summary>
-/// Spawner genÈrico configurable: se instancia varias veces en escena
-/// (una para obst·culos+enemigos de suelo, otra para enemigos voladores, etc.)
+/// Spawner gen√©rico configurable: se instancia varias veces en escena
+/// (una para obst√°culos+enemigos de suelo, otra para enemigos voladores, etc.)
 /// con distintas entradas y spawn points, todas sobre el mismo PoolManager.
 /// </summary>
 public class EntitySpawner : MonoBehaviour

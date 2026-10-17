@@ -12,6 +12,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private float multiplierValue = 2f;
 
     private float multiplier = 1f;
+    private int lastShownScore = -1;
 
     private void Awake()
     {
@@ -52,7 +53,15 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreIncreasing)
             scoreCount += (pointsPerSecond * multiplier) * Time.deltaTime;
-        scoreText.text = finalScoreText.text = "YOUR SCORE: " + Mathf.Round(scoreCount);
+
+        // Solo rearmar el texto cuando cambia el número mostrado: armar un string
+        // por frame genera basura que el GC termina cobrando en tirones.
+        int shown = Mathf.RoundToInt(scoreCount);
+        if (shown != lastShownScore)
+        {
+            lastShownScore = shown;
+            scoreText.text = finalScoreText.text = "YOUR SCORE: " + shown;
+        }
     }
 
     private void OnPowerUpActivated(PowerUpType type, float duration)

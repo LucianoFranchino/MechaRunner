@@ -22,9 +22,6 @@ public class Player : MonoBehaviour
     [Header("Double Jump")]
     [SerializeField] private bool doubleJumpUnlocked = false;
 
-    [Header("Testing (Editor Only)")]
-    [SerializeField] private bool useMouseForTesting = true;
-
     private Rigidbody2D rb;
     private bool isGrounded;
     private bool hasDoubleJumped;
@@ -67,14 +64,6 @@ public class Player : MonoBehaviour
         {
             hasDoubleJumped = false;
         }
-
-        // Testing con mouse en el Editor
-#if UNITY_EDITOR
-        if (useMouseForTesting)
-        {
-            HandleMouseInput();
-        }
-#endif
     }
 
     private void FixedUpdate()
@@ -197,22 +186,4 @@ public class Player : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    // Método para testear con mouse en el Editor
-    private void HandleMouseInput()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            swipeStartPos = Input.mousePosition;
-            isSwiping = true;
-        }
-
-        if (Input.GetMouseButtonUp(0) && isSwiping)
-        {
-            swipeEndPos = Input.mousePosition;
-            DetectSwipe();
-            isSwiping = false;
-        }
-    }
-#endif
 }

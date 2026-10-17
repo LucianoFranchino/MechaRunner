@@ -8,6 +8,7 @@ public class PooledObject : MonoBehaviour, IPooleable
 
     private string poolId;
     private float spawnTime;
+    private IPooleable[] poolables;
 
     public string PoolId
     {
@@ -15,9 +16,21 @@ public class PooledObject : MonoBehaviour, IPooleable
         set => poolId = value;
     }
 
+    /// <summary>
+    /// Componentes IPooleable del objeto (incluido este), cacheados para no
+    /// llamar a GetComponents en cada spawn/despawn.
+    /// </summary>
+    public IPooleable[] Poolables => poolables ??= GetComponents<IPooleable>();
+
+    private void Awake()
+    {
+        // Sin auto-retorno no hace falta que corra Update en cada objeto del pool
+        enabled = autoReturnToPool;
+    }
+
     private void Update()
     {
-        if (autoReturnToPool && Time.time - spawnTime >= autoReturnTime)
+        if (Time.time - spawnTime >= autoReturnTime)
         {
             ReturnToPool();
         }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Dueño único del timing de los power-ups: sabe cuánto dura cada uno y cuánto
-/// falta, y avisa por evento cuándo se activan/expiran. No sabe QUÉ hace cada
-/// power-up — eso lo decide quien escucha el evento (ScoreManager, CoinCounter, Weapon).
+/// DueÃ±o Ãºnico del timing de los power-ups: sabe cuÃ¡nto dura cada uno y cuÃ¡nto
+/// falta, y avisa por evento cuÃ¡ndo se activan/expiran. No sabe QUÃ‰ hace cada
+/// power-up â€” eso lo decide quien escucha el evento (ScoreManager, CoinCounter, Weapon).
 /// </summary>
 public class PowerUpManager : MonoBehaviour
 {
@@ -87,8 +87,8 @@ public class PowerUpManager : MonoBehaviour
         return 5f;
     }
 
-    // TODO: cuando exista la tienda, esto va a multiplicar según lo que el jugador
-    // haya comprado (ej. 1.5f si compró "nivel 1" de duración para este power-up).
+    // TODO: cuando exista la tienda, esto va a multiplicar segÃºn lo que el jugador
+    // haya comprado (ej. 1.5f si comprÃ³ "nivel 1" de duraciÃ³n para este power-up).
     // Por ahora siempre devuelve 1 (sin upgrades).
     private float ShopUpgradeMultiplier(PowerUpType type) => 1f;
 }

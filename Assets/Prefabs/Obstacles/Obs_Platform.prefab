@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5746071773000205254}
   - component: {fileID: -1111762367562478714}
   - component: {fileID: 7777571566983711862}
+  - component: {fileID: 9109889462800123585}
   m_Layer: 0
   m_Name: Obs_Platform
   m_TagString: Obstacle
@@ -48,9 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a116ab1588963c42a110a31d0ff62ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movSpeed: 3
   obstacleDamage: 4
-  despawnDistanceX: -10
 --- !u!61 &5746071773000205254
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -125,6 +124,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 1
   despawnDistanceX: -15
+--- !u!50 &9109889462800123585
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4954763397182163781}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7952856381513268426
 GameObject:
   m_ObjectHideFlags: 0

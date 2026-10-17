@@ -4,12 +4,14 @@ using UnityEngine;
 public class Pool
 {
     private GameObject prefab;
-    private Queue<GameObject> availableObjects;
-    private HashSet<GameObject> activeObjects;
+    private Queue<PooledObject> availableObjects;
+    private HashSet<PooledObject> activeObjects;
+    private readonly Dictionary<GameObject, PooledObject> lookup = new();
     private Transform container;
     private string poolId;
     private int maxSize;
     private bool expandable;
+    private bool limitWarningShown;
 
     public int AvailableCount => availableObjects.Count;
     public int ActiveCount => activeObjects.Count;
@@ -23,17 +25,17 @@ public class Pool
         this.expandable = expandable;
         this.container = container;
 
-        availableObjects = new Queue<GameObject>(initialSize);
-        activeObjects = new HashSet<GameObject>();
+        availableObjects = new Queue<PooledObject>(initialSize);
+        activeObjects = new HashSet<PooledObject>();
 
         // Pre-warm: crear objetos iniciales
         for (int i = 0; i < initialSize; i++)
         {
-            CreateNewObject();
+            availableObjects.Enqueue(CreateNewObject());
         }
     }
 
-    private GameObject CreateNewObject()
+    private PooledObject CreateNewObject()
     {
         GameObject obj = Object.Instantiate(prefab, container);
         obj.name = $"{prefab.name}_{TotalCount}";
@@ -47,13 +49,13 @@ public class Pool
         }
         pooledObj.Initialize(poolId);
 
-        availableObjects.Enqueue(obj);
-        return obj;
+        lookup[obj] = pooledObj;
+        return pooledObj;
     }
 
     public GameObject Spawn(Vector3 position, Quaternion rotation)
     {
-        GameObject obj = null;
+        PooledObject pooled = null;
 
         // Descartar objetos destruidos por fuera del pool (ej. un Destroy() accidental)
         while (availableObjects.Count > 0 && availableObjects.Peek() == null)
@@ -64,29 +66,32 @@ public class Pool
         // Intentar obtener un objeto disponible
         if (availableObjects.Count > 0)
         {
-            obj = availableObjects.Dequeue();
+            pooled = availableObjects.Dequeue();
         }
         else if (expandable && (maxSize <= 0 || TotalCount < maxSize))
         {
             // Crear nuevo objeto si el pool es expandible
-            obj = CreateNewObject();
-            availableObjects.Dequeue(); // Sacarlo inmediatamente
+            pooled = CreateNewObject();
         }
         else
         {
-            Debug.LogWarning($"Pool '{poolId}' alcanzó su límite máximo ({maxSize}) y no es expandible.");
+            // Avisar una sola vez: si no, en un pool lleno se loguea en cada spawn
+            if (!limitWarningShown)
+            {
+                Debug.LogWarning($"Pool '{poolId}' alcanzó su límite máximo ({maxSize}). Considerá subir su Max Size.");
+                limitWarningShown = true;
+            }
             return null;
         }
 
         // Configurar el objeto
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
+        GameObject obj = pooled.gameObject;
+        obj.transform.SetPositionAndRotation(position, rotation);
         obj.SetActive(true);
-        activeObjects.Add(obj);
+        activeObjects.Add(pooled);
 
-        // Llamar a OnSpawn en todos los IPooleable
-        var poolables = obj.GetComponents<IPooleable>();
-        foreach (var poolable in poolables)
+        // Llamar a OnSpawn en todos los IPooleable (cacheados en PooledObject)
+        foreach (var poolable in pooled.Poolables)
         {
             poolable.OnSpawn();
         }
@@ -96,34 +101,35 @@ public class Pool
 
     public void Despawn(GameObject obj)
     {
-        if (!activeObjects.Contains(obj))
+        if (!lookup.TryGetValue(obj, out var pooled) || !activeObjects.Remove(pooled))
         {
             Debug.LogWarning($"Objeto {obj.name} no pertenece a este pool o ya fue retornado.");
             return;
         }
 
         // Llamar a OnDespawn en todos los IPooleable
-        var poolables = obj.GetComponents<IPooleable>();
-        foreach (var poolable in poolables)
+        foreach (var poolable in pooled.Poolables)
         {
             poolable.OnDespawn();
         }
 
         obj.SetActive(false);
-        obj.transform.SetParent(container);
-        activeObjects.Remove(obj);
-        availableObjects.Enqueue(obj);
+        if (obj.transform.parent != container) obj.transform.SetParent(container);
+        availableObjects.Enqueue(pooled);
     }
 
     public void Clear()
     {
-        foreach (var obj in activeObjects)
+        foreach (var pooled in activeObjects)
         {
-            if (obj != null)
+            if (pooled == null) continue;
+
+            foreach (var poolable in pooled.Poolables)
             {
-                obj.SetActive(false);
-                availableObjects.Enqueue(obj);
+                poolable.OnDespawn();
             }
+            pooled.gameObject.SetActive(false);
+            availableObjects.Enqueue(pooled);
         }
         activeObjects.Clear();
     }
@@ -132,16 +138,17 @@ public class Pool
     {
         while (availableObjects.Count > 0)
         {
-            var obj = availableObjects.Dequeue();
-            if (obj != null)
-                Object.Destroy(obj);
+            var pooled = availableObjects.Dequeue();
+            if (pooled != null)
+                Object.Destroy(pooled.gameObject);
         }
 
-        foreach (var obj in activeObjects)
+        foreach (var pooled in activeObjects)
         {
-            if (obj != null)
-                Object.Destroy(obj);
+            if (pooled != null)
+                Object.Destroy(pooled.gameObject);
         }
         activeObjects.Clear();
+        lookup.Clear();
     }
 }

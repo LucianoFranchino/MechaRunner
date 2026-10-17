@@ -18,6 +18,16 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = false;
     }
 
+    private void Update()
+    {
+        // El botón/gesto "Atrás" de Android llega como Escape: pausa o reanuda
+        var keyboard = UnityEngine.InputSystem.Keyboard.current;
+        if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
+        {
+            if (GameIsPaused) Resume(); else Pause();
+        }
+    }
+
     private void OnApplicationPause(bool paused)
     {
         // Pausar automáticamente al minimizar la app en el celular

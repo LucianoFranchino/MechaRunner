@@ -38,7 +38,7 @@ public class ObjectSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn r·pido por ID
+    /// Spawn r√°pido por ID
     /// </summary>
     public GameObject Spawn(string poolId, Vector3 position)
     {
@@ -51,7 +51,7 @@ public class ObjectSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Despawn r·pido
+    /// Despawn r√°pido
     /// </summary>
     public void Despawn(GameObject obj)
     {

@@ -8,6 +8,6 @@ public class SpawnableEntry
     public float minDifficulty = 0f;
     public float maxDifficulty = 999f;
 
-    [Tooltip("Õndice dentro del array 'Spawn Points' del EntitySpawner que lo contiene.")]
+    [Tooltip("√çndice dentro del array 'Spawn Points' del EntitySpawner que lo contiene.")]
     public int spawnPointIndex;
 }

@@ -3,9 +3,9 @@ using UnityEngine;
 public enum MuteChannel { Sfx, Music }
 
 /// <summary>
-/// Botón de mute genérico: activa/desactiva dos GameObjects distintos
-/// (uno por estado) en vez de intercambiar un sprite, para que cada ícono
-/// pueda tener su propio diseño (shadow, escala, etc.) sin restricciones.
+/// BotÃ³n de mute genÃ©rico: activa/desactiva dos GameObjects distintos
+/// (uno por estado) en vez de intercambiar un sprite, para que cada Ã­cono
+/// pueda tener su propio diseÃ±o (shadow, escala, etc.) sin restricciones.
 /// </summary>
 public class MuteToggleButton : MonoBehaviour
 {

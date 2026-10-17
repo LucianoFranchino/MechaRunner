@@ -22,7 +22,7 @@ public class ParallaxLoopStateTests
         var recycled = state.Advance(2f); // segmento 0 pasa a -6, cruza recycleX (-5)
 
         CollectionAssert.Contains(recycled, 0);
-        Assert.AreEqual(14f, state.SegmentX[0], 0.001f); // se reubica despuÈs del m·s a la derecha (4) + segmentWidth
+        Assert.AreEqual(14f, state.SegmentX[0], 0.001f); // se reubica despu√©s del m√°s a la derecha (4) + segmentWidth
     }
 
     [Test]

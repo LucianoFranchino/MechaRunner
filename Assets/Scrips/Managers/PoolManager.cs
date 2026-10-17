@@ -61,13 +61,13 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     public GameObject Spawn(string poolId, Vector3 position, Quaternion rotation)
     {
-        if (!pools.ContainsKey(poolId))
+        if (!pools.TryGetValue(poolId, out var pool))
         {
             Debug.LogError($"Pool '{poolId}' no existe. Créalo primero con CreatePool().");
             return null;
         }
 
-        return pools[poolId].Spawn(position, rotation);
+        return pool.Spawn(position, rotation);
     }
 
     /// <summary>
@@ -83,14 +83,14 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     public void ReturnToPool(string poolId, GameObject obj)
     {
-        if (!pools.ContainsKey(poolId))
+        if (!pools.TryGetValue(poolId, out var pool))
         {
             Debug.LogWarning($"Pool '{poolId}' no existe. Destruyendo objeto.");
             Destroy(obj);
             return;
         }
 
-        pools[poolId].Despawn(obj);
+        pool.Despawn(obj);
     }
 
     /// <summary>

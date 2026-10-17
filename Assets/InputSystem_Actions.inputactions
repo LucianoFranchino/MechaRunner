@@ -516,6 +516,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4b2f6c1e-8d3a-4f7e-9c21-5a6b7c8d9e01",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "TouchPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9ec9c9aa-6867-4152-88c9-978bf4df38c8",
                     "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",

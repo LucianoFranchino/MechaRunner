@@ -5,40 +5,50 @@ using UnityEngine;
 namespace MechaRunner.Spawning
 {
     /// <summary>
-    /// SelecciÛn ponderada de una SpawnableEntry v·lida para la dificultad actual.
+    /// Selecci√≥n ponderada de una SpawnableEntry v√°lida para la dificultad actual.
     /// Sin dependencias de MonoBehaviour: testeable con NUnit sin escena.
+    /// No reserva memoria: recorre las entradas dos veces en vez de armar una lista.
     /// </summary>
     public static class WeightedSpawnSelector
     {
+        private static readonly Func<float> DefaultRandom = () => UnityEngine.Random.value;
+
         public static SpawnableEntry SelectEntry(
             IReadOnlyList<SpawnableEntry> entries,
             float currentDifficulty,
             Func<float> random01 = null)
         {
-            random01 ??= () => UnityEngine.Random.value;
+            random01 ??= DefaultRandom;
 
-            var valid = new List<SpawnableEntry>();
             int totalWeight = 0;
-            foreach (var entry in entries)
+            SpawnableEntry lastValid = null;
+            for (int i = 0; i < entries.Count; i++)
             {
-                if (currentDifficulty >= entry.minDifficulty && currentDifficulty <= entry.maxDifficulty)
+                var entry = entries[i];
+                if (IsValid(entry, currentDifficulty))
                 {
-                    valid.Add(entry);
                     totalWeight += entry.weight;
+                    lastValid = entry;
                 }
             }
 
-            if (valid.Count == 0 || totalWeight <= 0)
+            if (lastValid == null || totalWeight <= 0)
                 return null;
 
             float roll = random01() * totalWeight;
             float cumulative = 0f;
-            foreach (var entry in valid)
+            for (int i = 0; i < entries.Count; i++)
             {
+                var entry = entries[i];
+                if (!IsValid(entry, currentDifficulty)) continue;
+
                 cumulative += entry.weight;
                 if (roll < cumulative) return entry;
             }
-            return valid[valid.Count - 1];
+            return lastValid;
         }
+
+        private static bool IsValid(SpawnableEntry entry, float difficulty) =>
+            difficulty >= entry.minDifficulty && difficulty <= entry.maxDifficulty;
     }
 }

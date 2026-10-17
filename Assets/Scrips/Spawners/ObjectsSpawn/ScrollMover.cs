@@ -1,40 +1,40 @@
 using UnityEngine;
 
 /// <summary>
-/// Movimiento genÈrico de scroll hacia la izquierda a la velocidad del juego,
-/// con auto-despawn al salir de pantalla. Se agrega por composiciÛn a cualquier
-/// prefab pooleado: obst·culos, enemigos, monedas, power-ups.
+/// Movimiento gen√©rico de scroll hacia la izquierda a la velocidad del juego,
+/// con auto-despawn al salir de pantalla. Se agrega por composici√≥n a cualquier
+/// prefab pooleado: obst√°culos, enemigos, monedas, power-ups.
+/// Lee la velocidad actual cada frame, as√≠ cuando sube la dificultad todo lo que
+/// est√° en pantalla acelera junto con el piso y el parallax.
 /// </summary>
 [RequireComponent(typeof(PooledObject))]
-public class ScrollMover : MonoBehaviour, IPooleable
+public class ScrollMover : MonoBehaviour
 {
     [Tooltip("Multiplica la velocidad base del juego. 1 = misma velocidad que el resto del scroll.")]
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private float despawnDistanceX = -15f;
 
-    private float currentSpeed;
+    private const float FallbackSpeed = 5f;
+
     private PooledObject pooledObject;
+    private Transform cachedTransform;
 
     private void Awake()
     {
         pooledObject = GetComponent<PooledObject>();
+        cachedTransform = transform;
     }
 
     private void Update()
     {
-        transform.Translate(Vector2.left * Time.deltaTime * currentSpeed);
+        float baseSpeed = DificultyManager.Instance != null ? DificultyManager.Instance.GameSpeed : FallbackSpeed;
+        Vector3 pos = cachedTransform.position;
+        pos.x -= baseSpeed * speedMultiplier * Time.deltaTime;
+        cachedTransform.position = pos;
 
-        if (transform.position.x <= despawnDistanceX)
+        if (pos.x <= despawnDistanceX)
         {
             pooledObject.Despawn();
         }
     }
-
-    public void OnSpawn()
-    {
-        float baseSpeed = DificultyManager.Instance != null ? DificultyManager.Instance.GameSpeed : 5f;
-        currentSpeed = baseSpeed * speedMultiplier;
-    }
-
-    public void OnDespawn() { }
 }

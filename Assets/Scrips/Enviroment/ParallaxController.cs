@@ -1,15 +1,15 @@
 using UnityEngine;
 
 /// <summary>
-/// Único punto de entrada para el movimiento de todas las capas de parallax.
+/// Ãšnico punto de entrada para el movimiento de todas las capas de parallax.
 /// Lee la velocidad de DificultyManager una vez por frame y se la reparte
-/// a cada ParallaxLayer, que la escala según su propio parallaxMultiplier.
+/// a cada ParallaxLayer, que la escala segÃºn su propio parallaxMultiplier.
 /// </summary>
 public class ParallaxController : MonoBehaviour
 {
     [SerializeField] private ParallaxLayer[] layers;
 
-    [Tooltip("Velocidad a usar si DificultyManager todavía no existe (ej. en el menú principal).")]
+    [Tooltip("Velocidad a usar si DificultyManager todavÃ­a no existe (ej. en el menÃº principal).")]
     [SerializeField] private float fallbackSpeed = 5f;
 
     private void Update()

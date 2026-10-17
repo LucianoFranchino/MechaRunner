@@ -7,7 +7,7 @@ public class DificultyManager : MonoBehaviour
     [Header("Difficulty Progression")]
     [SerializeField] private float startGameSpeed = 5f;
     [SerializeField] private float maxGameSpeed = 15f;
-    [SerializeField] private float speedIncreaseInterval = 10f; // Cada cu·ntos segundos aumenta
+    [SerializeField] private float speedIncreaseInterval = 10f; // Cada cu√°ntos segundos aumenta
     [SerializeField] private float speedIncreaseAmount = 0.5f;
 
     [Header("Spawn Rate Progression")]
