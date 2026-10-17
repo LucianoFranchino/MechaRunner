@@ -52,9 +52,8 @@ public class GameplayRegressionTests
     public IEnumerator Encuadre_DobleSaltoNoSaleDeLaCamara()
     {
         yield return LoadGame();
-        var player = GameObject.Find("NEW PLAYER DEMO");
+        var player = PlayerObject();
         var rb = player.GetComponent<Rigidbody2D>();
-        var sr = player.GetComponent<SpriteRenderer>();
         var jump = typeof(Player).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
         var cam = Camera.main;
         float camTop = cam.transform.position.y + cam.orthographicSize;
@@ -69,7 +68,7 @@ public class GameplayRegressionTests
         for (float t = 0; t < 1.5f; t += Time.fixedDeltaTime)
         {
             yield return new WaitForFixedUpdate();
-            maxTop = Mathf.Max(maxTop, sr.bounds.max.y);
+            maxTop = Mathf.Max(maxTop, VisualTop(player));
         }
         Assert.Less(maxTop, camTop, $"El doble salto sale de cámara (tope {maxTop:F2}, cámara {camTop:F2})");
     }
@@ -79,21 +78,20 @@ public class GameplayRegressionTests
     {
         yield return LoadGame();
         var framing = Object.FindFirstObjectByType<CameraFraming>();
-        var player = GameObject.Find("NEW PLAYER DEMO").transform;
+        var player = PlayerObject().transform;
         Assert.Greater(framing.RightEdge, player.position.x);
 
-        // Se spawnea en el punto real (fuera del borde derecho)
-        var spawnX = framing.RightEdge + 2f;
-        var enemy = PoolManager.Instance.Spawn("Enemy", new Vector3(spawnX, -0.34f, 0f)).transform;
-        float minY = float.MaxValue;
+        // Se spawnea en el punto real (fuera del borde derecho), apoyado como lo hace el spawner
+        var enemy = SpawnOnFloor("Enemy", framing.RightEdge + 2f).transform;
+        float minBase = float.MaxValue;
         for (float t = 0; t < 4f && enemy.gameObject.activeInHierarchy && enemy.position.x > player.position.x + 1.5f; t += Time.deltaTime)
         {
-            minY = Mathf.Min(minY, enemy.position.y);
+            minBase = Mathf.Min(minBase, SolidBottom(enemy.gameObject));
             yield return null;
         }
         Assert.IsTrue(enemy.gameObject.activeInHierarchy, "El enemigo desapareció antes de llegar");
         Assert.LessOrEqual(enemy.position.x, player.position.x + 1.5f, "El enemigo no llegó al jugador");
-        Assert.Greater(minY, -0.6f, "El enemigo se cayó por debajo del piso");
+        Assert.Greater(minBase, GroundTop() - 0.03f, "El enemigo se hundió en el piso");
     }
 
     [UnityTest]
@@ -141,6 +139,139 @@ public class GameplayRegressionTests
         }
         if (covered < right) largest = Mathf.Max(largest, right - covered);
         return largest;
+    }
+
+    // ---------- Helpers de escala / piso ----------
+
+    private static GameObject PlayerObject() => Object.FindFirstObjectByType<Player>().gameObject;
+
+    private static float GroundTop() => GameObject.Find("_plat").GetComponent<BoxCollider2D>().bounds.max.y;
+
+    private static float VisualTop(GameObject go)
+    {
+        float top = float.MinValue;
+        foreach (var sr in go.GetComponentsInChildren<SpriteRenderer>()) top = Mathf.Max(top, sr.bounds.max.y);
+        return top;
+    }
+
+    private static float SolidBottom(GameObject go)
+    {
+        float bottom = float.MaxValue;
+        foreach (var c in go.GetComponentsInChildren<Collider2D>()) if (!c.isTrigger) bottom = Mathf.Min(bottom, c.bounds.min.y);
+        return bottom;
+    }
+
+    private static GameObject SpawnOnFloor(string poolId, float x)
+    {
+        var go = PoolManager.Instance.Spawn(poolId, new Vector3(x, GroundTop(), 0f));
+        float offset = MechaRunner.Spawning.SpawnAlignment.BottomOffsetFromPivot(go);
+        go.transform.position = new Vector3(x, GroundTop() + offset, 0f);
+        Physics2D.SyncTransforms();
+        return go;
+    }
+
+    // ---------- Etapa 2: piso, escala y Robot ----------
+
+    [UnityTest]
+    public IEnumerator Piso_ObjetosDeSueloSeApoyanSobreElPisoDesdeElSpawner()
+    {
+        yield return LoadGame();
+        var down = GameObject.Find("DownSpawn").GetComponent<EntitySpawner>();
+        var entriesField = typeof(EntitySpawner).GetField("entries", BindingFlags.NonPublic | BindingFlags.Instance);
+        var spawnMethod = typeof(EntitySpawner).GetMethod("SpawnEntity", BindingFlags.NonPublic | BindingFlags.Instance);
+        float ground = GroundTop();
+
+        foreach (var id in new[] { "Box", "Barrel", "DoubleB", "Enemy" })
+        {
+            // El spawner real, con una única entrada válida para cualquier dificultad
+            entriesField.SetValue(down, new[] { new SpawnableEntry { poolId = id, weight = 1, minDifficulty = 0f, maxDifficulty = 999f, spawnPointIndex = 0 } });
+            spawnMethod.Invoke(down, null);
+            yield return new WaitForFixedUpdate();
+
+            GameObject spawned = null;
+            foreach (var po in Object.FindObjectsByType<PooledObject>(FindObjectsSortMode.None))
+                if (po.PoolId == id && po.gameObject.activeInHierarchy) spawned = po.gameObject;
+            Assert.IsNotNull(spawned, id + " no se spawneó");
+            Assert.AreEqual(ground, SolidBottom(spawned), 0.02f, id + " no quedó apoyado sobre el piso");
+
+            if (id == "Enemy")
+            {
+                yield return new WaitForSeconds(0.5f);
+                Assert.AreEqual(ground, SolidBottom(spawned), 0.03f, "El enemigo no se mantiene sobre el piso");
+                Assert.AreEqual(0f, Mathf.DeltaAngle(0f, spawned.transform.eulerAngles.z), 0.01f, "El enemigo rotó");
+            }
+            PoolManager.Instance.ClearPool(id);
+        }
+    }
+
+    [UnityTest]
+    public IEnumerator Robot_EnemigoTerrestreLoDaniaYDesaparece()
+    {
+        yield return LoadGame();
+        var robot = PlayerObject();
+        var health = robot.GetComponent<PlayerHealth>();
+        var hpField = typeof(PlayerHealth).GetField("playerHealth", BindingFlags.NonPublic | BindingFlags.Instance);
+        hpField.SetValue(health, 10);
+
+        var enemy = SpawnOnFloor("Enemy", robot.transform.position.x + 2.5f);
+        for (float t = 0; t < 3f && enemy.activeInHierarchy; t += Time.deltaTime) yield return null;
+
+        Assert.IsFalse(enemy.activeInHierarchy, "El enemigo no desapareció al tocar al Robot");
+        Assert.AreEqual(9, (int)hpField.GetValue(health), "El enemigo debe hacer exactamente 1 de daño");
+        Assert.AreEqual(-3.1f, robot.transform.position.x, 0.01f, "El Robot fue desplazado");
+    }
+
+    [UnityTest]
+    public IEnumerator Robot_DisparoSaleDeLaBocaDelCanon()
+    {
+        yield return LoadGame();
+        var robot = PlayerObject();
+        var weapon = robot.GetComponent<Weapon>();
+        var firePoint = (Transform)typeof(Weapon).GetField("firePoint", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(weapon);
+        yield return new WaitForSeconds(0.2f);
+
+        weapon.Shoot();
+        // Posición del cañón en la pose de disparo, leída en el mismo frame del disparo
+        Vector3 muzzle = firePoint.position;
+        GameObject bullet = null;
+        foreach (var po in Object.FindObjectsByType<PooledObject>(FindObjectsSortMode.None))
+            if (po.PoolId == "Bullet" && po.gameObject.activeInHierarchy) bullet = po.gameObject;
+
+        Assert.IsNotNull(bullet);
+        Assert.AreEqual(muzzle.x, bullet.transform.position.x, 0.001f);
+        Assert.AreEqual(muzzle.y, bullet.transform.position.y, 0.001f);
+        Assert.Greater(muzzle.x, robot.transform.position.x + 0.15f, "La bala debe nacer delante del Robot");
+        float bottom = SolidBottom(robot), top = VisualTop(robot);
+        Assert.That(muzzle.y, Is.InRange(bottom, top), "La boca del cañón debe estar a la altura del Robot");
+
+        yield return new WaitForFixedUpdate();
+        var v = bullet.GetComponent<Rigidbody2D>().linearVelocity;
+        Assert.Greater(v.x, 0f);
+        Assert.AreEqual(0f, v.y, 0.001f, "El disparo debe ser horizontal");
+    }
+
+    [UnityTest]
+    public IEnumerator Robot_SaltoAnimadoNoDesplazaLaRaiz()
+    {
+        yield return LoadGame();
+        var robot = PlayerObject();
+        var animator = robot.GetComponent<Animator>();
+        var jump = typeof(Player).GetMethod("Jump", BindingFlags.NonPublic | BindingFlags.Instance);
+        yield return new WaitForSeconds(0.3f);
+        float startY = robot.transform.position.y;
+
+        jump.Invoke(robot.GetComponent<Player>(), null);
+        yield return null;
+        Assert.IsTrue(animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"), "No se reprodujo la animación de salto");
+
+        float maxY = startY;
+        for (float t = 0; t < 0.4f; t += Time.deltaTime)
+        {
+            maxY = Mathf.Max(maxY, robot.transform.position.y);
+            Assert.AreEqual(-3.1f, robot.transform.position.x, 0.01f, "El clip de salto movió la raíz en X");
+            yield return null;
+        }
+        Assert.Greater(maxY, startY + 1f, "El Robot no subió (la animación pisa la física)");
     }
 
     [UnityTest]

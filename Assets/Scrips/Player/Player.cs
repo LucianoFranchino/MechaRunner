@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
     [Header("Double Jump")]
     [SerializeField] private bool doubleJumpUnlocked = false;
 
+    [Header("Animación (opcional)")]
+    [SerializeField] private Animator animator;
+
+    private static readonly int JumpState = Animator.StringToHash("Jump");
+
     private Rigidbody2D rb;
     private bool isGrounded;
     private bool hasDoubleJumped;
@@ -118,13 +123,20 @@ public class Player : MonoBehaviour
         {
             // Salto normal desde el suelo
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            PlayJumpAnimation();
         }
         else if (doubleJumpUnlocked && !hasDoubleJumped)
         {
             // Doble salto (solo si está desbloqueado)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             hasDoubleJumped = true;
+            PlayJumpAnimation();
         }
+    }
+
+    private void PlayJumpAnimation()
+    {
+        if (animator != null) animator.Play(JumpState, 0, 0f);
     }
 
     private void FastFall()

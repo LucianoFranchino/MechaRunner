@@ -13,22 +13,35 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private AudioClip hurtSound;
     [SerializeField] private AudioClip deathSound;
 
+    [Header("Animación (opcional)")]
+    [SerializeField] private Animator animator;
+
+    private static readonly int DamageState = Animator.StringToHash("Damage");
+
     public bool IsDead { get; private set; }
 
     private float invulnerableUntil;
-    private SpriteRenderer spriteRenderer;
+    // Todas las partes del personaje (el Robot está armado por piezas, sin sprite en la raíz)
+    private SpriteRenderer[] spriteRenderers;
+    private bool visible = true;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
     }
 
     private void Update()
     {
-        if (spriteRenderer == null) return;
-
         bool invulnerable = !IsDead && Time.time < invulnerableUntil;
-        spriteRenderer.enabled = !invulnerable || Mathf.Repeat(Time.time, blinkInterval * 2f) >= blinkInterval;
+        SetVisible(!invulnerable || Mathf.Repeat(Time.time, blinkInterval * 2f) >= blinkInterval);
+    }
+
+    // Solo toca los renderers cuando cambia el estado (no en cada frame)
+    private void SetVisible(bool value)
+    {
+        if (value == visible) return;
+        visible = value;
+        foreach (var sr in spriteRenderers) sr.enabled = value;
     }
 
     // El daño por contacto lo aplica quien golpea (Enemy, Obstacle); acá no se
@@ -46,13 +59,14 @@ public class PlayerHealth : MonoBehaviour
 
         AudioManager.instance.PlayAudio(hurtSound);
         invulnerableUntil = Time.time + invulnerabilityTime;
+        if (animator != null) animator.Play(DamageState, 0, 0f);
     }
 
     public void Death()
     {
         if (IsDead) return;
         IsDead = true;
-        if (spriteRenderer != null) spriteRenderer.enabled = true;
+        SetVisible(true);
 
         if (ScoreManager.instance != null)
         {

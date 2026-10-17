@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour, IPooleable
 
     private int currentHealth;
     private PooledObject pooledObject;
+    // Evita resolver dos veces el mismo enemigo (dos colliders del jugador o dos balas en un paso)
+    private bool resolved;
 
     private void Awake()
     {
@@ -19,12 +21,14 @@ public class Enemy : MonoBehaviour, IPooleable
     public void OnSpawn()
     {
         currentHealth = maxHealth;
+        resolved = false;
     }
 
     public void OnDespawn() { }
 
     public void TakeDamage(int damage)
     {
+        if (resolved) return;
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -35,15 +39,18 @@ public class Enemy : MonoBehaviour, IPooleable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            other.GetComponent<PlayerHealth>().PlayerDamage(enemyDamage);
-            pooledObject.Despawn();
-        }
+        if (resolved || !other.CompareTag("Player")) return;
+
+        var health = other.GetComponentInParent<PlayerHealth>();
+        if (health == null) return;
+        resolved = true;
+        health.PlayerDamage(enemyDamage);
+        pooledObject.Despawn();
     }
 
     private void Die()
     {
+        resolved = true;
         PoolManager.Instance.Spawn(coinPoolId, transform.position);
         PoolManager.Instance.Spawn(deathEffectPoolId, transform.position);
         pooledObject.Despawn();

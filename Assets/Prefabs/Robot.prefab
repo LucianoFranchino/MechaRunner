@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5336924134036145312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7581133511049062933}
+  m_Layer: 3
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7581133511049062933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5336924134036145312}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.08, y: -1.83, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5518105268755204029}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5518105267485238488
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105267485238489}
   - component: {fileID: 5518105267485238490}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cuerpo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +60,10 @@ Transform:
   m_LocalPosition: {x: -0.02999973, y: -0.17999983, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5518105268773156073}
+  - {fileID: 5518105267574458595}
+  - {fileID: 5518105268454172255}
   m_Father: {fileID: 5518105268755204029}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5518105267485238490
@@ -97,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5518105267486128222}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,12 +146,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5518105267486128221}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.88, y: -0.3, z: 0}
-  m_LocalScale: {x: 0.28065446, y: 0.28065446, z: 0.28065446}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5518105268755204029}
+  m_Father: {fileID: 5518105267574458595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5518105267574458594
 GameObject:
@@ -129,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105267574458595}
   - component: {fileID: 5518105267574458524}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BrazoDer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,11 +179,12 @@ Transform:
   m_GameObject: {fileID: 5518105267574458594}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.71000016, y: 0.110000126, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.68000025, y: 0.28999993, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5518105268755204029}
+  m_Children:
+  - {fileID: 5518105267486128222}
+  m_Father: {fileID: 5518105267485238489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5518105267574458524
 SpriteRenderer:
@@ -217,7 +252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105267887973987}
   - component: {fileID: 5518105267887973916}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PieDer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105268255741177}
   - component: {fileID: 5518105268255741178}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RuedaIzq
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105268454172255}
   - component: {fileID: 5518105268454172248}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BrazoIzq
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,11 +444,11 @@ Transform:
   m_GameObject: {fileID: 5518105268454172254}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.64000046, y: 0.16000032, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.6700001, y: 0.34000012, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5518105268755204029}
+  m_Father: {fileID: 5518105267485238489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5518105268454172248
 SpriteRenderer:
@@ -481,7 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105268582108020}
   - component: {fileID: 5518105268582108021}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RuedaDer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +604,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105268704940186}
   - component: {fileID: 5518105268704940187}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PieIzq
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,8 +697,8 @@ GameObject:
   - component: {fileID: 5518105268755204025}
   - component: {fileID: 5518105268755204024}
   - component: {fileID: 5518105268755204031}
-  - component: {fileID: 5518105268755204020}
-  m_Layer: 0
+  - component: {fileID: 8222232937726742752}
+  m_Layer: 3
   m_Name: Robot
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -683,15 +718,12 @@ Transform:
   m_LocalScale: {x: 0.35631, y: 0.35631, z: 0.35631}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5518105268773156073}
-  - {fileID: 5518105267574458595}
-  - {fileID: 5518105268454172255}
   - {fileID: 5518105267485238489}
   - {fileID: 5518105267887973987}
   - {fileID: 5518105268704940186}
   - {fileID: 5518105268582108020}
   - {fileID: 5518105268255741177}
-  - {fileID: 5518105267486128222}
+  - {fileID: 7581133511049062933}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5518105268755204030
@@ -731,7 +763,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 1
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -741,7 +773,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 5
 --- !u!114 &5518105268755204026
 MonoBehaviour:
@@ -755,19 +787,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0530c94bf1ea7f74baf9ce5414081432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpSound: {fileID: 0}
-  jumpForce: 0
-  doubleJumpForce: 0
+  jumpForce: 10
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  groundCheck: {fileID: 7581133511049062933}
+  groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  groundCheck: {fileID: 0}
-  checkRadius: 0.2
-  coyoteTime: 0.1
-  lastGroundedTime: 0
-  dust: {fileID: 0}
-  score: {fileID: 0}
-  pauseMenu: {fileID: 0}
+    m_Bits: 64
+  swipeThreshold: 50
+  doubleJumpUnlocked: 1
+  animator: {fileID: 5518105268755204030}
 --- !u!114 &5518105268755204025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,12 +810,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628a1286cc8bd6f42a43a632784c02f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: bfb60c2ce45dcff4b800508213d280df, type: 3}
   firePoint: {fileID: 5518105267486128222}
   animator: {fileID: 5518105268755204030}
-  bullet: {fileID: 2440582175360884353, guid: 96ba90d7742daa244a78566d414f8fab, type: 3}
-  bulletSuper: {fileID: 0}
-  superFire: 0
+  bulletPoolId: Bullet
+  bulletSuperPoolId: BulletSuper
 --- !u!61 &5518105268755204024
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -878,7 +907,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.7333298, y: 4.4379616}
   m_EdgeRadius: 0
---- !u!114 &5518105268755204020
+--- !u!114 &8222232937726742752
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -887,15 +916,135 @@ MonoBehaviour:
   m_GameObject: {fileID: 5518105268755204028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a444e4565c7df845915c0830dd6bdec, type: 3}
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 0
-  coinScore: {fileID: 0}
-  timer: 0
-  multiplier: 1
-  baseTimeMultiplier: 5
-  multBase: 2
+  m_Actions: {fileID: -944628639613478452, guid: 58c0bd91d7c6d9c499acb1c75d790eb9,
+    type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
+    m_ActionName: 'Player/Look[/Mouse/delta,/Device Simulator Touchscreen/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
+    m_ActionName: 'Player/Attack[/Mouse/leftButton,/Device Simulator Touchscreen/primaryTouch/tap,/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 852140f2-7766-474d-8707-702459ba45f3
+    m_ActionName: 'Player/Interact[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 27c5f898-bc57-4ee1-8800-db469aca5fe3
+    m_ActionName: 'Player/Crouch[/Keyboard/c]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f1ba0d36-48eb-4cd5-b651-1c94a6531f70
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2776c80d-3c14-4091-8c56-d04ced07a2b0
+    m_ActionName: 'Player/Previous[/Keyboard/1]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba
+    m_ActionName: 'Player/Next[/Keyboard/2]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
+    m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b7032cbc-904c-420a-97ba-cb5434f5093f
+    m_ActionName: 'Player/Salto[/Device Simulator Touchscreen/primaryTouch/position,/Device
+      Simulator Touchscreen/primaryTouch/delta]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7607c7b6-cd76-4816-beef-bd0341cfe950
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 15cef263-9014-4fd5-94d9-4e4a6234a6ef
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 32b35790-4ed0-4e9a-aa41-69ac6d629449
+    m_ActionName: 'UI/Point[/Mouse/position,/Device Simulator Touchscreen/touch0/position,/Device
+      Simulator Touchscreen/touch1/position,/Device Simulator Touchscreen/touch2/position,/Device
+      Simulator Touchscreen/touch3/position,/Device Simulator Touchscreen/touch4/position,/Device
+      Simulator Touchscreen/touch5/position,/Device Simulator Touchscreen/touch6/position,/Device
+      Simulator Touchscreen/touch7/position,/Device Simulator Touchscreen/touch8/position,/Device
+      Simulator Touchscreen/touch9/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c7022bf-7922-4f7c-a998-c437916075ad
+    m_ActionName: 'UI/Click[/Mouse/leftButton,/Device Simulator Touchscreen/touch0/press,/Device
+      Simulator Touchscreen/touch1/press,/Device Simulator Touchscreen/touch2/press,/Device
+      Simulator Touchscreen/touch3/press,/Device Simulator Touchscreen/touch4/press,/Device
+      Simulator Touchscreen/touch5/press,/Device Simulator Touchscreen/touch6/press,/Device
+      Simulator Touchscreen/touch7/press,/Device Simulator Touchscreen/touch8/press,/Device
+      Simulator Touchscreen/touch9/press]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 44b200b1-1557-4083-816c-b22cbdf77ddf
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dad70c86-b58c-4b17-88ad-f5e53adf419e
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0489e84a-4833-4c40-bfae-cea84b696689
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 24908448-c609-4bc3-a128-ea258674378a
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
+    m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 23ff431d-bbf2-4493-8925-fb151e948aa1
+    m_ActionName: 'Player/TouchPosition[/Device Simulator Touchscreen/primaryTouch/position]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Touch
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &5518105268773156072
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +1055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5518105268773156073}
   - component: {fileID: 5518105268773156074}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cabeza
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -922,11 +1071,11 @@ Transform:
   m_GameObject: {fileID: 5518105268773156072}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04055619, y: 0.60000014, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.07055584, y: 0.78, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5518105268755204029}
+  m_Father: {fileID: 5518105267485238489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5518105268773156074
 SpriteRenderer:

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using MechaRunner.Spawning;
 
@@ -7,6 +8,10 @@ public class SpawnPoint
     [Tooltip("Solo para identificarlo en el Inspector, ej: 'Suelo', 'Plataforma', 'Aire'.")]
     public string label;
     public Transform point;
+
+    [Tooltip("Activado: la Y del punto es la superficie del piso y el objeto se apoya por su base " +
+             "(borde inferior de su collider sólido). Desactivado: se coloca su pivot en el punto.")]
+    public bool alignBottomToPoint;
 }
 
 /// <summary>
@@ -30,6 +35,9 @@ public class EntitySpawner : MonoBehaviour
 
     private float nextSpawnTime;
 
+    // Distancia pivot→base por pool: se calcula una vez (la geometría de un prefab no cambia)
+    private readonly Dictionary<string, float> bottomOffsets = new();
+
     private void Start() => ScheduleNextSpawn();
 
     private void Update()
@@ -48,8 +56,23 @@ public class EntitySpawner : MonoBehaviour
 
         if (entry == null) return;
 
-        Transform spawnPoint = spawnPoints[entry.spawnPointIndex].point;
-        PoolManager.Instance.Spawn(entry.poolId, spawnPoint.position);
+        SpawnPoint spawnPoint = spawnPoints[entry.spawnPointIndex];
+        GameObject spawned = PoolManager.Instance.Spawn(entry.poolId, spawnPoint.point.position);
+        if (spawned != null && spawnPoint.alignBottomToPoint)
+            AlignBottom(entry.poolId, spawned, spawnPoint.point.position.y);
+    }
+
+    private void AlignBottom(string poolId, GameObject spawned, float surfaceY)
+    {
+        if (!bottomOffsets.TryGetValue(poolId, out float offset))
+        {
+            offset = SpawnAlignment.BottomOffsetFromPivot(spawned);
+            bottomOffsets[poolId] = offset;
+        }
+
+        Vector3 pos = spawned.transform.position;
+        pos.y = surfaceY + offset;
+        spawned.transform.position = pos;
     }
 
     private void ScheduleNextSpawn()

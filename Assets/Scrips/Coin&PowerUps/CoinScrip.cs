@@ -8,15 +8,23 @@ public class CoinScrip : MonoBehaviour
     [SerializeField] private Type type;
 
     private PooledObject pooledObject;
+    // El Robot tiene dos colliders (sólido + trigger): ambos entran en el mismo paso de física
+    private bool collected;
 
     private void Awake()
     {
         pooledObject = GetComponent<PooledObject>();
     }
 
+    private void OnEnable()
+    {
+        collected = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!col.CompareTag("Player")) return;
+        if (collected || !col.CompareTag("Player")) return;
+        collected = true;
 
         switch (type)
         {
