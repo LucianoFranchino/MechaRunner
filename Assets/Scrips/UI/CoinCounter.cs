@@ -16,6 +16,10 @@ public class CoinCounter : MonoBehaviour
     [SerializeField] private float multiplierValue = 2f;
 
     private float multiplier = 1f;
+    private int startCoins;
+
+    /// <summary>Monedas ganadas en esta partida (el total guardado es coinValue).</summary>
+    public int RunCoins => coinValue - startCoins;
 
     private void Awake()
     {
@@ -30,6 +34,7 @@ public class CoinCounter : MonoBehaviour
     private void Start()
     {
         coinValue = PlayerPrefs.GetInt(CoinsKey, coinValue);
+        startCoins = coinValue;
         coinScore.SetText("{0}", coinValue);
 
         if (PowerUpManager.Instance != null)

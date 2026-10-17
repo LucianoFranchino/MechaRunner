@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -7,8 +7,8 @@ using UnityEngine.TestTools;
 using UnityEngine.UI;
 
 /// <summary>
-/// Tests del rediseÃ±o de UI: cableado de botones, pausa/resultados con los controles,
-/// rÃ©cord nuevo y una sola pista de mÃºsica del menÃº al juego.
+/// Tests del rediseño de UI: cableado de botones, pausa/resultados con los controles,
+/// récord nuevo y una sola pista de música del menú al juego.
 /// Guardan y restauran los PlayerPrefs del jugador.
 /// </summary>
 public class UiRegressionTests
@@ -36,7 +36,7 @@ public class UiRegressionTests
         if (hadHighscore) PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, savedHighscore); else PlayerPrefs.DeleteKey(ScoreManager.HighscoreKey);
         PlayerPrefs.Save();
         Time.timeScale = 1f;
-        // La mÃºsica del menÃº es DontDestroyOnLoad: no debe filtrarse a otros tests
+        // La música del menú es DontDestroyOnLoad: no debe filtrarse a otros tests
         if (MusicTransicion.Source != null) Object.Destroy(MusicTransicion.Source.gameObject);
     }
 
@@ -63,7 +63,7 @@ public class UiRegressionTests
         Assert.Greater(buttons.Length, 0);
         foreach (var b in buttons)
         {
-            Assert.Greater(b.onClick.GetPersistentEventCount(), 0, b.name + " no tiene acciÃ³n");
+            Assert.Greater(b.onClick.GetPersistentEventCount(), 0, b.name + " no tiene acción");
             for (int i = 0; i < b.onClick.GetPersistentEventCount(); i++)
                 Assert.IsNotNull(b.onClick.GetPersistentTarget(i), b.name + " apunta a un objeto inexistente");
         }
@@ -79,7 +79,7 @@ public class UiRegressionTests
 
         pause.Pause();
         Assert.IsTrue(PauseMenu.GameIsPaused);
-        Assert.IsFalse(controls.activeSelf, "FIRE/pausa siguen visibles detrÃ¡s de la pausa");
+        Assert.IsFalse(controls.activeSelf, "FIRE/pausa siguen visibles detrás de la pausa");
         Assert.IsTrue(GameCanvas.Find("PauseMenu").gameObject.activeSelf);
 
         pause.Resume();
@@ -88,37 +88,111 @@ public class UiRegressionTests
         Assert.AreEqual(1f, Time.timeScale);
     }
 
-    [UnityTest]
-    public IEnumerator UI_GameOverMuestraPuntajeYRecordNuevo()
+    // ------------------------------------------------------------------ Game Over animado
+
+    private static IEnumerator StartGame(float best)
     {
-        PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, 10f);
+        PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, best);
         yield return Load("Game");
         foreach (var spawner in Object.FindObjectsByType<EntitySpawner>(FindObjectsSortMode.None)) spawner.enabled = false;
+    }
 
-        ScoreManager.instance.scoreCount = 50f;
-        yield return null; // el HUD refleja el puntaje
+    private static GameOverSequence Die(float score)
+    {
+        ScoreManager.instance.scoreCount = score;
         Object.FindFirstObjectByType<PlayerHealth>().PlayerDamage(999);
+        return GameCanvas.Find("GameOver").GetComponent<GameOverSequence>();
+    }
 
-        var results = GameCanvas.Find("GameOver");
-        Assert.IsTrue(results.gameObject.activeSelf);
+    /// <summary>Espera en tiempo real (el Game Over deja timeScale en 0).</summary>
+    private static IEnumerator WaitFor(System.Func<bool> condition, float timeout, string what)
+    {
+        float end = Time.realtimeSinceStartup + timeout;
+        while (!condition())
+        {
+            if (Time.realtimeSinceStartup > end) Assert.Fail("Timeout esperando: " + what);
+            yield return null;
+        }
+    }
+
+    private static string Text(string path) => GameCanvas.Find("GameOver/" + path).GetComponent<TMP_Text>().text;
+    private static bool Active(string path) => GameCanvas.Find("GameOver/" + path).gameObject.activeSelf;
+
+    [UnityTest]
+    public IEnumerator GameOver_ElPuntajeCuentaDesdeCeroHastaElFinal()
+    {
+        yield return StartGame(9999f);
+        var seq = Die(80f);
+
+        Assert.IsTrue(GameCanvas.Find("GameOver").gameObject.activeSelf, "No se abrió la pantalla de resultados");
         Assert.IsFalse(GameCanvas.Find("Controls").gameObject.activeSelf, "Los controles quedaron sobre los resultados");
-        Assert.AreEqual("50", results.Find("Results/ScoreValue").GetComponent<TMP_Text>().text);
-        Assert.AreEqual("50", results.Find("Results/BestValue").GetComponent<TMP_Text>().text);
-        Assert.IsTrue(results.Find("Results/NewBadge").gameObject.activeSelf, "Falta la insignia de rÃ©cord nuevo");
+        Assert.AreEqual("0", Text("Results/ScoreValue"), "El conteo no arranca en 0");
+        Assert.IsFalse(GameCanvas.Find("GameOver/Actions").GetComponent<CanvasGroup>().interactable, "Los botones se pueden tocar antes de tiempo");
+
+        yield return WaitFor(() => seq.Finished, 8f, "fin de la secuencia");
+        Assert.AreEqual("80", Text("Results/ScoreValue"));
+        Assert.AreEqual("9999", Text("Results/BestValue"));
+        Assert.IsTrue(GameCanvas.Find("GameOver/Actions").GetComponent<CanvasGroup>().interactable);
+        Assert.IsFalse(Active("Results/NewBadge"), "Insignia NEW sin récord");
+        Assert.IsFalse(Active("Celebration"), "Celebración sin récord");
     }
 
     [UnityTest]
-    public IEnumerator UI_SinRecordNoApareceLaInsignia()
+    public IEnumerator GameOver_MonedasDeLaPartidaVuelanYSumanAlTotal()
     {
-        PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, 9999f);
-        yield return Load("Game");
-        foreach (var spawner in Object.FindObjectsByType<EntitySpawner>(FindObjectsSortMode.None)) spawner.enabled = false;
+        PlayerPrefs.SetInt(CoinCounter.CoinsKey, 10);
+        yield return StartGame(9999f);
+        for (int i = 0; i < 3; i++) CoinCounter.Instance.GetCoin();
+        var seq = Die(5f);
 
-        ScoreManager.instance.scoreCount = 50f;
-        Object.FindFirstObjectByType<PlayerHealth>().PlayerDamage(999);
+        Assert.AreEqual("10", Text("TotalCoins/TotalValue"), "El total tiene que arrancar sin las monedas de la partida");
+        yield return WaitFor(() => GameCanvas.Find("GameOver/FlyingCoins").GetComponentsInChildren<Image>(false).Length > 0, 6f, "monedas volando");
+        yield return WaitFor(() => seq.Finished, 8f, "fin de la secuencia");
 
-        Assert.IsFalse(GameCanvas.Find("GameOver/Results/NewBadge").gameObject.activeSelf);
-        Assert.AreEqual("9999", GameCanvas.Find("GameOver/Results/BestValue").GetComponent<TMP_Text>().text);
+        Assert.AreEqual("+3", Text("Results/CoinsRow/RunCoins"));
+        Assert.AreEqual("13", Text("TotalCoins/TotalValue"));
+        Assert.AreEqual(0, GameCanvas.Find("GameOver/FlyingCoins").GetComponentsInChildren<Image>(false).Length, "Quedaron monedas volando");
+        Assert.AreEqual(13, PlayerPrefs.GetInt(CoinCounter.CoinsKey), "Cambió el guardado de monedas");
+    }
+
+    [UnityTest]
+    public IEnumerator GameOver_RecordMuestraCelebracionYDespuesLaInsignia()
+    {
+        yield return StartGame(10f);
+        var seq = Die(50f);
+
+        Assert.IsFalse(Active("Results/NewBadge"), "La insignia tiene que esperar a la celebración");
+        yield return WaitFor(() => Active("Celebration"), 6f, "celebración de récord");
+        Assert.AreEqual("50", Text("Celebration/RecordLabel/Score"));
+
+        seq.OnPointerClick(null); // tocar la cierra
+        yield return WaitFor(() => !Active("Celebration"), 2f, "cierre de la celebración");
+        yield return WaitFor(() => seq.Finished, 8f, "fin de la secuencia");
+        Assert.IsTrue(Active("Results/NewBadge"), "Falta la insignia de récord nuevo");
+        Assert.AreEqual("50", Text("Results/BestValue"));
+        Assert.AreEqual("50", Text("Results/ScoreValue"));
+    }
+
+    [UnityTest]
+    public IEnumerator GameOver_TocarSaltaAlFinalSinPerderLaCelebracion()
+    {
+        PlayerPrefs.SetInt(CoinCounter.CoinsKey, 0);
+        yield return StartGame(10f);
+        CoinCounter.Instance.GetCoin();
+        var seq = Die(500f);
+        yield return null;
+
+        seq.OnPointerClick(null);
+        Assert.IsTrue(seq.Finished);
+        Assert.AreEqual("500", Text("Results/ScoreValue"));
+        Assert.AreEqual("1", Text("TotalCoins/TotalValue"));
+        Assert.AreEqual("+1", Text("Results/CoinsRow/RunCoins"));
+        Assert.IsTrue(GameCanvas.Find("GameOver/Actions").GetComponent<CanvasGroup>().interactable);
+        Assert.IsTrue(Active("Celebration"), "El récord tiene que celebrarse aunque se salte el conteo");
+
+        seq.OnPointerClick(null);
+        yield return WaitFor(() => !Active("Celebration"), 2f, "cierre de la celebración");
+        Assert.IsTrue(Active("Results/NewBadge"));
     }
 
     [UnityTest]
@@ -126,16 +200,16 @@ public class UiRegressionTests
     {
         PlayerPrefs.SetInt(AudioManager.MusicMutedKey, 0);
         yield return Load("MainMenu");
-        Assert.IsNotNull(MusicTransicion.Source, "El menÃº no creÃ³ la mÃºsica persistente");
+        Assert.IsNotNull(MusicTransicion.Source, "El menú no creó la música persistente");
 
         yield return Load("Game");
         int playing = 0;
         foreach (var s in Object.FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
             if (s.isPlaying && s.loop && s.clip != null && s.enabled) playing++;
-        Assert.AreEqual(1, playing, "Suenan varias pistas de mÃºsica a la vez");
+        Assert.AreEqual(1, playing, "Suenan varias pistas de música a la vez");
 
         AudioManager.instance.ToggleMusicMute();
-        Assert.IsTrue(MusicTransicion.Source.mute, "El mute no silencia la mÃºsica que viene del menÃº");
+        Assert.IsTrue(MusicTransicion.Source.mute, "El mute no silencia la música que viene del menú");
         AudioManager.instance.ToggleMusicMute();
         Assert.IsFalse(MusicTransicion.Source.mute);
     }

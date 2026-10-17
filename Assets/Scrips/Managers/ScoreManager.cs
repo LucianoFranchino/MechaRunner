@@ -7,7 +7,7 @@ public class ScoreManager : MonoBehaviour
 
     public const string HighscoreKey = "highscore";
 
-    [Header("Vistas del puntaje (HUD, pausa, resultados)")]
+    [Header("Vistas del puntaje (HUD y pausa; resultados lo anima GameOverSequence)")]
     [Tooltip("Textos que muestran el puntaje actual. Se actualizan solo cuando cambia el número.")]
     [SerializeField] private TMP_Text[] scoreTexts;
     [Tooltip("Textos que muestran el récord guardado (pausa, resultados).")]
@@ -25,6 +25,9 @@ public class ScoreManager : MonoBehaviour
     private float bestAtStart;
 
     public float Best => PlayerPrefs.GetFloat(HighscoreKey, 0f);
+
+    /// <summary>La partida terminada superó el récord con el que empezó (lo fija Save).</summary>
+    public bool IsNewRecord { get; private set; }
 
     private void Awake()
     {
@@ -107,6 +110,7 @@ public class ScoreManager : MonoBehaviour
 
         // Resultados: récord actualizado e insignia NEW si se superó el anterior
         SetAll(bestTexts, Mathf.RoundToInt(Best));
-        if (newRecordBadge != null) newRecordBadge.SetActive(newRecord && scoreCount > bestAtStart);
+        IsNewRecord = newRecord && scoreCount > bestAtStart;
+        if (newRecordBadge != null) newRecordBadge.SetActive(IsNewRecord);
     }
 }
