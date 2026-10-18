@@ -9,32 +9,17 @@ using UnityEngine.UI;
 /// <summary>
 /// Tests del rediseño de UI: cableado de botones, pausa/resultados con los controles,
 /// récord nuevo y una sola pista de música del menú al juego.
-/// Guardan y restauran los PlayerPrefs del jugador.
+/// Usan un guardado temporal propio (TestSaveIsolation): no tocan el del jugador.
 /// </summary>
 public class UiRegressionTests
 {
-    private static readonly string[] IntKeys = { CurrencyService.CoinsKey, AudioManager.SfxMutedKey, AudioManager.MusicMutedKey };
-    private readonly System.Collections.Generic.Dictionary<string, int> savedInts = new();
-    private bool hadHighscore;
-    private float savedHighscore;
-
     [SetUp]
-    public void SavePrefs()
-    {
-        savedInts.Clear();
-        foreach (var key in IntKeys)
-            if (PlayerPrefs.HasKey(key)) savedInts[key] = PlayerPrefs.GetInt(key);
-        hadHighscore = PlayerPrefs.HasKey(ScoreManager.HighscoreKey);
-        savedHighscore = PlayerPrefs.GetFloat(ScoreManager.HighscoreKey);
-    }
+    public void IsolateSave() => TestSaveIsolation.Begin();
 
     [TearDown]
-    public void RestorePrefs()
+    public void RestoreSave()
     {
-        foreach (var key in IntKeys)
-            if (savedInts.TryGetValue(key, out int value)) PlayerPrefs.SetInt(key, value); else PlayerPrefs.DeleteKey(key);
-        if (hadHighscore) PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, savedHighscore); else PlayerPrefs.DeleteKey(ScoreManager.HighscoreKey);
-        PlayerPrefs.Save();
+        TestSaveIsolation.End();
         Time.timeScale = 1f;
         // La música del menú es DontDestroyOnLoad: no debe filtrarse a otros tests
         if (MusicTransition.Source != null) Object.Destroy(MusicTransition.Source.gameObject);
@@ -94,7 +79,7 @@ public class UiRegressionTests
 
     private static IEnumerator StartGame(float best)
     {
-        PlayerPrefs.SetFloat(ScoreManager.HighscoreKey, best);
+        SaveSystem.Data.progress.bestScore = best;
         yield return Load("Game");
         foreach (var spawner in Object.FindObjectsByType<EntitySpawner>(FindObjectsSortMode.None)) spawner.enabled = false;
     }
@@ -142,7 +127,7 @@ public class UiRegressionTests
     [UnityTest]
     public IEnumerator GameOver_MonedasDeLaPartidaVuelanYSumanAlTotal()
     {
-        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 10);
+        SaveSystem.Data.progress.coins = 10;
         yield return StartGame(9999f);
         for (int i = 0; i < 3; i++) CurrencyService.Instance.CollectCoin();
         var seq = Die(5f);
@@ -154,7 +139,10 @@ public class UiRegressionTests
         Assert.AreEqual("+3", Text("Results/CoinsRow/RunCoins"));
         Assert.AreEqual("13", Text("TotalCoins/TotalValue"));
         Assert.AreEqual(0, GameCanvas.Find("GameOver/FlyingCoins").GetComponentsInChildren<Image>(false).Length, "Quedaron monedas volando");
-        Assert.AreEqual(13, PlayerPrefs.GetInt(CurrencyService.CoinsKey), "Cambió el guardado de monedas");
+        Assert.AreEqual(13, SaveSystem.Data.progress.coins, "Cambió el guardado de monedas");
+        Assert.IsFalse(SaveSystem.IsDirty, "El fin de partida no escribió el guardado");
+        SaveSystem.UseDirectory(TestSaveIsolation.Directory); // releer del disco
+        Assert.AreEqual(13, SaveSystem.Data.progress.coins, "Las monedas no quedaron en el archivo");
     }
 
     [UnityTest]
@@ -178,7 +166,7 @@ public class UiRegressionTests
     [UnityTest]
     public IEnumerator GameOver_TocarSaltaAlFinalSinPerderLaCelebracion()
     {
-        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 0);
+        SaveSystem.Data.progress.coins = 0;
         yield return StartGame(10f);
         CurrencyService.Instance.CollectCoin();
         var seq = Die(500f);
@@ -200,7 +188,7 @@ public class UiRegressionTests
     [UnityTest]
     public IEnumerator Audio_UnaSolaMusicaDelMenuAlJuegoYElMuteLaApaga()
     {
-        PlayerPrefs.SetInt(AudioManager.MusicMutedKey, 0);
+        SaveSystem.Data.settings.musicMuted = false;
         yield return Load("MainMenu");
         Assert.IsNotNull(MusicTransition.Source, "El menú no creó la música persistente");
 

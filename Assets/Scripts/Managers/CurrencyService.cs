@@ -4,13 +4,11 @@ using UnityEngine;
 /// <summary>
 /// Monedas del jugador (modelo): total acumulado, monedas ganadas en esta partida y el
 /// multiplicador del power-up. No conoce la UI: las vistas escuchan Changed.
-/// La persistencia va a PlayerPrefs hasta que exista el sistema de guardado central.
+/// El total se guarda en SaveSystem (progress.coins); se escribe a disco en los puntos de guardado.
 /// </summary>
 public class CurrencyService : MonoBehaviour
 {
     public static CurrencyService Instance { get; private set; }
-
-    public const string CoinsKey = "Coins";
 
     [Tooltip("Multiplicador mientras dura el power-up de monedas.")]
     [SerializeField] private float multiplierValue = 2f;
@@ -28,7 +26,7 @@ public class CurrencyService : MonoBehaviour
     public event Action<int> Changed;
 
     /// <summary>Total guardado, para pantallas sin partida (menú).</summary>
-    public static int SavedCoins => PlayerPrefs.GetInt(CoinsKey, 0);
+    public static int SavedCoins => SaveSystem.Data.progress.coins;
 
     private void Awake()
     {
@@ -72,7 +70,8 @@ public class CurrencyService : MonoBehaviour
     {
         if (amount == 0) return;
         Coins += amount;
-        PlayerPrefs.SetInt(CoinsKey, Coins);
+        SaveSystem.Data.progress.coins = Coins;
+        SaveSystem.MarkDirty();
         Changed?.Invoke(Coins);
     }
 

@@ -8,32 +8,17 @@ using UnityEngine.TestTools;
 /// <summary>
 /// Tests de regresión de los bugs corregidos en pool, vida, monedas, power-ups y reinicio.
 /// Cargan la escena Game real; cualquier Debug.LogError o excepción hace fallar el test.
-/// Guardan y restauran los PlayerPrefs del jugador (monedas / highscore).
+/// Usan un guardado temporal propio (TestSaveIsolation): no tocan el del jugador.
 /// </summary>
 public class GameplayRegressionTests
 {
-    private static readonly string[] IntKeys = { CurrencyService.CoinsKey, AudioManager.SfxMutedKey, AudioManager.MusicMutedKey };
-    private readonly System.Collections.Generic.Dictionary<string, int> savedInts = new();
-    private bool hadHighscore;
-    private float savedHighscore;
-
     [SetUp]
-    public void SavePrefs()
-    {
-        savedInts.Clear();
-        foreach (var key in IntKeys)
-            if (PlayerPrefs.HasKey(key)) savedInts[key] = PlayerPrefs.GetInt(key);
-        hadHighscore = PlayerPrefs.HasKey("highscore");
-        savedHighscore = PlayerPrefs.GetFloat("highscore");
-    }
+    public void IsolateSave() => TestSaveIsolation.Begin();
 
     [TearDown]
-    public void RestorePrefs()
+    public void RestoreSave()
     {
-        foreach (var key in IntKeys)
-            if (savedInts.TryGetValue(key, out int value)) PlayerPrefs.SetInt(key, value); else PlayerPrefs.DeleteKey(key);
-        if (hadHighscore) PlayerPrefs.SetFloat("highscore", savedHighscore); else PlayerPrefs.DeleteKey("highscore");
-        PlayerPrefs.Save();
+        TestSaveIsolation.End();
         Time.timeScale = 1f;
     }
 
@@ -343,8 +328,8 @@ public class GameplayRegressionTests
     [UnityTest]
     public IEnumerator Game_MuteSobreviveAlReinicio()
     {
-        PlayerPrefs.SetInt("SfxMuted", 0);
-        PlayerPrefs.SetInt("MusicMuted", 0);
+        SaveSystem.Data.settings.sfxMuted = false;
+        SaveSystem.Data.settings.musicMuted = false;
         yield return LoadGame();
 
         AudioManager.instance.ToggleMusicMute();
@@ -463,7 +448,7 @@ public class GameplayRegressionTests
     [UnityTest]
     public IEnumerator Monedas_ModeloConMultiplicadorYVistaSincronizada()
     {
-        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 5);
+        SaveSystem.Data.progress.coins = 5;
         yield return LoadGame();
         var wallet = CurrencyService.Instance;
         int changes = 0;
@@ -475,7 +460,7 @@ public class GameplayRegressionTests
 
         Assert.AreEqual(8, wallet.Coins, "5 guardadas + 1 + 2 con el multiplicador");
         Assert.AreEqual(3, wallet.RunCoins);
-        Assert.AreEqual(8, PlayerPrefs.GetInt(CurrencyService.CoinsKey), "No se guardó el total");
+        Assert.AreEqual(8, SaveSystem.Data.progress.coins, "No se guardó el total");
         Assert.AreEqual(2, changes);
         var hudText = GameObject.Find("Canvas").transform.Find("HUD/ScorePlate/CoinValue").GetComponent<TMPro.TMP_Text>();
         Assert.AreEqual("8", hudText.text, "La vista del HUD no refleja el modelo");

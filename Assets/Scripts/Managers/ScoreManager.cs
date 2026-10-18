@@ -1,11 +1,9 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance;
-
-    public const string HighscoreKey = "highscore";
 
     [Header("Vistas del puntaje (HUD y pausa; resultados lo anima GameOverSequence)")]
     [Tooltip("Textos que muestran el puntaje actual. Se actualizan solo cuando cambia el número.")]
@@ -24,7 +22,7 @@ public class ScoreManager : MonoBehaviour
     private int lastShownScore = -1;
     private float bestAtStart;
 
-    public float Best => PlayerPrefs.GetFloat(HighscoreKey, 0f);
+    public float Best => SaveSystem.Data.progress.bestScore;
 
     /// <summary>La partida terminada superó el récord con el que empezó (lo fija Save).</summary>
     public bool IsNewRecord { get; private set; }
@@ -32,7 +30,7 @@ public class ScoreManager : MonoBehaviour
     private void Awake()
     {
         // Sin DontDestroyOnLoad: referencia textos de la escena, así que tiene que
-        // recrearse con ella. El highscore persiste en PlayerPrefs.
+        // recrearse con ella. El récord persiste en SaveSystem.
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -101,12 +99,14 @@ public class ScoreManager : MonoBehaviour
 
     public void Save()
     {
-        bool newRecord = !PlayerPrefs.HasKey(HighscoreKey) || scoreCount > PlayerPrefs.GetFloat(HighscoreKey);
+        var progress = SaveSystem.Data.progress;
+        bool newRecord = scoreCount > progress.bestScore;
         if (newRecord)
-            PlayerPrefs.SetFloat(HighscoreKey, scoreCount);
+            progress.bestScore = scoreCount;
 
-        // Forzar escritura a disco: en Android, si el SO mata la app no se llama a OnApplicationQuit.
-        PlayerPrefs.Save();
+        // Fin de partida: se escribe todo (récord y monedas ganadas). En Android, si el SO
+        // mata la app después, no se llama a OnApplicationQuit.
+        SaveSystem.Save();
 
         // Resultados: récord actualizado e insignia NEW si se superó el anterior
         SetAll(bestTexts, Mathf.RoundToInt(Best));

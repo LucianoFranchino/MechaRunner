@@ -6,7 +6,7 @@ public enum GameState { Playing, Paused, GameOver }
 
 /// <summary>
 /// Estado de la partida (jugando, en pausa, terminada) y sus transiciones: tiempo, puntaje,
-/// guardado del récord y cambio de escena. Las pantallas (pausa, resultados, controles)
+/// guardado (SaveSystem) y cambio de escena. Las pantallas (pausa, resultados, controles)
 /// solo escuchan StateChanged; el input y las armas consultan IsPlaying.
 /// Reiniciar recarga la escena, así pools, dificultad y puntaje vuelven a su estado inicial.
 /// </summary>
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
         if (!IsPlaying) return;
         Time.timeScale = 0f;
         SetScoring(false);
+        SaveSystem.SaveIfDirty(); // monedas de la partida en curso
         SetState(GameState.Paused);
     }
 
@@ -81,18 +82,21 @@ public class GameManager : MonoBehaviour
         if (IsGameOver) return;
         SetScoring(false);
         if (ScoreManager.instance != null) ScoreManager.instance.Save();
+        else SaveSystem.SaveIfDirty();
         Time.timeScale = 0f;
         SetState(GameState.GameOver);
     }
 
     public void Restart()
     {
+        SaveSystem.SaveIfDirty();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMenu()
     {
+        SaveSystem.SaveIfDirty();
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }

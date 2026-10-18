@@ -22,7 +22,7 @@ public class MusicTransition : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             source = GetComponent<AudioSource>();
             // Respetar el mute de música guardado también en el menú
-            if (source != null) source.mute = PlayerPrefs.GetInt(AudioManager.MusicMutedKey, 0) == 1;
+            if (source != null) source.mute = SaveSystem.Data.settings.musicMuted;
         }
         else
         {
