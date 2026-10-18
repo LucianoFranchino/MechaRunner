@@ -1,29 +1,40 @@
 # Mecha Runner
 
-MechaRunner is a game that falls into the “Endless Runner” category of 2D platforms; where the player controls a robot character who, tired of being a slave in the factory where he works, tries to escape from the security guards there.
+MechaRunner is a 2D endless runner: the player controls a robot who, tired of being a slave in the factory where he works, tries to escape from its security guards.
 
-Made in Unity 2019.4.15f in C#
+Made in **Unity 6 (6000.0.59f2)** with C#, URP 2D Renderer and the Input System. Target: **Android, landscape**.
 
-GAMEPLAY
+## Gameplay
 
-In the level we must stop the enemies and avoid the different obstacles presented on the map, for this we will have:
-  Mobility: The character will move only in one direction; the player only has to jump at the right moment to avoid the obstacles.
-  Armament: It has a main weapon in the right arm.
-  Power Ups: These are objects that appear randomly in the game, these will be detailed later.
-  
-  
-MECHANICS
+The robot runs in one direction while obstacles and enemies come towards it. Over time they move faster and spawn more often.
 
-Camera:
-The camera will have a side scrolling view, showing everything that happens on the level at all times.
+- **Swipe up:** jump. Swipe up again in the air for a double jump.
+- **Swipe down:** drop fast.
+- **FIRE button:** shoot the arm cannon. Ground enemies take 2 hits.
+- **Power-ups:**
+  - **Double Coins:** every coin counts x2.
+  - **Super Shot:** one shot destroys any enemy.
+  - **Double Score:** points count x2.
 
-Progression:
-As time progresses in the game, the speed of the obstacles increases, increasing the difficulty for the player.
+Coins and the best score are saved between sessions.
 
-Movement:
-The character moves in only one direction where objects approach towards him on their way, at first slower and as the game progresses, their speed increases.
-The player will only have the option to jump by tapping the button located at the bottom left of the screen. Pressing it twice the character will perform a double jump to overcome higher obstacles.
+## Project structure
 
-Attack:
-At the moment the character has only one attack to defeat the enemies, the hand cannon.
-The player must press anywhere on the screen to activate it.
+| Folder | Contents |
+|---|---|
+| `Assets/Scenes` | `MainMenu` → `Tutorial` → `Game` (build order) |
+| `Assets/Scripts/Managers` | `GameManager` (Playing / Paused / GameOver states), score, coins (`CurrencyService`), audio, difficulty, pools, power-ups |
+| `Assets/Scripts/Spawners` | Object pools (referenced by prefab) and weighted spawners |
+| `Assets/Scripts/UI` | HUD, pause, Game Over sequence, menu views |
+| `Assets/Scripts/Environment` | Camera framing, parallax |
+| `Assets/Test` | Play Mode regression tests (`MechaRunner.Tests` assembly) |
+
+Game code lives in the `MechaRunner` assembly (`Assets/Scripts/MechaRunner.asmdef`). Tests are only compiled when the Test Runner needs them.
+
+## Tests
+
+Open **Window → General → Test Runner → PlayMode** and run all. The tests load the real `Game` scene and restore the saved PlayerPrefs when they finish.
+
+## Builds
+
+Builds go to the `Builds/` folder at the project root. That folder is ignored by Git.

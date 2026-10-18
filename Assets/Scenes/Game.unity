@@ -1212,7 +1212,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 175609996}
-  - component: {fileID: 175609997}
   - component: {fileID: 175609998}
   m_Layer: 5
   m_Name: GameOver
@@ -1247,19 +1246,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &175609997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175609995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc9d50398961fdf4991b69bb18ff3006, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameplayControls: {fileID: 860573488}
 --- !u!114 &175609998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1897,9 +1883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a444e4565c7df845915c0830dd6bdec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 0
-  coinScore: {fileID: 1268650489}
-  multiplierValue: 2
+  valueText: {fileID: 1268650489}
 --- !u!114 &241175238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2317,7 +2301,7 @@ Transform:
   m_GameObject: {fileID: 312639622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0.37, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7294,10 +7278,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 325920452}
-  - component: {fileID: 325920454}
   - component: {fileID: 325920453}
+  - component: {fileID: 325920454}
   m_Layer: 0
-  m_Name: MenuManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7331,7 +7315,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 1971525388}
-  scoreManager: {fileID: 2119304485}
   gameplayControls: {fileID: 860573488}
 --- !u!114 &325920454
 MonoBehaviour:
@@ -7342,7 +7325,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 325920451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b4cbfc992dd17479c431f24b65fa25, type: 3}
+  m_Script: {fileID: 11500000, guid: 341475a7c0a7cd044bcc1c23e46f9fc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &329675548
@@ -8435,7 +8418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &525888920
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9544,7 +9527,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 325920454}
-        m_TargetAssemblyTypeName: MenuManager, MechaRunner
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
         m_MethodName: Restart
         m_Mode: 0
         m_Arguments:
@@ -10684,32 +10667,38 @@ MonoBehaviour:
     point: {fileID: 902296357}
     alignBottomToPoint: 1
   entries:
-  - poolId: Enemy
+  - prefab: {fileID: 8006273657135835026, guid: 48a1c9af794c59247abbf24ac6cf361c,
+      type: 3}
     weight: 2
     minDifficulty: 7
     maxDifficulty: 11
     spawnPointIndex: 0
-  - poolId: Enemy
+  - prefab: {fileID: 8006273657135835026, guid: 48a1c9af794c59247abbf24ac6cf361c,
+      type: 3}
     weight: 3
     minDifficulty: 11
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: DoubleB
+  - prefab: {fileID: 8157309390313620035, guid: 189793019d18cda479112a6f86379ce4,
+      type: 3}
     weight: 1
     minDifficulty: 0
     maxDifficulty: 7
     spawnPointIndex: 0
-  - poolId: DoubleB
+  - prefab: {fileID: 8157309390313620035, guid: 189793019d18cda479112a6f86379ce4,
+      type: 3}
     weight: 3
     minDifficulty: 7
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: Box
+  - prefab: {fileID: 8329489835256858344, guid: 605cbe0844e2a874fa45dd02499570a8,
+      type: 3}
     weight: 3
     minDifficulty: 0
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: Barrel
+  - prefab: {fileID: 2651986174515901776, guid: 7e8c20e2116ce1145ae29efaf6538401,
+      type: 3}
     weight: 3
     minDifficulty: 0
     maxDifficulty: 999
@@ -12618,8 +12607,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 325920454}
-        m_TargetAssemblyTypeName: MenuManager, MechaRunner
-        m_MethodName: Menu
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
+        m_MethodName: GoToMenu
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12913,6 +12902,7 @@ Transform:
   - {fileID: 1932266065}
   - {fileID: 527487802}
   - {fileID: 325920452}
+  - {fileID: 1524281188}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1330027980
@@ -13024,22 +13014,26 @@ MonoBehaviour:
     point: {fileID: 1339142815}
     alignBottomToPoint: 0
   entries:
-  - poolId: FlyEnemy
+  - prefab: {fileID: 5480063347915605934, guid: 08690c3ea2f6daa49b9eb5a3ae0bc871,
+      type: 3}
     weight: 1
     minDifficulty: 10
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: CoinPU
+  - prefab: {fileID: 1600580277604500451, guid: ac425d8b3ccd46c45a5cc8a11efdf091,
+      type: 3}
     weight: 2
     minDifficulty: 0
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: ScorePU
+  - prefab: {fileID: 2807254851994896334, guid: 9c33f4272cc4bcf4fb0e3af27a1115ac,
+      type: 3}
     weight: 1
     minDifficulty: 0
     maxDifficulty: 999
     spawnPointIndex: 0
-  - poolId: SuperPU
+  - prefab: {fileID: 7444758878976111276, guid: d27d2d1cdb762de40b5bd17370f1939e,
+      type: 3}
     weight: 1
     minDifficulty: 0
     maxDifficulty: 999
@@ -13446,8 +13440,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 325920454}
-        m_TargetAssemblyTypeName: MenuManager, MechaRunner
-        m_MethodName: Menu
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
+        m_MethodName: GoToMenu
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13578,8 +13572,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 325920453}
-        m_TargetAssemblyTypeName: PauseMenu, MechaRunner
+      - m_Target: {fileID: 325920454}
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
         m_MethodName: Resume
         m_Mode: 0
         m_Arguments:
@@ -13787,73 +13781,61 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolConfigs:
-  - poolId: Barrel
-    prefab: {fileID: 2651986174515901776, guid: 7e8c20e2116ce1145ae29efaf6538401,
+  - prefab: {fileID: 2651986174515901776, guid: 7e8c20e2116ce1145ae29efaf6538401,
       type: 3}
     initialSize: 4
     maxSize: 8
     expandable: 1
-  - poolId: Box
-    prefab: {fileID: 8329489835256858344, guid: 605cbe0844e2a874fa45dd02499570a8,
+  - prefab: {fileID: 8329489835256858344, guid: 605cbe0844e2a874fa45dd02499570a8,
       type: 3}
     initialSize: 4
     maxSize: 8
     expandable: 1
-  - poolId: DoubleB
-    prefab: {fileID: 8157309390313620035, guid: 189793019d18cda479112a6f86379ce4,
+  - prefab: {fileID: 8157309390313620035, guid: 189793019d18cda479112a6f86379ce4,
       type: 3}
     initialSize: 4
     maxSize: 8
     expandable: 1
-  - poolId: Enemy
-    prefab: {fileID: 8006273657135835026, guid: 48a1c9af794c59247abbf24ac6cf361c,
+  - prefab: {fileID: 8006273657135835026, guid: 48a1c9af794c59247abbf24ac6cf361c,
       type: 3}
     initialSize: 3
     maxSize: 6
     expandable: 1
-  - poolId: FlyEnemy
-    prefab: {fileID: 5480063347915605934, guid: 08690c3ea2f6daa49b9eb5a3ae0bc871,
+  - prefab: {fileID: 5480063347915605934, guid: 08690c3ea2f6daa49b9eb5a3ae0bc871,
       type: 3}
     initialSize: 2
     maxSize: 4
     expandable: 1
-  - poolId: Coin
-    prefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
+  - prefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
     initialSize: 5
     maxSize: 10
     expandable: 1
-  - poolId: DeathFX
-    prefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
+  - prefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
       type: 3}
     initialSize: 3
     maxSize: 6
     expandable: 1
-  - poolId: Bullet
-    prefab: {fileID: 2440582175360884353, guid: 96ba90d7742daa244a78566d414f8fab,
+  - prefab: {fileID: 2440582175360884353, guid: 96ba90d7742daa244a78566d414f8fab,
       type: 3}
     initialSize: 5
     maxSize: 10
     expandable: 1
-  - poolId: CoinPU
-    prefab: {fileID: 1600580277604500451, guid: ac425d8b3ccd46c45a5cc8a11efdf091,
+  - prefab: {fileID: 1600580277604500451, guid: ac425d8b3ccd46c45a5cc8a11efdf091,
       type: 3}
     initialSize: 3
     maxSize: 4
     expandable: 1
-  - poolId: ScorePU
-    prefab: {fileID: 2807254851994896334, guid: 9c33f4272cc4bcf4fb0e3af27a1115ac,
+  - prefab: {fileID: 2807254851994896334, guid: 9c33f4272cc4bcf4fb0e3af27a1115ac,
       type: 3}
     initialSize: 3
     maxSize: 4
     expandable: 1
-  - poolId: SuperPU
-    prefab: {fileID: 7444758878976111276, guid: d27d2d1cdb762de40b5bd17370f1939e,
+  - prefab: {fileID: 7444758878976111276, guid: d27d2d1cdb762de40b5bd17370f1939e,
       type: 3}
     initialSize: 3
     maxSize: 4
     expandable: 1
-  - poolId: BulletSuper
-    prefab: {fileID: 1653885357122628049, guid: 91c28e5d7c321c0419af2b8ca0cef7ef,
+  - prefab: {fileID: 1653885357122628049, guid: 91c28e5d7c321c0419af2b8ca0cef7ef,
       type: 3}
     initialSize: 5
     maxSize: 10
@@ -13873,6 +13855,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1524281187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1524281188}
+  - component: {fileID: 1524281189}
+  m_Layer: 0
+  m_Name: CurrencyService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1524281188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524281187}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1322220482}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1524281189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524281187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b40e0da5bbc1f8418dcc2029dc3f7a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiplierValue: 2
 --- !u!1 &1535965960
 GameObject:
   m_ObjectHideFlags: 0
@@ -14149,6 +14176,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558508308}
+  m_CullTransparentMesh: 1
+--- !u!1 &1576233184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576233185}
+  - component: {fileID: 1576233187}
+  - component: {fileID: 1576233186}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1576233185
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576233184}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2136150493}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -6.199997, y: 0}
+  m_SizeDelta: {x: 111.4057, y: 55.7029}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1576233186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576233184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 7983310ffac338f47b0df1a108ed3325, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1576233187
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576233184}
   m_CullTransparentMesh: 1
 --- !u!1 &1595445613
 GameObject:
@@ -16125,8 +16227,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 325920453}
-        m_TargetAssemblyTypeName: PauseMenu, MechaRunner
+      - m_Target: {fileID: 325920454}
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
         m_MethodName: Pause
         m_Mode: 0
         m_Arguments:
@@ -16762,7 +16864,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 2
-  deathScreen: {fileID: 175609997}
   invulnerabilityTime: 1
   blinkInterval: 0.1
   hurtSound: {fileID: 8300000, guid: 93bdf8f6708c30544b6ea4c4a4ebcdaf, type: 3}
@@ -17119,7 +17220,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 325920454}
-        m_TargetAssemblyTypeName: MenuManager, MechaRunner
+        m_TargetAssemblyTypeName: GameManager, MechaRunner
         m_MethodName: Restart
         m_Mode: 0
         m_Arguments:
@@ -17200,12 +17301,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 525888920}
+  - {fileID: 1576233185}
   m_Father: {fileID: 860573489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 48, y: 48}
-  m_SizeDelta: {x: 220, y: 150}
+  m_SizeDelta: {x: 235.0076, y: 107.4279}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2136150494
 MonoBehaviour:
@@ -17237,7 +17339,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300026, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
+    m_PressedSprite: {fileID: 21300114, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -17283,8 +17385,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300024, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300118, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

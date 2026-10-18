@@ -154,7 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinSound: {fileID: 8300000, guid: f9e6fac3c515ad14eb397d58d5646bd3, type: 3}
   powerSound: {fileID: 8300000, guid: 8e0ddb110dd66d0458dc818972338391, type: 3}
-  type: 3
+  isPowerUp: 1
+  powerUp: 2
 --- !u!199 &4237904485494820932
 ParticleSystemRenderer:
   serializedVersion: 6

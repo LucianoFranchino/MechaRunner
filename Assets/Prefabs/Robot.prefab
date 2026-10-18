@@ -813,8 +813,10 @@ MonoBehaviour:
   shootSound: {fileID: 8300000, guid: bfb60c2ce45dcff4b800508213d280df, type: 3}
   firePoint: {fileID: 5518105267486128222}
   animator: {fileID: 5518105268755204030}
-  bulletPoolId: Bullet
-  bulletSuperPoolId: BulletSuper
+  bulletPrefab: {fileID: 2440582175360884353, guid: 96ba90d7742daa244a78566d414f8fab,
+    type: 3}
+  bulletSuperPrefab: {fileID: 1653885357122628049, guid: 91c28e5d7c321c0419af2b8ca0cef7ef,
+    type: 3}
 --- !u!61 &5518105268755204024
 BoxCollider2D:
   m_ObjectHideFlags: 0

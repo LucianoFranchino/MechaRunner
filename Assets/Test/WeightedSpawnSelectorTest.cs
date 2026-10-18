@@ -9,13 +9,13 @@ public class WeightedSpawnSelectorTests
     {
         var entries = new List<SpawnableEntry>
         {
-            new SpawnableEntry { poolId = "FueraDeRango", weight = 1, minDifficulty = 20f, maxDifficulty = 30f },
-            new SpawnableEntry { poolId = "Valida", weight = 1, minDifficulty = 0f, maxDifficulty = 10f },
+            new SpawnableEntry { weight = 1, minDifficulty = 20f, maxDifficulty = 30f },
+            new SpawnableEntry { weight = 1, minDifficulty = 0f, maxDifficulty = 10f },
         };
 
         var result = WeightedSpawnSelector.SelectEntry(entries, currentDifficulty: 5f, random01: () => 0f);
 
-        Assert.AreEqual("Valida", result.poolId);
+        Assert.AreSame(entries[1], result, "Debe elegir la única entrada válida");
     }
 
     [Test]
@@ -23,14 +23,14 @@ public class WeightedSpawnSelectorTests
     {
         var entries = new List<SpawnableEntry>
         {
-            new SpawnableEntry { poolId = "Comun", weight = 3 },
-            new SpawnableEntry { poolId = "Raro", weight = 1 },
+            new SpawnableEntry { weight = 3 },
+            new SpawnableEntry { weight = 1 },
         };
 
         // roll = 0.9 * totalWeight(4) = 3.6 -> cae en el segundo (Raro)
         var result = WeightedSpawnSelector.SelectEntry(entries, currentDifficulty: 0f, random01: () => 0.9f);
 
-        Assert.AreEqual("Raro", result.poolId);
+        Assert.AreSame(entries[1], result, "Debe caer en la entrada rara");
     }
 
     [Test]
@@ -38,7 +38,7 @@ public class WeightedSpawnSelectorTests
     {
         var entries = new List<SpawnableEntry>
         {
-            new SpawnableEntry { poolId = "FueraDeRango", weight = 1, minDifficulty = 20f, maxDifficulty = 30f },
+            new SpawnableEntry { weight = 1, minDifficulty = 20f, maxDifficulty = 30f },
         };
 
         var result = WeightedSpawnSelector.SelectEntry(entries, currentDifficulty: 5f);

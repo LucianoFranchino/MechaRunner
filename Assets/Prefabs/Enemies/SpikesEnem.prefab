@@ -224,11 +224,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60edb2786d588d419f62dd14b24ed4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explocionSound: {fileID: 8300000, guid: aa94840c978ecea44a010e2a13e7c5ce, type: 3}
+  explosionSound: {fileID: 8300000, guid: aa94840c978ecea44a010e2a13e7c5ce, type: 3}
   maxHealth: 2
   enemyDamage: 1
-  coinPoolId: Coin
-  deathEffectPoolId: DeathFX
+  coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
+    type: 3}
+  deathEffectPrefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
+    type: 3}
 --- !u!114 &6352844443337758564
 MonoBehaviour:
   m_ObjectHideFlags: 0

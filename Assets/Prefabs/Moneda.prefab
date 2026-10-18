@@ -203,7 +203,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinSound: {fileID: 8300000, guid: f9e6fac3c515ad14eb397d58d5646bd3, type: 3}
   powerSound: {fileID: 8300000, guid: 8e0ddb110dd66d0458dc818972338391, type: 3}
-  type: 0
+  isPowerUp: 0
+  powerUp: 0
 --- !u!114 &7379846989959248418
 MonoBehaviour:
   m_ObjectHideFlags: 0

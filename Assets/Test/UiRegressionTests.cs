@@ -13,7 +13,7 @@ using UnityEngine.UI;
 /// </summary>
 public class UiRegressionTests
 {
-    private static readonly string[] IntKeys = { CoinCounter.CoinsKey, AudioManager.SfxMutedKey, AudioManager.MusicMutedKey };
+    private static readonly string[] IntKeys = { CurrencyService.CoinsKey, AudioManager.SfxMutedKey, AudioManager.MusicMutedKey };
     private readonly System.Collections.Generic.Dictionary<string, int> savedInts = new();
     private bool hadHighscore;
     private float savedHighscore;
@@ -37,7 +37,7 @@ public class UiRegressionTests
         PlayerPrefs.Save();
         Time.timeScale = 1f;
         // La música del menú es DontDestroyOnLoad: no debe filtrarse a otros tests
-        if (MusicTransicion.Source != null) Object.Destroy(MusicTransicion.Source.gameObject);
+        if (MusicTransition.Source != null) Object.Destroy(MusicTransition.Source.gameObject);
     }
 
     private static IEnumerator Load(string scene)
@@ -75,14 +75,16 @@ public class UiRegressionTests
     {
         yield return Load("Game");
         var controls = GameCanvas.Find("Controls").gameObject;
-        var pause = Object.FindFirstObjectByType<PauseMenu>();
+        var game = GameManager.Instance;
 
-        pause.Pause();
-        Assert.IsTrue(PauseMenu.GameIsPaused);
+        game.Pause();
+        Assert.IsTrue(GameManager.IsPaused);
+        Assert.AreEqual(0f, Time.timeScale);
         Assert.IsFalse(controls.activeSelf, "FIRE/pausa siguen visibles detrás de la pausa");
         Assert.IsTrue(GameCanvas.Find("PauseMenu").gameObject.activeSelf);
 
-        pause.Resume();
+        game.Resume();
+        Assert.IsTrue(GameManager.IsPlaying);
         Assert.IsTrue(controls.activeSelf);
         Assert.IsFalse(GameCanvas.Find("PauseMenu").gameObject.activeSelf);
         Assert.AreEqual(1f, Time.timeScale);
@@ -140,9 +142,9 @@ public class UiRegressionTests
     [UnityTest]
     public IEnumerator GameOver_MonedasDeLaPartidaVuelanYSumanAlTotal()
     {
-        PlayerPrefs.SetInt(CoinCounter.CoinsKey, 10);
+        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 10);
         yield return StartGame(9999f);
-        for (int i = 0; i < 3; i++) CoinCounter.Instance.GetCoin();
+        for (int i = 0; i < 3; i++) CurrencyService.Instance.CollectCoin();
         var seq = Die(5f);
 
         Assert.AreEqual("10", Text("TotalCoins/TotalValue"), "El total tiene que arrancar sin las monedas de la partida");
@@ -152,7 +154,7 @@ public class UiRegressionTests
         Assert.AreEqual("+3", Text("Results/CoinsRow/RunCoins"));
         Assert.AreEqual("13", Text("TotalCoins/TotalValue"));
         Assert.AreEqual(0, GameCanvas.Find("GameOver/FlyingCoins").GetComponentsInChildren<Image>(false).Length, "Quedaron monedas volando");
-        Assert.AreEqual(13, PlayerPrefs.GetInt(CoinCounter.CoinsKey), "Cambió el guardado de monedas");
+        Assert.AreEqual(13, PlayerPrefs.GetInt(CurrencyService.CoinsKey), "Cambió el guardado de monedas");
     }
 
     [UnityTest]
@@ -176,9 +178,9 @@ public class UiRegressionTests
     [UnityTest]
     public IEnumerator GameOver_TocarSaltaAlFinalSinPerderLaCelebracion()
     {
-        PlayerPrefs.SetInt(CoinCounter.CoinsKey, 0);
+        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 0);
         yield return StartGame(10f);
-        CoinCounter.Instance.GetCoin();
+        CurrencyService.Instance.CollectCoin();
         var seq = Die(500f);
         yield return null;
 
@@ -200,7 +202,7 @@ public class UiRegressionTests
     {
         PlayerPrefs.SetInt(AudioManager.MusicMutedKey, 0);
         yield return Load("MainMenu");
-        Assert.IsNotNull(MusicTransicion.Source, "El menú no creó la música persistente");
+        Assert.IsNotNull(MusicTransition.Source, "El menú no creó la música persistente");
 
         yield return Load("Game");
         int playing = 0;
@@ -209,8 +211,8 @@ public class UiRegressionTests
         Assert.AreEqual(1, playing, "Suenan varias pistas de música a la vez");
 
         AudioManager.instance.ToggleMusicMute();
-        Assert.IsTrue(MusicTransicion.Source.mute, "El mute no silencia la música que viene del menú");
+        Assert.IsTrue(MusicTransition.Source.mute, "El mute no silencia la música que viene del menú");
         AudioManager.instance.ToggleMusicMute();
-        Assert.IsFalse(MusicTransicion.Source.mute);
+        Assert.IsFalse(MusicTransition.Source.mute);
     }
 }

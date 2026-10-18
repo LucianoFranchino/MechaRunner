@@ -12,7 +12,7 @@ using UnityEngine.TestTools;
 /// </summary>
 public class GameplayRegressionTests
 {
-    private static readonly string[] IntKeys = { "Coins", "SfxMuted", "MusicMuted" };
+    private static readonly string[] IntKeys = { CurrencyService.CoinsKey, AudioManager.SfxMutedKey, AudioManager.MusicMutedKey };
     private readonly System.Collections.Generic.Dictionary<string, int> savedInts = new();
     private bool hadHighscore;
     private float savedHighscore;
@@ -82,7 +82,7 @@ public class GameplayRegressionTests
         Assert.Greater(framing.RightEdge, player.position.x);
 
         // Se spawnea en el punto real (fuera del borde derecho), apoyado como lo hace el spawner
-        var enemy = SpawnOnFloor("Enemy", framing.RightEdge + 2f).transform;
+        var enemy = SpawnOnFloor("Enemigo", framing.RightEdge + 2f).transform;
         float minBase = float.MaxValue;
         for (float t = 0; t < 4f && enemy.gameObject.activeInHierarchy && enemy.position.x > player.position.x + 1.5f; t += Time.deltaTime)
         {
@@ -161,9 +161,17 @@ public class GameplayRegressionTests
         return bottom;
     }
 
-    private static GameObject SpawnOnFloor(string poolId, float x)
+    /// <summary>Prefab de un pool de la escena por nombre (el juego usa referencias directas).</summary>
+    private static GameObject Prefab(string prefabName)
     {
-        var go = PoolManager.Instance.Spawn(poolId, new Vector3(x, GroundTop(), 0f));
+        var prefab = PoolManager.Instance.FindPrefab(prefabName);
+        Assert.IsNotNull(prefab, "No hay pool para el prefab " + prefabName);
+        return prefab;
+    }
+
+    private static GameObject SpawnOnFloor(string prefabName, float x)
+    {
+        var go = PoolManager.Instance.Spawn(Prefab(prefabName), new Vector3(x, GroundTop(), 0f));
         float offset = MechaRunner.Spawning.SpawnAlignment.BottomOffsetFromPivot(go);
         go.transform.position = new Vector3(x, GroundTop() + offset, 0f);
         Physics2D.SyncTransforms();
@@ -181,26 +189,26 @@ public class GameplayRegressionTests
         var spawnMethod = typeof(EntitySpawner).GetMethod("SpawnEntity", BindingFlags.NonPublic | BindingFlags.Instance);
         float ground = GroundTop();
 
-        foreach (var id in new[] { "Box", "Barrel", "DoubleB", "Enemy" })
+        foreach (var id in new[] { "Obs_Box", "Obs_Barrel", "Obs_Double", "Enemigo" })
         {
             // El spawner real, con una única entrada válida para cualquier dificultad
-            entriesField.SetValue(down, new[] { new SpawnableEntry { poolId = id, weight = 1, minDifficulty = 0f, maxDifficulty = 999f, spawnPointIndex = 0 } });
+            entriesField.SetValue(down, new[] { new SpawnableEntry { prefab = Prefab(id), weight = 1, minDifficulty = 0f, maxDifficulty = 999f, spawnPointIndex = 0 } });
             spawnMethod.Invoke(down, null);
             yield return new WaitForFixedUpdate();
 
             GameObject spawned = null;
             foreach (var po in Object.FindObjectsByType<PooledObject>(FindObjectsSortMode.None))
-                if (po.PoolId == id && po.gameObject.activeInHierarchy) spawned = po.gameObject;
+                if (po.SourcePrefab == Prefab(id) && po.gameObject.activeInHierarchy) spawned = po.gameObject;
             Assert.IsNotNull(spawned, id + " no se spawneó");
             Assert.AreEqual(ground, SolidBottom(spawned), 0.02f, id + " no quedó apoyado sobre el piso");
 
-            if (id == "Enemy")
+            if (id == "Enemigo")
             {
                 yield return new WaitForSeconds(0.5f);
                 Assert.AreEqual(ground, SolidBottom(spawned), 0.03f, "El enemigo no se mantiene sobre el piso");
                 Assert.AreEqual(0f, Mathf.DeltaAngle(0f, spawned.transform.eulerAngles.z), 0.01f, "El enemigo rotó");
             }
-            PoolManager.Instance.ClearPool(id);
+            PoolManager.Instance.ClearPool(Prefab(id));
         }
     }
 
@@ -213,7 +221,7 @@ public class GameplayRegressionTests
         var hpField = typeof(PlayerHealth).GetField("playerHealth", BindingFlags.NonPublic | BindingFlags.Instance);
         hpField.SetValue(health, 10);
 
-        var enemy = SpawnOnFloor("Enemy", robot.transform.position.x + 2.5f);
+        var enemy = SpawnOnFloor("Enemigo", robot.transform.position.x + 2.5f);
         for (float t = 0; t < 3f && enemy.activeInHierarchy; t += Time.deltaTime) yield return null;
 
         Assert.IsFalse(enemy.activeInHierarchy, "El enemigo no desapareció al tocar al Robot");
@@ -235,7 +243,7 @@ public class GameplayRegressionTests
         Vector3 muzzle = firePoint.position;
         GameObject bullet = null;
         foreach (var po in Object.FindObjectsByType<PooledObject>(FindObjectsSortMode.None))
-            if (po.PoolId == "Bullet" && po.gameObject.activeInHierarchy) bullet = po.gameObject;
+            if (po.SourcePrefab == Prefab("Bullet") && po.gameObject.activeInHierarchy) bullet = po.gameObject;
 
         Assert.IsNotNull(bullet);
         Assert.AreEqual(muzzle.x, bullet.transform.position.x, 0.001f);
@@ -286,19 +294,19 @@ public class GameplayRegressionTests
         typeof(PooledObject).GetField("autoReturnToPool", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(pooled, true);
         typeof(PooledObject).GetField("autoReturnTime", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(pooled, 0.2f);
 
-        PoolManager.Instance.CreatePool("Auto", prefab, 1, 1, false);
+        PoolManager.Instance.CreatePool(prefab, 1, 1, false);
 
         // Primer uso: vuelve solo
-        PoolManager.Instance.Spawn("Auto", Vector3.zero);
+        PoolManager.Instance.Spawn(prefab, Vector3.zero);
         yield return new WaitForSeconds(0.4f);
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Auto").active, "No volvió al pool en el primer uso");
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(prefab).active, "No volvió al pool en el primer uso");
 
         // Segundo uso: no debe volver instantáneamente (antes usaba el tiempo de creación)
-        PoolManager.Instance.Spawn("Auto", Vector3.zero);
+        PoolManager.Instance.Spawn(prefab, Vector3.zero);
         yield return null;
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("Auto").active, "Volvió al pool apenas spawneado");
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(prefab).active, "Volvió al pool apenas spawneado");
         yield return new WaitForSeconds(0.4f);
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Auto").active, "No volvió al pool en el segundo uso");
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(prefab).active, "No volvió al pool en el segundo uso");
 
         Object.Destroy(managerGo);
         Object.Destroy(prefab);
@@ -311,11 +319,11 @@ public class GameplayRegressionTests
         var weapon = Object.FindFirstObjectByType<Weapon>();
 
         weapon.Shoot();
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("Bullet").active);
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Bullet")).active);
 
         PowerUpManager.Instance.Activate(PowerUpType.SuperShoot);
         weapon.Shoot();
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("BulletSuper").active, "El SuperShoot no spawneó bala");
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("SuperBulet")).active, "El SuperShoot no spawneó bala");
         yield return null;
     }
 
@@ -325,11 +333,11 @@ public class GameplayRegressionTests
         yield return LoadGame();
 
         // Disparo hacia arriba: no choca con nada
-        PoolManager.Instance.Spawn("Bullet", new Vector3(0f, 20f, 0f), Quaternion.Euler(0f, 0f, 90f));
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("Bullet").active);
+        PoolManager.Instance.Spawn(Prefab("Bullet"), new Vector3(0f, 20f, 0f), Quaternion.Euler(0f, 0f, 90f));
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Bullet")).active);
 
         yield return new WaitForSeconds(3.5f);
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Bullet").active, "La bala perdida nunca volvió al pool");
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(Prefab("Bullet")).active, "La bala perdida nunca volvió al pool");
     }
 
     [UnityTest]
@@ -342,7 +350,7 @@ public class GameplayRegressionTests
         AudioManager.instance.ToggleMusicMute();
         Assert.IsTrue(AudioManager.instance.MusicMuted);
 
-        Object.FindFirstObjectByType<MenuManager>().Restart();
+        GameManager.Instance.Restart();
         yield return null;
         yield return null;
 
@@ -355,15 +363,15 @@ public class GameplayRegressionTests
     {
         yield return LoadGame();
 
-        var enemyGo = PoolManager.Instance.Spawn("Enemy", new Vector3(30f, 0f, 0f));
+        var enemyGo = PoolManager.Instance.Spawn(Prefab("Enemigo"), new Vector3(30f, 0f, 0f));
         enemyGo.GetComponent<Enemy>().TakeDamage(999);
 
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Enemy").active);
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("DeathFX").active, "No apareció la explosión");
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo("Coin").active, "No soltó moneda");
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(Prefab("Enemigo")).active);
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("ExplocionEnem")).active, "No apareció la explosión");
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Moneda")).active, "No soltó moneda");
 
         yield return new WaitForSeconds(3f); // duración + lifetime de las partículas
-        var fx = PoolManager.Instance.GetPoolInfo("DeathFX");
+        var fx = PoolManager.Instance.GetPoolInfo(Prefab("ExplocionEnem"));
         Assert.AreEqual(0, fx.active, "La explosión no volvió al pool");
         Assert.AreEqual(fx.total, fx.available, "La explosión se destruyó en vez de volver al pool");
     }
@@ -373,15 +381,15 @@ public class GameplayRegressionTests
     {
         yield return LoadGame();
         var player = GameObject.FindWithTag("Player");
-        int before = CoinCounter.Instance.coinValue;
+        int before = CurrencyService.Instance.Coins;
 
-        PoolManager.Instance.Spawn("Coin", player.transform.position);
+        PoolManager.Instance.Spawn(Prefab("Moneda"), player.transform.position);
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
         yield return null;
 
-        Assert.AreEqual(before + 1, CoinCounter.Instance.coinValue);
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Coin").active, "La moneda no se despawneó");
+        Assert.AreEqual(before + 1, CurrencyService.Instance.Coins);
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(Prefab("Moneda")).active, "La moneda no se despawneó");
     }
 
     [UnityTest]
@@ -397,36 +405,101 @@ public class GameplayRegressionTests
         yield return new WaitForSeconds(1.1f);
         health.PlayerDamage(1);
         Assert.IsTrue(health.IsDead);
-        Assert.IsTrue(DeadthCreen.IsGameOver);
+        Assert.IsTrue(GameManager.IsGameOver);
         Assert.AreEqual(0f, Time.timeScale);
         Assert.IsFalse(ScoreManager.instance.scoreIncreasing, "El puntaje siguió sumando muerto");
 
         // Golpes y pausa después de morir no hacen nada
         health.PlayerDamage(5);
-        Object.FindFirstObjectByType<PauseMenu>().Pause();
-        Assert.IsFalse(PauseMenu.GameIsPaused);
+        GameManager.Instance.Pause();
+        Assert.IsFalse(GameManager.IsPaused);
+        Assert.IsTrue(GameManager.IsGameOver);
     }
 
     [UnityTest]
     public IEnumerator Game_ReiniciarDejaTodoLimpio()
     {
         yield return LoadGame();
-        PoolManager.Instance.Spawn("Box", new Vector3(30f, 0f, 0f));
+        PoolManager.Instance.Spawn(Prefab("Obs_Box"), new Vector3(30f, 0f, 0f));
         ScoreManager.instance.scoreCount = 500f;
         Object.FindFirstObjectByType<PlayerHealth>().PlayerDamage(999);
         var oldPoolManager = PoolManager.Instance;
 
-        Object.FindFirstObjectByType<MenuManager>().Restart();
+        GameManager.Instance.Restart();
         yield return null;
         yield return null;
 
         Assert.AreNotSame(oldPoolManager, PoolManager.Instance, "El PoolManager sobrevivió al reinicio");
-        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo("Box").active, "Quedaron obstáculos de la partida anterior");
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(Prefab("Obs_Box")).active, "Quedaron obstáculos de la partida anterior");
         Assert.Less(ScoreManager.instance.scoreCount, 1f, "El puntaje no se reinició");
         Assert.IsTrue(ScoreManager.instance.scoreIncreasing);
-        Assert.IsFalse(DeadthCreen.IsGameOver);
+        Assert.IsFalse(GameManager.IsGameOver);
+        Assert.IsTrue(GameManager.IsPlaying);
         Assert.AreEqual(1f, Time.timeScale);
 
         yield return new WaitForSeconds(0.5f); // que corran varios Update sin MissingReferenceException
+    }
+
+    // ---------- Arquitectura: estados, monedas y pools ----------
+
+    [UnityTest]
+    public IEnumerator GameManager_PausaAlMinimizarYNoReanudaSolo()
+    {
+        yield return LoadGame();
+        GameManager.Instance.SendMessage("OnApplicationPause", true);
+        Assert.IsTrue(GameManager.IsPaused, "No se pausó al minimizar la app");
+        Assert.AreEqual(0f, Time.timeScale);
+        Assert.IsFalse(ScoreManager.instance.scoreIncreasing);
+
+        GameManager.Instance.SendMessage("OnApplicationPause", false);
+        Assert.IsTrue(GameManager.IsPaused, "Al volver a la app tiene que esperar a que el jugador toque RESUME");
+
+        GameManager.Instance.Resume();
+        Assert.IsTrue(GameManager.IsPlaying);
+        Assert.AreEqual(1f, Time.timeScale);
+        Assert.IsTrue(ScoreManager.instance.scoreIncreasing);
+    }
+
+    [UnityTest]
+    public IEnumerator Monedas_ModeloConMultiplicadorYVistaSincronizada()
+    {
+        PlayerPrefs.SetInt(CurrencyService.CoinsKey, 5);
+        yield return LoadGame();
+        var wallet = CurrencyService.Instance;
+        int changes = 0;
+        wallet.Changed += _ => changes++;
+
+        wallet.CollectCoin();
+        PowerUpManager.Instance.Activate(PowerUpType.CoinMultiplier);
+        wallet.CollectCoin();
+
+        Assert.AreEqual(8, wallet.Coins, "5 guardadas + 1 + 2 con el multiplicador");
+        Assert.AreEqual(3, wallet.RunCoins);
+        Assert.AreEqual(8, PlayerPrefs.GetInt(CurrencyService.CoinsKey), "No se guardó el total");
+        Assert.AreEqual(2, changes);
+        var hudText = GameObject.Find("Canvas").transform.Find("HUD/ScorePlate/CoinValue").GetComponent<TMPro.TMP_Text>();
+        Assert.AreEqual("8", hudText.text, "La vista del HUD no refleja el modelo");
+    }
+
+    [UnityTest]
+    public IEnumerator Pool_PrefabSinConfigurarSeCreaSoloYVuelve()
+    {
+        var managerGo = new GameObject("PoolManager_Test");
+        managerGo.AddComponent<PoolManager>();
+        var prefab = new GameObject("SinConfigurar");
+        prefab.SetActive(false);
+
+        LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("no tiene pool configurado"));
+        var go = PoolManager.Instance.Spawn(prefab, Vector3.zero);
+        Assert.IsNotNull(go);
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(prefab).active);
+        Assert.AreSame(prefab, go.GetComponent<PooledObject>().SourcePrefab);
+
+        go.GetComponent<PooledObject>().Despawn();
+        Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(prefab).active, "No volvió a su pool");
+        yield return null;
+
+        Object.Destroy(managerGo);
+        Object.Destroy(prefab);
     }
 }
