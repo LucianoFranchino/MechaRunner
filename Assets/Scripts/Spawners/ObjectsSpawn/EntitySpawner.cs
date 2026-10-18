@@ -33,7 +33,17 @@ public class EntitySpawner : MonoBehaviour
     [Tooltip("Multiplica el SpawnInterval base del DifficultyManager. >1 = este spawner spawnea menos seguido que el resto.")]
     [SerializeField] private float spawnIntervalMultiplier = 1f;
 
+    [Header("Cadencia por distancia (GameLab)")]
+    [Tooltip("Separa los spawns por distancia recorrida en vez de por tiempo: la separación en el mundo no depende de la velocidad.")]
+    [SerializeField] private bool distanceBased = false;
+    [Tooltip("Hueco mínimo/máximo entre spawns, en unidades del mundo, antes de aplicar la densidad de la zona.")]
+    [SerializeField] private float minGap = 8f;
+    [SerializeField] private float maxGap = 14f;
+    [Tooltip("Piso de justicia: nunca menos que estos segundos entre spawns a la velocidad actual (el salto dura 0,64 s).")]
+    [SerializeField] private float minGapSeconds = 0.9f;
+
     private float nextSpawnTime;
+    private float nextSpawnDistance;
 
     // Distancia pivot→base por pool: se calcula una vez (la geometría de un prefab no cambia)
     private readonly Dictionary<GameObject, float> bottomOffsets = new();
@@ -42,6 +52,17 @@ public class EntitySpawner : MonoBehaviour
 
     private void Update()
     {
+        var difficulty = DifficultyManager.Instance;
+        if (distanceBased && difficulty != null)
+        {
+            if (difficulty.Distance >= nextSpawnDistance)
+            {
+                SpawnEntity();
+                ScheduleNextSpawn();
+            }
+            return;
+        }
+
         if (Time.time >= nextSpawnTime)
         {
             SpawnEntity();
@@ -77,6 +98,13 @@ public class EntitySpawner : MonoBehaviour
 
     private void ScheduleNextSpawn()
     {
+        var difficulty = DifficultyManager.Instance;
+        if (distanceBased && difficulty != null)
+        {
+            nextSpawnDistance = difficulty.Distance + NextGap(difficulty.GameSpeed, difficulty.Density);
+            return;
+        }
+
         float baseInterval = DifficultyManager.Instance != null ? DifficultyManager.Instance.SpawnInterval : 2f;
         float variation = Random.Range(-0.3f, 0.3f);
         float finalInterval = Mathf.Clamp(
@@ -85,5 +113,13 @@ public class EntitySpawner : MonoBehaviour
             maxTimeBetweenSpawns);
 
         nextSpawnTime = Time.time + finalInterval;
+    }
+
+    /// <summary>Hueco hasta el próximo spawn (unidades): al azar entre min y max, más corto con más densidad,
+    /// pero nunca menor que minGapSeconds a la velocidad actual.</summary>
+    public float NextGap(float speed, float density)
+    {
+        float gap = Random.Range(minGap, maxGap) / Mathf.Max(0.1f, density);
+        return Mathf.Max(gap, speed * minGapSeconds);
     }
 }

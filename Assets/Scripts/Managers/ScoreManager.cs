@@ -13,8 +13,14 @@ public class ScoreManager : MonoBehaviour
     [Tooltip("Se muestra en resultados cuando la partida supera el récord anterior.")]
     [SerializeField] private GameObject newRecordBadge;
 
+    public enum ScoreSource { Time, Distance }
+
     public float scoreCount;
+    [Tooltip("Time = puntos por segundo (Game). Distance = puntos por unidad recorrida (GameLab): premia ir más rápido.")]
+    [SerializeField] private ScoreSource source = ScoreSource.Time;
     public float pointsPerSecond;
+    [Tooltip("Puntos por unidad del mundo recorrida (modo Distance).")]
+    [SerializeField] private float pointsPerUnit = 1f;
     public bool scoreIncreasing;
     [SerializeField] private float multiplierValue = 2f;
 
@@ -66,7 +72,7 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         if (scoreIncreasing)
-            scoreCount += (pointsPerSecond * multiplier) * Time.deltaTime;
+            scoreCount += PointsPerSecondNow() * multiplier * Time.deltaTime;
 
         // Solo rearmar el texto cuando cambia el número mostrado: armar un string
         // por frame genera basura que el GC termina cobrando en tirones.
@@ -76,6 +82,13 @@ public class ScoreManager : MonoBehaviour
             lastShownScore = shown;
             SetAll(scoreTexts, shown);
         }
+    }
+
+    private float PointsPerSecondNow()
+    {
+        if (source == ScoreSource.Distance && DifficultyManager.Instance != null)
+            return DifficultyManager.Instance.GameSpeed * pointsPerUnit;
+        return pointsPerSecond;
     }
 
     private static void SetAll(TMP_Text[] texts, int value)
