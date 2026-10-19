@@ -165,7 +165,22 @@ public class Player : MonoBehaviour
 
     private void CheckGround()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Collider2D ground = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        // Sobre un hueco (GameLab) el piso de abajo no cuenta, pero una plataforma sí
+        isGrounded = ground != null && !(LevelRules.PlayerOverPit && LevelRules.IsMainGround(ground));
+
+        if (!isGrounded && LevelRules.WalkableTops) isGrounded = StandingOnObstacle();
+    }
+
+    private static readonly Collider2D[] groundHits = new Collider2D[4];
+
+    private bool StandingOnObstacle()
+    {
+        var filter = new ContactFilter2D { useTriggers = false };
+        int count = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, filter, groundHits);
+        for (int i = 0; i < count; i++)
+            if (groundHits[i].GetComponent<Obstacle>() != null) return true;
+        return false;
     }
 
     // Método público para desbloquear el doble salto con power-up

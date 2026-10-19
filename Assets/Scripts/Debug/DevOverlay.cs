@@ -16,6 +16,9 @@ public class DevOverlay : MonoBehaviour
     private int frames;
     private float frameTime;
     private GUIStyle style;
+    private LevelDirector director;
+
+    private void Start() => director = FindFirstObjectByType<LevelDirector>();
 
     private void Update()
     {
@@ -35,14 +38,15 @@ public class DevOverlay : MonoBehaviour
             : $"{d.Mode}  zona {d.ZoneIndex + 1} ({d.ZoneName})\n" +
               $"vel {d.GameSpeed:0.00}  dens {d.Density:0.00}\n" +
               $"dist {d.Distance:0}  t {d.GameTime:0}s\n" +
-              $"score {(s != null ? s.scoreCount : 0f):0}  FPS {fps:0}";
+              $"score {(s != null ? s.scoreCount : 0f):0}  FPS {fps:0}" +
+              (director != null && director.CurrentSection != null ? $"\n{director.CurrentSection.name} ({director.CurrentSection.Intensity})" : "");
     }
 
     private void OnGUI()
     {
         if (!visible) return;
         style ??= new GUIStyle(GUI.skin.box) { fontSize = fontSize, alignment = TextAnchor.UpperLeft, normal = { textColor = Color.white } };
-        GUI.Box(new Rect(Screen.width * 0.5f - 230f, Screen.height - 190f, 460f, 170f), text, style);
+        GUI.Box(new Rect(Screen.width * 0.5f - 260f, Screen.height - 225f, 520f, 205f), text, style);
     }
 #endif
 }

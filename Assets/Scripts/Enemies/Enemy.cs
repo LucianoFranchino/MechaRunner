@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Enemy : MonoBehaviour, IPoolable
+public class Enemy : MonoBehaviour, IPoolable, IDamageable
 {
     [FormerlySerializedAs("explocionSound")]
     [SerializeField] private AudioClip explosionSound;
@@ -53,7 +53,16 @@ public class Enemy : MonoBehaviour, IPoolable
     private void Die()
     {
         resolved = true;
-        PoolManager.Instance.Spawn(coinPrefab, transform.position);
+        // Con reglas de GameLab el enemigo puede soltar un power-up (o nada) en vez de una moneda
+        if (LevelRules.Current != null)
+        {
+            var drop = LevelRules.Current.RollEnemyDrop();
+            if (drop != null) PoolManager.Instance.Spawn(drop, transform.position);
+        }
+        else
+        {
+            PoolManager.Instance.Spawn(coinPrefab, transform.position);
+        }
         PoolManager.Instance.Spawn(deathEffectPrefab, transform.position);
         pooledObject.Despawn();
     }

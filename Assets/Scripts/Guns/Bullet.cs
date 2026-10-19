@@ -38,7 +38,8 @@ public class Bullet : MonoBehaviour, IPoolable
     {
         if (hitInfo.gameObject.CompareTag("Enemy"))
         {
-            hitInfo.GetComponent<Enemy>().TakeDamage(damage);
+            var target = hitInfo.GetComponentInParent<IDamageable>();
+            if (target != null) target.TakeDamage(damage);
             pooledObject.Despawn();
         }
         else if (hitInfo.gameObject.CompareTag("Obstacle"))
