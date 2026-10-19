@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1997650863627853041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.961264, y: 0, z: 0}
+  m_LocalPosition: {x: 0.96126413, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -39,6 +39,58 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997650863627853041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
+    type: 3}
+  count: 4
+  spacing: 0.8
+  waveHeight: 0.5
+  waveLength: 4
+  bodyOffset: 0.65
+--- !u!1 &3081295953185516292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1434522931915845343}
+  - component: {fileID: 3401267679183967367}
+  m_Layer: 0
+  m_Name: Coins_JumpArc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1434522931915845343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3081295953185516292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.961264, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6997107126799973291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3401267679183967367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3081295953185516292}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
@@ -83,9 +135,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5008244450080544704}
-  - {fileID: 6728605050135065222}
-  - {fileID: 5227945945271685786}
   - {fileID: 2229136146368241579}
+  - {fileID: 5227945945271685786}
+  - {fileID: 1434522931915845343}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3888215141648207609
@@ -159,58 +211,6 @@ MonoBehaviour:
     localScale: {x: 0.4, y: 0.4, z: 1}
     stretchWithSpeed: 0
     leadingEdge: 0.3
---- !u!1 &5985391187299748350
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6728605050135065222}
-  - component: {fileID: 7457900523834041003}
-  m_Layer: 0
-  m_Name: Coins_JumpArc
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6728605050135065222
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5985391187299748350}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.96126413, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6997107126799973291}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7457900523834041003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5985391187299748350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shape: 1
-  coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
-    type: 3}
-  count: 4
-  spacing: 0.8
-  waveHeight: 0.5
-  waveLength: 4
-  bodyOffset: 0.65
 --- !u!1001 &1151227280009683392
 PrefabInstance:
   m_ObjectHideFlags: 0

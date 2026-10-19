@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &226083204058113048
+--- !u!1 &823113846357257178
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1467644109924202905}
-  - component: {fileID: 6785680586992720755}
+  - component: {fileID: 2990485227893353401}
+  - component: {fileID: 1975670089632374646}
   m_Layer: 0
   m_Name: Coins_Line
   m_TagString: Untagged
@@ -17,28 +17,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1467644109924202905
+--- !u!4 &2990485227893353401
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226083204058113048}
+  m_GameObject: {fileID: 823113846357257178}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.6, y: 0.65, z: 0}
+  m_LocalPosition: {x: 9.1, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1152912755760212004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6785680586992720755
+--- !u!114 &1975670089632374646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226083204058113048}
+  m_GameObject: {fileID: 823113846357257178}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 3399328089559657965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.1, y: 0.65, z: 0}
+  m_LocalPosition: {x: 4.6, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 3635053772077130438}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -143,58 +143,6 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3635053772077130438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shape: 1
-  coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
-    type: 3}
-  count: 5
-  spacing: 0.8
-  waveHeight: 0.5
-  waveLength: 4
-  bodyOffset: 0.65
---- !u!1 &4928231517506437353
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5426039760760201321}
-  - component: {fileID: 2127494032933906332}
-  m_Layer: 0
-  m_Name: Coins_JumpArc
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5426039760760201321
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928231517506437353}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1152912755760212004}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2127494032933906332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4928231517506437353}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
@@ -238,11 +186,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5426039760760201321}
-  - {fileID: 5672689431404395302}
   - {fileID: 2776524826058993142}
-  - {fileID: 1467644109924202905}
+  - {fileID: 3214315598561559326}
+  - {fileID: 6620632223340774844}
   - {fileID: 1459510651439012000}
+  - {fileID: 2990485227893353401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9069751565438778302
@@ -349,7 +297,7 @@ MonoBehaviour:
     localScale: {x: 0.4, y: 0.4, z: 1}
     stretchWithSpeed: 0
     leadingEdge: 0.3
---- !u!1 &7290163134692574994
+--- !u!1 &6589825402125099402
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -357,8 +305,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5672689431404395302}
-  - component: {fileID: 3786762349575790239}
+  - component: {fileID: 6620632223340774844}
+  - component: {fileID: 3537500446349345072}
   m_Layer: 0
   m_Name: Coins_JumpArc
   m_TagString: Untagged
@@ -366,13 +314,65 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5672689431404395302
+--- !u!4 &6620632223340774844
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7290163134692574994}
+  m_GameObject: {fileID: 6589825402125099402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1152912755760212004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3537500446349345072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6589825402125099402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shape: 1
+  coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
+    type: 3}
+  count: 5
+  spacing: 0.8
+  waveHeight: 0.5
+  waveLength: 4
+  bodyOffset: 0.65
+--- !u!1 &7864271842274491342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3214315598561559326}
+  - component: {fileID: 5304231652191409827}
+  m_Layer: 0
+  m_Name: Coins_JumpArc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3214315598561559326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864271842274491342}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.5, y: 0, z: 0}
@@ -381,13 +381,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1152912755760212004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3786762349575790239
+--- !u!114 &5304231652191409827
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7290163134692574994}
+  m_GameObject: {fileID: 7864271842274491342}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 057e46270aa97cd4f8e92f365212897e, type: 3}

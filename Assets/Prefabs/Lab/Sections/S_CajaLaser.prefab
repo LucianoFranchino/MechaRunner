@@ -153,7 +153,7 @@ MonoBehaviour:
     localPosition: {x: 9, y: 1.6}
     localScale: {x: 1, y: 1, z: 1}
     stretchWithSpeed: 1
-    leadingEdge: 2.17
+    leadingEdge: 9
   - prefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e, type: 3}
     localPosition: {x: 9.5, y: 0.65}
     localScale: {x: 0.4, y: 0.4, z: 1}
@@ -298,6 +298,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3163396492746062960}
     m_Modifications:
+    - target: {fileID: 1094569685305898071, guid: 6babb14f35597304cbbd032959d2457d,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 5.19
+      objectReference: {fileID: 0}
     - target: {fileID: 1466855766604617667, guid: 6babb14f35597304cbbd032959d2457d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -347,6 +352,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105203171462542505, guid: 6babb14f35597304cbbd032959d2457d,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 5.19
       objectReference: {fileID: 0}
     - target: {fileID: 2552341235436529347, guid: 6babb14f35597304cbbd032959d2457d,
         type: 3}
