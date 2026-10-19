@@ -13,6 +13,7 @@ public class PoolManager : MonoBehaviour
     [SerializeField] private Transform poolContainer;
 
     [Header("Debug")]
+    [Tooltip("Loguea la creación de cada pool. (El panel OnGUI se quitó: Unity llama a OnGUI en cada frame si el método existe y reserva memoria aunque no dibuje nada.)")]
     [SerializeField] private bool showDebugInfo = false;
 
     private readonly Dictionary<GameObject, Pool> pools = new Dictionary<GameObject, Pool>();
@@ -155,21 +156,5 @@ public class PoolManager : MonoBehaviour
             pool.DestroyAll();
         }
         pools.Clear();
-    }
-
-    // Debug
-    private void OnGUI()
-    {
-        if (!showDebugInfo) return;
-
-        GUILayout.BeginArea(new Rect(10, 10, 300, 500));
-        GUILayout.Label("=== POOL MANAGER DEBUG ===");
-
-        foreach (var pool in pools.Values)
-        {
-            GUILayout.Label($"{pool.Name}: {pool.ActiveCount} active | {pool.AvailableCount} available");
-        }
-
-        GUILayout.EndArea();
     }
 }

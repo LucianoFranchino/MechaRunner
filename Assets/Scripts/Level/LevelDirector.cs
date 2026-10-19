@@ -40,7 +40,12 @@ public class LevelDirector : MonoBehaviour
         public Vector3 scale;
     }
     private readonly List<Pending> pending = new(96);
-    private static readonly System.Comparison<Pending> ByTrigger = (a, b) => a.triggerDistance.CompareTo(b.triggerDistance);
+    // Comparador como struct cacheado: List.Sort(Comparison) reserva un envoltorio en cada llamada
+    private struct ByTrigger : IComparer<Pending>
+    {
+        public int Compare(Pending a, Pending b) => a.triggerDistance.CompareTo(b.triggerDistance);
+    }
+    private static readonly IComparer<Pending> byTrigger = new ByTrigger();
 
     private float nextStartDistance;
     private int rhythmStep;
@@ -117,7 +122,7 @@ public class LevelDirector : MonoBehaviour
                 scale = s,
             });
         }
-        pending.Sort(ByTrigger);
+        pending.Sort(byTrigger);
         SpawnDue();
 
         CurrentSection = section;
