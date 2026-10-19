@@ -87,8 +87,6 @@ public class PowerUpManager : MonoBehaviour
         return 5f;
     }
 
-    // TODO: cuando exista la tienda, esto va a multiplicar según lo que el jugador
-    // haya comprado (ej. 1.5f si compró "nivel 1" de duración para este power-up).
-    // Por ahora siempre devuelve 1 (sin upgrades).
-    private float ShopUpgradeMultiplier(PowerUpType type) => 1f;
+    // Mejoras compradas en la tienda (ej. nivel 2 con +25% por nivel = x1.5)
+    private float ShopUpgradeMultiplier(PowerUpType type) => ShopService.DurationMultiplier(type);
 }

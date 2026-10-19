@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Todo lo que se guarda del jugador, en un único JSON. Cada sistema tiene su sección:
@@ -14,6 +15,7 @@ public class SaveData
     public int version = CurrentVersion;
     public PlayerProgress progress = new PlayerProgress();
     public GameSettings settings = new GameSettings();
+    public ShopProgress shop = new ShopProgress();
 }
 
 [Serializable]
@@ -21,6 +23,15 @@ public class PlayerProgress
 {
     public int coins;
     public float bestScore;
+}
+
+[Serializable]
+public class ShopProgress
+{
+    [Tooltip("Nivel de mejora de cada power-up, por índice de PowerUpType.")]
+    public int[] upgradeLevels = new int[0];
+    public string selectedCharacter = "robot";
+    public string[] ownedCharacters = { "robot" };
 }
 
 [Serializable]

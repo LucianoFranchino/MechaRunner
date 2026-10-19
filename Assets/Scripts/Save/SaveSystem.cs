@@ -163,6 +163,7 @@ public static class SaveSystem
         bool changed = false;
         if (loaded.progress == null) { loaded.progress = new PlayerProgress(); changed = true; }
         if (loaded.settings == null) { loaded.settings = new GameSettings(); changed = true; }
+        if (loaded.shop == null) { loaded.shop = new ShopProgress(); changed = true; }
         // Las migraciones de formato van acá, una por versión: if (loaded.version < 2) { ... }
         if (loaded.version < SaveData.CurrentVersion) { loaded.version = SaveData.CurrentVersion; changed = true; }
         return changed;

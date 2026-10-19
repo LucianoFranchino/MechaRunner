@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6858b31197abb64fadd73dd5bfdf7c4, type: 3}
+  m_Name: ShopCatalog
+  m_EditorClassIdentifier: 
+  upgrades:
+  - type: 1
+    title: DOUBLE COINS
+    description: Every coin counts x2 while it lasts
+    icon: {fileID: 21300000, guid: 0ea093552ea24094587116fd41385a6e, type: 3}
+    maxLevel: 5
+    bonusPerLevel: 0.25
+    displayBaseSeconds: 8
+    basePrice: 200
+    priceGrowth: 2
+  - type: 0
+    title: DOUBLE SCORE
+    description: Your score grows twice as fast while it lasts
+    icon: {fileID: 21300000, guid: 262e069bab0ea024a986dc5127d49bbc, type: 3}
+    maxLevel: 5
+    bonusPerLevel: 0.25
+    displayBaseSeconds: 8
+    basePrice: 200
+    priceGrowth: 2
+  - type: 2
+    title: SUPER SHOT
+    description: One shot destroys any enemy while it lasts
+    icon: {fileID: 21300000, guid: 7ed28131698ecce4cbb1d50d9dfa4b56, type: 3}
+    maxLevel: 5
+    bonusPerLevel: 0.25
+    displayBaseSeconds: 8
+    basePrice: 200
+    priceGrowth: 2
+  characters:
+  - id: robot
+    displayName: ROBOT
+    comingSoon: 0
+    price: 0
+  - id: mk2
+    displayName: MK-II
+    comingSoon: 1
+    price: 5000
+  - id: mk3
+    displayName: MK-III
+    comingSoon: 1
+    price: 10000
+  - id: mk4
+    displayName: MK-IV
+    comingSoon: 1
+    price: 20000
