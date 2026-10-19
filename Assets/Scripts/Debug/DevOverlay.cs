@@ -13,6 +13,11 @@ public class DevOverlay : MonoBehaviour
     [SerializeField] private bool visible = true;
     [SerializeField] private float fontSize = 26f;
 
+#if !(UNITY_EDITOR || DEVELOPMENT_BUILD)
+    public void SetVisible(bool show) { }
+    public bool IsVisible => false;
+#endif
+
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     private TextMeshProUGUI numbers;
     private TextMeshProUGUI labels;
@@ -49,6 +54,16 @@ public class DevOverlay : MonoBehaviour
         t.textWrappingMode = TextWrappingModes.NoWrap;
         return t;
     }
+
+    /// <summary>Menú de debug: mostrar u ocultar el overlay.</summary>
+    public void SetVisible(bool show)
+    {
+        visible = show;
+        if (numbers != null) numbers.gameObject.SetActive(show);
+        if (labels != null) labels.gameObject.SetActive(show);
+    }
+
+    public bool IsVisible => visible;
 
     private void Update()
     {

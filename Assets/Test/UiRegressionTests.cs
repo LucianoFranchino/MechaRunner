@@ -27,7 +27,7 @@ public class UiRegressionTests
 
     private static IEnumerator Load(string scene)
     {
-        SceneManager.LoadScene(scene);
+        TestScenes.Load(scene);
         yield return null;
         yield return null;
     }

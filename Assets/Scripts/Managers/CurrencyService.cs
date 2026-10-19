@@ -60,6 +60,14 @@ public class CurrencyService : MonoBehaviour
         }
     }
 
+    /// <summary>Vuelve a leer el total del guardado (si se cambió por fuera, ej. menú de debug).</summary>
+    public void SyncFromSave()
+    {
+        Coins = SavedCoins;
+        startCoins = Coins;
+        Changed?.Invoke(Coins);
+    }
+
     /// <summary>Una moneda recogida (aplica el multiplicador activo).</summary>
     public void CollectCoin()
     {

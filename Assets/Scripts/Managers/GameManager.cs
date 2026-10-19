@@ -91,7 +91,16 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.SaveIfDirty();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        var scene = SceneManager.GetActiveScene();
+#if UNITY_EDITOR
+        // En el Editor se puede jugar una escena desactivada en Build Settings (no tiene índice)
+        if (scene.buildIndex < 0)
+        {
+            UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(scene.path, new LoadSceneParameters(LoadSceneMode.Single));
+            return;
+        }
+#endif
+        SceneManager.LoadScene(scene.buildIndex);
     }
 
     public void GoToMenu()

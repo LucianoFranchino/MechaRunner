@@ -110,6 +110,13 @@ public class ScoreManager : MonoBehaviour
             multiplier = 1f;
     }
 
+    /// <summary>Vuelve a leer el récord del guardado (si se cambió por fuera, ej. menú de debug).</summary>
+    public void SyncBestFromSave()
+    {
+        bestAtStart = Best;
+        SetAll(bestTexts, Mathf.RoundToInt(bestAtStart));
+    }
+
     public void Save()
     {
         var progress = SaveSystem.Data.progress;

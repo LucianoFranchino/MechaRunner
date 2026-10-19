@@ -148,6 +148,15 @@ public class DifficultyManager : MonoBehaviour
         return Mathf.Min(zones[zones.Length - 1].speed + endlessPerMinute * extraMinutes, Mathf.Max(maxSpeed, zones[zones.Length - 1].speed));
     }
 
+    /// <summary>Menú de debug: salta al inicio de la próxima zona (o un minuto más si ya es la última).</summary>
+    public void SkipToNextZone()
+    {
+        if (!UsesZones) { gameTime += speedIncreaseInterval; return; }
+        float start = 0f;
+        for (int i = 0; i <= ZoneIndex && i < zones.Length; i++) start += Mathf.Max(0.01f, zones[i].duration);
+        gameTime = ZoneIndex + 1 < zones.Length ? start : gameTime + 60f;
+    }
+
     private void IncreaseDifficulty()
     {
         // Aumentar velocidad del juego

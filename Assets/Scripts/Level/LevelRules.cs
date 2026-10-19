@@ -75,6 +75,15 @@ public class LevelRules : MonoBehaviour
         }
 
         if (!playerHealth.IsDead && playerBody.bounds.min.y < ground.bounds.max.y - fallDeathDepth)
-            playerHealth.Death();
+        {
+            if (PlayerHealth.DevInvulnerable)
+            {
+                // Menú de debug: en vez de morir, vuelve arriba del piso
+                var body = playerHealth.transform;
+                body.position = new Vector3(body.position.x, ground.bounds.max.y + 2f, body.position.z);
+                if (body.TryGetComponent(out Rigidbody2D rb)) rb.linearVelocity = Vector2.zero;
+            }
+            else playerHealth.Death();
+        }
     }
 }

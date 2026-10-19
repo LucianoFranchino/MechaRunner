@@ -66,7 +66,7 @@ public class LevelDesignTests
     [UnityTest]
     public IEnumerator Game_SigueConLaProgresionYElPuntajeOriginales()
     {
-        SceneManager.LoadScene("Game");
+        TestScenes.Load("Game");
         yield return null;
         yield return null;
 
@@ -74,22 +74,21 @@ public class LevelDesignTests
         Assert.AreEqual(DifficultyManager.ProgressionMode.Steps, dm.Mode, "Game no tiene que usar el modo nuevo hasta que se apruebe");
         Assert.AreEqual(4f, dm.GameSpeed, 1e-4f);
         Assert.AreEqual(ScoreManager.ScoreSource.Time, typeof(ScoreManager).GetField("source", Private).GetValue(ScoreManager.instance));
-        Assert.IsNull(Object.FindFirstObjectByType<SaveSlotOverride>(), "Game usa el guardado real");
         foreach (var s in Object.FindObjectsByType<EntitySpawner>(FindObjectsSortMode.None))
             Assert.IsFalse((bool)typeof(EntitySpawner).GetField("distanceBased", Private).GetValue(s), s.name + " pasó a spawn por distancia");
     }
 
     [UnityTest]
-    public IEnumerator GameLab_ZonasDistanciaYGuardadoAparte()
+    public IEnumerator GameLab_ZonasDistanciaYMismoGuardado()
     {
-        SceneManager.LoadScene("GameLab");
+        TestScenes.Load("GameLab");
         yield return null;
         yield return null;
 
         var dm = DifficultyManager.Instance;
         Assert.AreEqual(DifficultyManager.ProgressionMode.Zones, dm.Mode);
         Assert.AreEqual(6f, dm.GameSpeed, 1e-4f, "GameLab arranca a velocidad 6");
-        StringAssert.EndsWith("Lab", SaveSystem.Directory.TrimEnd('/', '\\'), "GameLab no puede escribir el guardado real");
+        Assert.AreEqual(TestSaveIsolation.Directory, SaveSystem.Directory, "GameLab usa el mismo guardado que el resto del juego (lo muestra el menú)");
 
         float d0 = dm.Distance, s0 = ScoreManager.instance.scoreCount;
         yield return new WaitForSeconds(1f);

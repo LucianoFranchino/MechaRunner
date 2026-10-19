@@ -15473,7 +15473,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1748037698}
-  - component: {fileID: 1748037697}
   - component: {fileID: 1748037696}
   - component: {fileID: 1748037699}
   m_Layer: 0
@@ -15497,19 +15496,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visible: 1
   fontSize: 26
---- !u!114 &1748037697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748037695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3401c6d5e5df9e64fa91e263926af947, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotFolder: Lab
 --- !u!4 &1748037698
 Transform:
   m_ObjectHideFlags: 0

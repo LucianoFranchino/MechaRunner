@@ -19,6 +19,12 @@ public class PlayerHealth : MonoBehaviour
 
     public bool IsDead { get; private set; }
 
+    /// <summary>Menú de debug: no recibe daño (dura la sesión, entre escenas).</summary>
+    public static bool DevInvulnerable { get; set; }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => DevInvulnerable = false;
+
     private float invulnerableUntil;
     // Todas las partes del personaje (el Robot está armado por piezas, sin sprite en la raíz)
     private SpriteRenderer[] spriteRenderers;
@@ -47,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
     // escucha OnTriggerEnter2D para no contar dos veces el mismo golpe.
     public void PlayerDamage(int damage)
     {
-        if (IsDead || Time.time < invulnerableUntil) return;
+        if (IsDead || DevInvulnerable || Time.time < invulnerableUntil) return;
 
         playerHealth -= damage;
         if (playerHealth <= 0)

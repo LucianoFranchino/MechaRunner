@@ -42,6 +42,9 @@ public static class SaveSystem
     private static string BackupPath => FilePath + ".bak";
     private static string TempPath => FilePath + ".tmp";
 
+    /// <summary>Se dispara después de escribir el guardado (para refrescar pantallas como el menú).</summary>
+    public static event Action Saved;
+
     public static void MarkDirty() => IsDirty = true;
 
     public static void SaveIfDirty()
@@ -75,12 +78,20 @@ public static class SaveSystem
                 File.Move(TempPath, FilePath);
             }
             IsDirty = false;
+            Saved?.Invoke();
         }
         catch (Exception e)
         {
             // Sin espacio o sin permisos: el juego sigue y se reintenta en el próximo guardado
             Debug.LogWarning($"SaveSystem: no se pudo guardar ({e.Message}).");
         }
+    }
+
+    /// <summary>Vuelve el progreso (monedas, récord) a cero y lo guarda. Conserva la configuración (audio).</summary>
+    public static void ResetProgress()
+    {
+        Data.progress = new PlayerProgress();
+        Save();
     }
 
     /// <summary>Lee el archivo (o su respaldo). Si no existe, migra PlayerPrefs o empieza de cero.</summary>
@@ -179,6 +190,7 @@ public static class SaveSystem
         data = null;
         directory = null;
         IsDirty = false;
+        Saved = null;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]

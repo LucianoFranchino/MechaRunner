@@ -26,7 +26,7 @@ public class LevelSectionTests
 
     private static IEnumerator LoadLab()
     {
-        SceneManager.LoadScene("GameLab");
+        TestScenes.Load("GameLab");
         yield return null;
         yield return null;
         Object.FindFirstObjectByType<LevelDirector>().enabled = false;

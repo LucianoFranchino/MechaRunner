@@ -24,7 +24,7 @@ public class GameplayRegressionTests
 
     private static IEnumerator LoadGame()
     {
-        SceneManager.LoadScene("Game");
+        TestScenes.Load("Game");
         yield return null;
         yield return null; // Start() de todos los objetos (creación de pools)
 
