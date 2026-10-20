@@ -6,6 +6,7 @@ public enum MuteChannel { Sfx, Music }
 /// Botón de mute genérico: activa/desactiva dos GameObjects distintos
 /// (uno por estado) en vez de intercambiar un sprite, para que cada ícono
 /// pueda tener su propio diseño (shadow, escala, etc.) sin restricciones.
+/// En escenas sin AudioManager (menú) cambia el ajuste guardado directamente.
 /// </summary>
 public class MuteToggleButton : MonoBehaviour
 {
@@ -13,30 +14,44 @@ public class MuteToggleButton : MonoBehaviour
     [SerializeField] private GameObject unmutedIcon;
     [SerializeField] private GameObject mutedIcon;
 
-    private void Start()
+    private bool Muted
     {
-        bool muted = channel == MuteChannel.Sfx
-            ? AudioManager.instance.SfxMuted
-            : AudioManager.instance.MusicMuted;
-
-        UpdateIcon(muted);
+        get
+        {
+            var audio = AudioManager.instance;
+            if (audio != null) return channel == MuteChannel.Sfx ? audio.SfxMuted : audio.MusicMuted;
+            var settings = SaveSystem.Data.settings;
+            return channel == MuteChannel.Sfx ? settings.sfxMuted : settings.musicMuted;
+        }
     }
+
+    private void OnEnable() => UpdateIcon(Muted);
 
     public void Toggle()
     {
-        bool muted;
-        if (channel == MuteChannel.Sfx)
+        var audio = AudioManager.instance;
+        if (audio != null)
         {
-            AudioManager.instance.ToggleSfxMute();
-            muted = AudioManager.instance.SfxMuted;
+            if (channel == MuteChannel.Sfx) audio.ToggleSfxMute();
+            else audio.ToggleMusicMute();
         }
         else
         {
-            AudioManager.instance.ToggleMusicMute();
-            muted = AudioManager.instance.MusicMuted;
+            // Menú: no hay AudioManager. Las fuentes con SfxMuteFollower se actualizan al guardar.
+            var settings = SaveSystem.Data.settings;
+            if (channel == MuteChannel.Sfx)
+            {
+                settings.sfxMuted = !settings.sfxMuted;
+            }
+            else
+            {
+                settings.musicMuted = !settings.musicMuted;
+                if (MusicTransition.Source != null) MusicTransition.Source.mute = settings.musicMuted;
+            }
+            SaveSystem.Save();
         }
 
-        UpdateIcon(muted);
+        UpdateIcon(Muted);
     }
 
     private void UpdateIcon(bool muted)
