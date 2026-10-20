@@ -101,7 +101,7 @@ MonoBehaviour:
   intensity: 0
   minZone: 1
   maxZone: 99
-  weight: 3
+  weight: 2
   introducesThreat: 0
   length: 12
   elements:

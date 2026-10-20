@@ -10498,15 +10498,15 @@ MonoBehaviour:
   spawnIntervalDecrease: 0.12
   zones:
   - name: Calentamiento
-    duration: 40
+    duration: 25
     speed: 6
     density: 0.8
   - name: Linea de montaje
-    duration: 45
+    duration: 35
     speed: 7
     density: 1
   - name: Deposito
-    duration: 45
+    duration: 40
     speed: 8
     density: 1.1
   - name: Seguridad
@@ -14593,9 +14593,11 @@ MonoBehaviour:
   - {fileID: 4780550256114137401, guid: cb002344fc1940d4bbaf6ca92d311890, type: 3}
   - {fileID: 5005326754917345622, guid: 2218ae574a18acc48b97402e24080bf8, type: 3}
   - {fileID: 4949064352328035733, guid: d5df0a8e6255b7241bd52220e4113e16, type: 3}
+  - {fileID: 7846562183028229767, guid: 2ee508e7943a75e44978b774dbc69882, type: 3}
+  - {fileID: 1509449635796814516, guid: 22b1af61d0c6f8344b0affceb639d13d, type: 3}
   spawnPoint: {fileID: 902296357}
   ground: {fileID: 629822095}
-  earlyRhythm: 010000000100000000000000
+  earlyRhythm: 01000000010000000100000000000000
   lateRhythm: 01000000010000000200000000000000
   lateRhythmFromZone: 3
   gapSeconds: 0.9
