@@ -1042,7 +1042,7 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 23ff431d-bbf2-4493-8925-fb151e948aa1
     m_ActionName: 'Player/TouchPosition[/Device Simulator Touchscreen/primaryTouch/position]'
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Touch
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1

@@ -21,6 +21,10 @@ public class DevOverlay : MonoBehaviour
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     private TextMeshProUGUI numbers;
     private TextMeshProUGUI labels;
+    private TextMeshProUGUI playerState;
+    private Player player;
+    private Rigidbody2D playerBody;
+    private string shownScheme;
     private readonly StringBuilder labelText = new(128);
     private LevelDirector director;
     private string shownZone, shownSection;
@@ -36,6 +40,9 @@ public class DevOverlay : MonoBehaviour
         if (canvas == null) return;
         numbers = CreateText(canvas.transform, "DevOverlay_Numbers", new Vector2(0f, 150f));
         labels = CreateText(canvas.transform, "DevOverlay_Labels", new Vector2(0f, 30f));
+        playerState = CreateText(canvas.transform, "DevOverlay_Player", new Vector2(0f, 270f));
+        player = FindFirstObjectByType<Player>();
+        if (player != null) playerBody = player.GetComponent<Rigidbody2D>();
     }
 
     private TextMeshProUGUI CreateText(Transform parent, string name, Vector2 pos)
@@ -60,6 +67,7 @@ public class DevOverlay : MonoBehaviour
     {
         visible = show;
         if (numbers != null) numbers.gameObject.SetActive(show);
+        if (playerState != null) playerState.gameObject.SetActive(show);
         if (labels != null) labels.gameObject.SetActive(show);
     }
 
@@ -83,14 +91,21 @@ public class DevOverlay : MonoBehaviour
         numbers.SetText("zona {0:0}  vel {1:2}  dens {2:2}\ndist {3:0}  t {4:0}s  score {5:0}  FPS {6:0}",
             d.ZoneIndex + 1, d.GameSpeed, d.Density, d.Distance, d.GameTime, s != null ? s.scoreCount : 0f, fps);
 
+        // Salto (diagnóstico): piso y doble salto como 1/0, velocidad vertical y último swipe
+        if (player != null)
+            playerState.SetText("piso {0:0}  doble usado {1:0}  vy {2:1}  swipe {3:0}",
+                player.IsGrounded ? 1 : 0, player.HasDoubleJumped ? 1 : 0, playerBody.linearVelocity.y, player.LastSwipeDeltaY);
+
         // Nombres: solo se reescriben cuando cambian (sin concatenar strings)
         string zone = d.ZoneName;
         string section = director != null && director.CurrentSection != null ? director.CurrentSection.name : "";
-        if (!ReferenceEquals(zone, shownZone) || !ReferenceEquals(section, shownSection))
+        string scheme = player != null ? player.ControlScheme : "";
+        if (!ReferenceEquals(zone, shownZone) || !ReferenceEquals(section, shownSection) || scheme != shownScheme)
         {
             shownZone = zone;
             shownSection = section;
-            labelText.Clear().Append(zone).Append("  |  ").Append(section);
+            shownScheme = scheme;
+            labelText.Clear().Append(zone).Append("  |  ").Append(section).Append("  |  input ").Append(scheme);
             labels.SetText(labelText);
         }
     }

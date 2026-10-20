@@ -39,6 +39,12 @@ public class Player : MonoBehaviour
     private InputAction touchPositionAction;
     private InputAction touchPressAction;
 
+    // Diagnóstico (DevOverlay): solo lectura
+    public bool IsGrounded => isGrounded;
+    public bool HasDoubleJumped => hasDoubleJumped;
+    public float LastSwipeDeltaY { get; private set; }
+    public string ControlScheme => playerInput != null ? playerInput.currentControlScheme : "";
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -97,6 +103,7 @@ public class Player : MonoBehaviour
         if (!GameManager.IsPlaying) return;
 
         Vector2 swipeDelta = swipeEndPos - swipeStartPos;
+        LastSwipeDeltaY = swipeDelta.y;
 
         // Swipe vertical debe ser mayor al horizontal
         if (Mathf.Abs(swipeDelta.y) > Mathf.Abs(swipeDelta.x))
@@ -132,6 +139,14 @@ public class Player : MonoBehaviour
             hasDoubleJumped = true;
             PlayJumpAnimation();
         }
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        else if (Mathf.Abs(rb.linearVelocity.y) < 0.05f)
+        {
+            // Quieto (apoyado) y el swipe no hizo saltar: estado a investigar
+            Debug.LogWarning($"[Salto] Swipe arriba sin salto estando quieto: piso={isGrounded} dobleUsado={hasDoubleJumped} " +
+                $"dobleDesbloqueado={doubleJumpUnlocked} pos={transform.position} sobreHueco={LevelRules.PlayerOverPit} esquema={ControlScheme}");
+        }
+#endif
     }
 
     private void PlayJumpAnimation()

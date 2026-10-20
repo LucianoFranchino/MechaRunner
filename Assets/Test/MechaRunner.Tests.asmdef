@@ -5,6 +5,7 @@
         "MechaRunner",
         "UnityEngine.UI",
         "Unity.TextMeshPro",
+        "Unity.InputSystem",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
