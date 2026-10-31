@@ -1,0 +1,21 @@
+<!-- Copyright (C) 2019 Google Inc. All Rights Reserved.
+
+FirebaseCrashlytics iOS and Android Dependencies.
+-->
+
+<dependencies>
+  <remoteSwiftPackage url="https://github.com/firebase/firebase-ios-sdk.git" version="13.0.1">
+    <swiftPackage name="FirebaseCrashlytics"/>
+  </remoteSwiftPackage>
+  <androidPackages>
+    <androidPackage spec="com.google.firebase:firebase-crashlytics-ndk:21.0.0">
+    </androidPackage>
+    <androidPackage spec="com.google.firebase:firebase-analytics:24.0.0">
+    </androidPackage>
+    <androidPackage spec="com.google.firebase:firebase-crashlytics-unity:14.0.0">
+      <repositories>
+        <repository>Assets/Firebase/m2repository</repository>
+      </repositories>
+    </androidPackage>
+  </androidPackages>
+</dependencies>
