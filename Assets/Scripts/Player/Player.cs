@@ -16,11 +16,19 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
-    [Header("Swipe Settings")]
+    [Header("Controles")]
+    [Tooltip("Swipe arriba/abajo para saltar y caer rápido (control anterior). Apagado: se salta con el botón JUMP.")]
+    [SerializeField] private bool swipeControls = false;
     [SerializeField] private float swipeThreshold = 50f;
 
     [Header("Double Jump")]
     [SerializeField] private bool doubleJumpUnlocked = false;
+
+    [Header("Game feel")]
+    [Tooltip("Segundos después de dejar el piso en los que todavía se puede hacer el salto normal (coyote time).")]
+    [SerializeField] private float coyoteTime = 0.1f;
+    [Tooltip("Si se pide un salto sin salto disponible, se guarda estos segundos y se hace apenas toca el piso (jump buffer).")]
+    [SerializeField] private float jumpBufferTime = 0.12f;
 
     [Header("Animación (opcional)")]
     [SerializeField] private Animator animator;
@@ -30,6 +38,10 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
     private bool hasDoubleJumped;
+    // Coyote time y jump buffer
+    private float lastGroundedTime = float.NegativeInfinity;
+    private float jumpBufferedUntil = float.NegativeInfinity;
+    private bool groundJumpUsed;
     private Vector2 swipeStartPos;
     private Vector2 swipeEndPos;
     private bool isSwiping;
@@ -57,6 +69,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!swipeControls) return;
         touchPressAction.performed += OnTouchPress;
         touchPressAction.canceled += OnTouchRelease;
     }
@@ -67,6 +80,13 @@ public class Player : MonoBehaviour
         touchPressAction.canceled -= OnTouchRelease;
     }
 
+    /// <summary>Botón JUMP del HUD (al apretar): salta o, en el aire, hace el doble salto.</summary>
+    public void JumpButton()
+    {
+        if (!GameManager.IsPlaying) return;
+        Jump();
+    }
+
     private void Update()
     {
         CheckGround();
@@ -74,7 +94,29 @@ public class Player : MonoBehaviour
         if (isGrounded)
         {
             hasDoubleJumped = false;
+            // Apoyado (no en el despegue): vuelve a tener salto normal y arranca el margen de coyote
+            if (rb.linearVelocity.y <= 0.01f)
+            {
+                groundJumpUsed = false;
+                lastGroundedTime = Time.time;
+                if (Time.time <= jumpBufferedUntil)
+                {
+                    jumpBufferedUntil = float.NegativeInfinity;
+                    GroundJump();
+                }
+            }
         }
+    }
+
+    /// <summary>Puede hacer el salto normal: en el piso o recién salido de él (coyote time).</summary>
+    private bool CanGroundJump => !groundJumpUsed && (isGrounded || Time.time - lastGroundedTime <= coyoteTime);
+
+    private void GroundJump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        groundJumpUsed = true;
+        lastGroundedTime = float.NegativeInfinity;
+        PlayJumpAnimation();
     }
 
     private void FixedUpdate()
@@ -126,11 +168,10 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
-        if (isGrounded)
+        if (CanGroundJump)
         {
-            // Salto normal desde el suelo
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            PlayJumpAnimation();
+            // Salto normal desde el suelo (o justo después de dejarlo)
+            GroundJump();
         }
         else if (doubleJumpUnlocked && !hasDoubleJumped)
         {
@@ -139,14 +180,17 @@ public class Player : MonoBehaviour
             hasDoubleJumped = true;
             PlayJumpAnimation();
         }
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        else if (Mathf.Abs(rb.linearVelocity.y) < 0.05f)
+        else
         {
-            // Quieto (apoyado) y el swipe no hizo saltar: estado a investigar
-            Debug.LogWarning($"[Salto] Swipe arriba sin salto estando quieto: piso={isGrounded} dobleUsado={hasDoubleJumped} " +
-                $"dobleDesbloqueado={doubleJumpUnlocked} pos={transform.position} sobreHueco={LevelRules.PlayerOverPit} esquema={ControlScheme}");
-        }
+            // Sin salto disponible: se guarda y se hace al tocar el piso (jump buffer)
+            jumpBufferedUntil = Time.time + jumpBufferTime;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            // Tocando el piso pero sin "piso": el estado del bug del salto a investigar
+            if (rb.IsTouchingLayers(groundLayer) && Mathf.Abs(rb.linearVelocity.y) < 0.05f)
+                Debug.LogWarning($"[Salto] Salto pedido apoyado sin piso detectado: dobleUsado={hasDoubleJumped} " +
+                    $"pos={transform.position} sobreHueco={LevelRules.PlayerOverPit} esquema={ControlScheme}");
 #endif
+        }
     }
 
     private void PlayJumpAnimation()

@@ -22,8 +22,15 @@ public class PlayerHealth : MonoBehaviour
     /// <summary>Menú de debug: no recibe daño (dura la sesión, entre escenas).</summary>
     public static bool DevInvulnerable { get; set; }
 
+    /// <summary>Recibió daño (false) o murió (true). Para sacudida de cámara y vibración.</summary>
+    public static event System.Action<bool> Hurt;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStatics() => DevInvulnerable = false;
+    private static void ResetStatics()
+    {
+        DevInvulnerable = false;
+        Hurt = null;
+    }
 
     private float invulnerableUntil;
     // Todas las partes del personaje (el Robot está armado por piezas, sin sprite en la raíz)
@@ -65,6 +72,7 @@ public class PlayerHealth : MonoBehaviour
         AudioManager.instance.PlayAudio(hurtSound);
         invulnerableUntil = Time.time + invulnerabilityTime;
         if (animator != null) animator.Play(DamageState, 0, 0f);
+        Hurt?.Invoke(false);
     }
 
     public void Death()
@@ -74,6 +82,7 @@ public class PlayerHealth : MonoBehaviour
         SetVisible(true);
 
         AudioManager.instance.PlayAudio(deathSound);
+        Hurt?.Invoke(true);
         // Guarda el récord, congela el juego y muestra los resultados
         if (GameManager.Instance != null) GameManager.Instance.GameOver();
     }

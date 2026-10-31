@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.TestTools;
 
 /// <summary>
-/// Partida larga en GameLab con piloto automático: salta con swipes táctiles reales lo que tiene adelante,
+/// Partida larga en GameLab con piloto automático: salta con el botón JUMP lo que tiene adelante,
 /// dispara, usa SUPER SHOT y cada tanto llega ruido de un gamepad (como uno conectado a la PC).
 /// Busca estados en los que el Robot no puede saltar: apoyado y quieto pero "en el aire", o un salto pedido
 /// desde el piso que no ocurre. Es lenta: solo corre si existe Temp/run_soak.flag en el proyecto.
@@ -23,7 +23,6 @@ public class LongRunSoakTests
     private static readonly FieldInfo HealthField = typeof(PlayerHealth).GetField("playerHealth", Private);
 
     private Gamepad pad;
-    private Touchscreen addedTouch;
 
     [SetUp]
     public void IsolateSave() => TestSaveIsolation.Begin();
@@ -32,8 +31,7 @@ public class LongRunSoakTests
     public void RestoreSave()
     {
         if (pad != null) InputSystem.RemoveDevice(pad);
-        if (addedTouch != null) InputSystem.RemoveDevice(addedTouch);
-        pad = null; addedTouch = null;
+        pad = null;
         Time.timeScale = 1f;
         TestSaveIsolation.End();
         if (MusicTransition.Source != null) Object.Destroy(MusicTransition.Source.gameObject);
@@ -44,21 +42,7 @@ public class LongRunSoakTests
     {
         if (!System.IO.File.Exists(System.IO.Path.Combine(Application.dataPath, "../Temp/run_soak.flag")))
             Assert.Ignore("Partida larga: crear Temp/run_soak.flag para correrla");
-        var touch = Touchscreen.current;
-        if (touch == null) touch = addedTouch = InputSystem.AddDevice<Touchscreen>();
         pad = InputSystem.AddDevice<Gamepad>();
-        int touchId = 1;
-        IEnumerator Swipe()
-        {
-            touchId++;
-            foreach (var (phase, y) in new[] { (UnityEngine.InputSystem.TouchPhase.Began, 200f), (UnityEngine.InputSystem.TouchPhase.Moved, 500f), (UnityEngine.InputSystem.TouchPhase.Ended, 500f) })
-            {
-                InputSystem.QueueStateEvent(touch, new TouchState { touchId = touchId, phase = phase, position = new Vector2(400f, y) });
-                InputSystem.Update();
-                yield return null;
-            }
-        }
-
         TestScenes.Load("GameLab");
         yield return null;
         yield return null;
@@ -81,8 +65,6 @@ public class LongRunSoakTests
             HealthField.SetValue(health, 1000000);
             ground = GameObject.Find("_plat").GetComponent<Collider2D>();
             Time.timeScale = 3f;
-            var input = Object.FindFirstObjectByType<PlayerInput>();
-            input.SwitchCurrentControlScheme("Touch", touch);
         }
         Bind();
 
@@ -157,13 +139,13 @@ public class LongRunSoakTests
             }
             if (danger && grounded && rb.linearVelocity.y <= 0.01f)
             {
-                yield return Swipe();
+                HudControlsTests.Press(GameObject.Find("Canvas").transform.Find("Controls/JumpButton").gameObject);
                 yield return new WaitForFixedUpdate();
                 jumps++;
                 if (rb.linearVelocity.y <= 0.1f && (bool)IsGroundedField.GetValue(player))
                 {
                     failedJumps++;
-                    anomalies.Add(Describe("SWIPE EN EL PISO QUE NO HIZO SALTAR (esquema " + Object.FindFirstObjectByType<PlayerInput>().currentControlScheme + ")"));
+                    anomalies.Add(Describe("BOTÓN JUMP EN EL PISO QUE NO HIZO SALTAR"));
                 }
                 continue;
             }
@@ -182,7 +164,7 @@ public class LongRunSoakTests
                 InputSystem.Update();
                 nextPad = t + 20f;
             }
-            if (t >= nextShot) { weapon.Shoot(); nextShot = t + 0.25f; }
+            if (t >= nextShot) { HudControlsTests.Press(GameObject.Find("Canvas").transform.Find("Controls/FireButton").gameObject); nextShot = t + 0.25f; }
             if (t >= nextSuper) { PowerUpManager.Instance.Activate(PowerUpType.SuperShoot); nextSuper = t + 22f; }
 
             if (anomalies.Count > 40) break;

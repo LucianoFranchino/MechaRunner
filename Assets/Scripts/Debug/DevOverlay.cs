@@ -91,10 +91,10 @@ public class DevOverlay : MonoBehaviour
         numbers.SetText("zona {0:0}  vel {1:2}  dens {2:2}\ndist {3:0}  t {4:0}s  score {5:0}  FPS {6:0}",
             d.ZoneIndex + 1, d.GameSpeed, d.Density, d.Distance, d.GameTime, s != null ? s.scoreCount : 0f, fps);
 
-        // Salto (diagnóstico): piso y doble salto como 1/0, velocidad vertical y último swipe
+        // Salto (diagnóstico): piso y doble salto como 1/0 y velocidad vertical
         if (player != null)
-            playerState.SetText("piso {0:0}  doble usado {1:0}  vy {2:1}  swipe {3:0}",
-                player.IsGrounded ? 1 : 0, player.HasDoubleJumped ? 1 : 0, playerBody.linearVelocity.y, player.LastSwipeDeltaY);
+            playerState.SetText("piso {0:0}  doble usado {1:0}  vy {2:1}",
+                player.IsGrounded ? 1 : 0, player.HasDoubleJumped ? 1 : 0, playerBody.linearVelocity.y);
 
         // Nombres: solo se reescriben cuando cambian (sin concatenar strings)
         string zone = d.ZoneName;

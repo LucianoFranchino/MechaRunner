@@ -252,7 +252,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SWIPE DOWN
+  m_text: DOUBLE JUMP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 12a6401fbf9df1845a804ed119ba5322, type: 2}
@@ -388,7 +388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "SHOOT ENEMIES  \xB7  2 HITS EACH"
+  m_text: "TAP THE LEFT BUTTON  \xB7  SHOOT ENEMIES"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: -9059159922372565008, guid: 9c8e43f83859843498d00622e64608aa,
@@ -612,7 +612,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300016, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a15f2ef17680f34eba054a12eb1a223, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2109,7 +2109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TAP FIRE
+  m_text: FIRE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 12a6401fbf9df1845a804ed119ba5322, type: 2}
@@ -2245,7 +2245,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DROP FAST
+  m_text: TAP JUMP AGAIN IN THE AIR
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: -9059159922372565008, guid: 9c8e43f83859843498d00622e64608aa,
@@ -3344,7 +3344,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SWIPE UP
+  m_text: JUMP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 12a6401fbf9df1845a804ed119ba5322, type: 2}
@@ -4017,7 +4017,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "JUMP  \xB7  AGAIN IN THE AIR: DOUBLE JUMP"
+  m_text: TAP THE RIGHT BUTTON
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c8e43f83859843498d00622e64608aa, type: 2}
   m_sharedMaterial: {fileID: -9059159922372565008, guid: 9c8e43f83859843498d00622e64608aa,

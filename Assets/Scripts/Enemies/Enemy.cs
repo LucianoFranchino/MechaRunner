@@ -50,9 +50,16 @@ public class Enemy : MonoBehaviour, IPoolable, IDamageable
         pooledObject.Despawn();
     }
 
+    /// <summary>Un enemigo fue destruido (vibración sutil, etc.).</summary>
+    public static event System.Action Killed;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() => Killed = null;
+
     private void Die()
     {
         resolved = true;
+        Killed?.Invoke();
         // Con reglas de GameLab el enemigo puede soltar un power-up (o nada) en vez de una moneda
         if (LevelRules.Current != null)
         {
