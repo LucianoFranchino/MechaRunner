@@ -35,7 +35,7 @@ public class Pickup : MonoBehaviour
         else
         {
             if (CurrencyService.Instance != null) CurrencyService.Instance.CollectCoin();
-            AudioManager.instance.PlayAudio(coinSound);
+            AudioManager.instance.PlayCoin(coinSound);
         }
 
         pooledObject.Despawn();

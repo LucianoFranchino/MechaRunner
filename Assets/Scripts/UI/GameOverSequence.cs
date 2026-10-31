@@ -278,7 +278,7 @@ public class GameOverSequence : MonoBehaviour, IPointerClickHandler
         shownTotal = totalCoins - runCoins + Mathf.RoundToInt(runCoins * (float)arrived / count);
         totalText.SetText("{0}", shownTotal);
         totalPunch = 0f;
-        if (AudioManager.instance != null) AudioManager.instance.PlayAudio(coinClip);
+        if (AudioManager.instance != null) AudioManager.instance.PlayCoin(coinClip);
         flying--;
     }
 
