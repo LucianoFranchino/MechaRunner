@@ -10488,6 +10488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20dc7f4d032f239468b9264c7fecd50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
   startGameSpeed: 4
   maxGameSpeed: 10
   speedIncreaseInterval: 10
@@ -10495,6 +10496,10 @@ MonoBehaviour:
   startSpawnInterval: 2
   minSpawnInterval: 0.8
   spawnIntervalDecrease: 0.12
+  zones: []
+  zoneRampTime: 3
+  endlessSpeedPerMinute: 0.5
+  zoneMaxSpeed: 12
   showDebugInfo: 0
 --- !u!1 &884869943
 GameObject:
@@ -10706,6 +10711,10 @@ MonoBehaviour:
   minTimeBetweenSpawns: 0.5
   maxTimeBetweenSpawns: 3
   spawnIntervalMultiplier: 1
+  distanceBased: 0
+  minGap: 8
+  maxGap: 14
+  minGapSeconds: 0.9
 --- !u!4 &902296357
 Transform:
   m_ObjectHideFlags: 0
@@ -13041,6 +13050,10 @@ MonoBehaviour:
   minTimeBetweenSpawns: 1
   maxTimeBetweenSpawns: 5
   spawnIntervalMultiplier: 3
+  distanceBased: 0
+  minGap: 8
+  maxGap: 14
+  minGapSeconds: 0.9
 --- !u!4 &1339142815
 Transform:
   m_ObjectHideFlags: 0
@@ -17058,7 +17071,9 @@ MonoBehaviour:
   - {fileID: 448032019}
   newRecordBadge: {fileID: 1295520879}
   scoreCount: 0
+  source: 0
   pointsPerSecond: 1
+  pointsPerUnit: 1
   scoreIncreasing: 1
   multiplierValue: 2
 --- !u!1 &2119774847
@@ -17539,7 +17554,7 @@ PrefabInstance:
     - target: {fileID: 5518105268755204029, guid: 75c226875ac7025499c5a1f834cebe6c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13561147
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 5518105268755204029, guid: 75c226875ac7025499c5a1f834cebe6c,
         type: 3}
