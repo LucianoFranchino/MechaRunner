@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 8501084026874212224}
   - component: {fileID: 6352844443337758564}
   - component: {fileID: 1950935452938250812}
+  - component: {fileID: 3584715362163171921}
   m_Layer: 0
   m_Name: SpikesEnem
   m_TagString: Enemy
@@ -225,11 +226,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionSound: {fileID: 8300000, guid: aa94840c978ecea44a010e2a13e7c5ce, type: 3}
+  hitSound: {fileID: 0}
   maxHealth: 1
   enemyDamage: 1
   coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
     type: 3}
-  deathEffectPrefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
+  deathEffectPrefab: {fileID: 7926447465432764455, guid: 16520cb0a4c9bb1489e59dbf2cd1aaf5,
+    type: 3}
+  explosionEffectPrefab: {fileID: 8489740932881899504, guid: abfd6ef6babe2644bbc73567a5aba380,
     type: 3}
 --- !u!114 &6352844443337758564
 MonoBehaviour:
@@ -259,6 +263,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 0.9
   despawnDistanceX: -15
+--- !u!114 &3584715362163171921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480063347915605934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffeef199d5fbf2541a8233698c09bec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 82f552a8bc00b4d44924dbbcddb54e60, type: 2}
+  duration: 0.08
 --- !u!1 &5525829644036604445
 GameObject:
   m_ObjectHideFlags: 0

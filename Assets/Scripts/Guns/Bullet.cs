@@ -8,6 +8,8 @@ public class Bullet : MonoBehaviour, IPoolable
     [SerializeField] private int damage = 2;
     [Tooltip("Segundos hasta volver al pool si no choca con nada (si no, el pool se agota y el arma deja de disparar).")]
     [SerializeField] private float maxLifetime = 3f;
+    [Tooltip("Chispas en el punto donde la bala le pega a un enemigo (opcional).")]
+    [SerializeField] private GameObject hitEffect;
 
     private PooledObject pooledObject;
     private float despawnTime;
@@ -39,6 +41,11 @@ public class Bullet : MonoBehaviour, IPoolable
         if (hitInfo.gameObject.CompareTag("Enemy"))
         {
             var target = hitInfo.GetComponentInParent<IDamageable>();
+            if (hitEffect != null)
+            {
+                Vector3 point = hitInfo.ClosestPoint(transform.position);
+                PoolManager.Instance.Spawn(hitEffect, new Vector3(point.x, point.y, transform.position.z));
+            }
             if (target != null) target.TakeDamage(damage);
             pooledObject.Despawn();
         }

@@ -169,6 +169,9 @@ MonoBehaviour:
   speed: 5
   rb: {fileID: 4841064766098987317}
   damage: 10
+  maxLifetime: 3
+  hitEffect: {fileID: 8314095035554668716, guid: 95e7671270e857146be47986aa9ffb64,
+    type: 3}
 --- !u!114 &41448636412450924
 MonoBehaviour:
   m_ObjectHideFlags: 0
