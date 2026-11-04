@@ -9,6 +9,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject bulletSuperPrefab;
 
+    [Header("Game feel")]
+    [Tooltip("Desvío máximo de cada bala en grados (recoil sutil, arriba o abajo).")]
+    [SerializeField, Range(0f, 10f)] private float spreadDegrees = 1.5f;
+    [Tooltip("Destello en la boca del cañón (opcional).")]
+    [SerializeField] private MuzzleFlash muzzleFlash;
+
     private static readonly int FireState = Animator.StringToHash("Fire");
 
     public void Shoot()
@@ -28,9 +34,11 @@ public class Weapon : MonoBehaviour
             && PowerUpManager.Instance.IsActive(PowerUpType.SuperShoot);
 
         GameObject bullet = superActive ? bulletSuperPrefab : bulletPrefab;
-        // Dirección siempre horizontal hacia adelante: el brazo queda levemente inclinado
-        // en la pose, pero el juego necesita disparos rectos.
-        PoolManager.Instance.Spawn(bullet, firePoint.position, Quaternion.identity);
-        AudioManager.instance.PlayAudio(shootSound);
+        // Hacia adelante con un desvío leve al azar: los disparos se ven menos mecánicos
+        // (el brazo queda inclinado en la pose, por eso no se usa su rotación).
+        float angle = Random.Range(-spreadDegrees, spreadDegrees);
+        PoolManager.Instance.Spawn(bullet, firePoint.position, Quaternion.Euler(0f, 0f, angle));
+        AudioManager.instance.PlayShot(shootSound);
+        if (muzzleFlash != null) muzzleFlash.Play(superActive);
     }
 }

@@ -64,4 +64,24 @@ public class AudioFeelTests
         yield return null;
         Assert.AreEqual(menu, MusicTransition.Source.volume, 1e-3f, "Al entrar al juego la música cambia de volumen");
     }
+
+    [Test]
+    public void Monedas_PasadoElTopeVariaSinSerMasAgudo()
+    {
+        const int scale = 8, top = 4;
+        var seen = new System.Collections.Generic.HashSet<int>();
+        for (int step = 0; step < 60; step++)
+        {
+            int note = AudioManager.CoinNoteIndex(step, scale, top);
+            Assert.LessOrEqual(note, scale - 1, "Nunca más agudo que el tope de la escala");
+            if (step < scale) Assert.AreEqual(step, note, "Hasta el tope sube de a una nota");
+            else
+            {
+                Assert.GreaterOrEqual(note, scale - top, "Pasado el tope se mueve entre las notas altas");
+                seen.Add(note);
+                Assert.AreNotEqual(AudioManager.CoinNoteIndex(step - 1, scale, top), note, "No repite la misma nota seguida");
+            }
+        }
+        Assert.AreEqual(top, seen.Count, "Pasado el tope usa todas las notas altas");
+    }
 }

@@ -240,7 +240,8 @@ public class GameplayRegressionTests
         yield return new WaitForFixedUpdate();
         var v = bullet.GetComponent<Rigidbody2D>().linearVelocity;
         Assert.Greater(v.x, 0f);
-        Assert.AreEqual(0f, v.y, 0.001f, "El disparo debe ser horizontal");
+        // Hacia adelante con un desvío leve (recoil): como mucho 1,5° arriba o abajo
+        Assert.LessOrEqual(Mathf.Abs(Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg), 1.5f + 1e-3f, "El disparo debe ir hacia adelante con un desvío sutil");
     }
 
     [UnityTest]
@@ -352,13 +353,18 @@ public class GameplayRegressionTests
         enemyGo.GetComponent<Enemy>().TakeDamage(999);
 
         Assert.AreEqual(0, PoolManager.Instance.GetPoolInfo(Prefab("Enemigo")).active);
-        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("ExplocionEnem")).active, "No apareció la explosión");
+        // Al morir: piezas de robot (partículas) y la explosión animada
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Fx_RobotParts")).active, "No salieron las piezas de robot");
+        Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Fx_Explosion")).active, "No apareció la explosión");
         Assert.AreEqual(1, PoolManager.Instance.GetPoolInfo(Prefab("Moneda")).active, "No soltó moneda");
 
         yield return new WaitForSeconds(3f); // duración + lifetime de las partículas
-        var fx = PoolManager.Instance.GetPoolInfo(Prefab("ExplocionEnem"));
-        Assert.AreEqual(0, fx.active, "La explosión no volvió al pool");
-        Assert.AreEqual(fx.total, fx.available, "La explosión se destruyó en vez de volver al pool");
+        foreach (var name in new[] { "Fx_RobotParts", "Fx_Explosion" })
+        {
+            var fx = PoolManager.Instance.GetPoolInfo(Prefab(name));
+            Assert.AreEqual(0, fx.active, name + " no volvió al pool");
+            Assert.AreEqual(fx.total, fx.available, name + " se destruyó en vez de volver al pool");
+        }
     }
 
     [UnityTest]

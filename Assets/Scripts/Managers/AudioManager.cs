@@ -28,6 +28,12 @@ public class AudioManager: MonoBehaviour
     [SerializeField] private int[] coinScale = { 0, 2, 4, 5, 7, 9, 11, 12 };
     [Tooltip("Segundos máximos entre monedas para que la racha siga subiendo.")]
     [SerializeField] private float coinChainWindow = 0.4f;
+    [Tooltip("Al llegar arriba, la racha sube y baja entre estas últimas notas de la escala (nunca más agudo que el tope).")]
+    [SerializeField, Min(2)] private int coinTopNotes = 4;
+
+    [Header("Disparo: variación de tono")]
+    [Tooltip("Tonos posibles del disparo (levemente graves); se elige uno al azar sin repetir el anterior.")]
+    [SerializeField] private float[] shotPitches = { 0.92f, 0.95f, 0.98f };
 
     public bool SfxMuted { get; private set; }
     public bool MusicMuted { get; private set; }
@@ -36,11 +42,32 @@ public class AudioManager: MonoBehaviour
     // Varias fuentes para las monedas: cambiar el tono de una no desafina la cola de la anterior
     private AudioSource[] coinSources;
     private int nextCoinSource;
+    // Fuentes propias del disparo: el cambio de tono no afecta a los demás efectos
+    private AudioSource[] shotSources;
+    private int nextShotSource;
+    private int lastShotPitch = -1;
+
+    /// <summary>Tono del último disparo. Para tests.</summary>
+    public float LastShotPitch { get; private set; } = 1f;
     private int coinStep;
     private float lastCoinTime = float.NegativeInfinity;
 
-    /// <summary>Paso de la racha de monedas actual (0 = primera). Para tests.</summary>
+    /// <summary>Paso de la racha de monedas actual (0 = primera; sigue creciendo pasado el tope). Para tests.</summary>
     public int CoinStep => coinStep;
+
+    /// <summary>
+    /// Nota de la escala para el paso de la racha: sube hasta el tope y después va y viene entre las
+    /// últimas notas (arpegio), así una lluvia de monedas no repite la más aguda.
+    /// </summary>
+    public static int CoinNoteIndex(int step, int scaleLength, int topNotes)
+    {
+        if (step < scaleLength) return step;
+        int top = Mathf.Clamp(topNotes, 2, scaleLength);
+        int span = top - 1;                                   // ej. 4 notas: 3 pasos entre la más baja y el tope
+        int k = (step - (scaleLength - 1)) % (2 * span);      // 0 = tope, baja span pasos y vuelve a subir
+        int down = k <= span ? k : 2 * span - k;
+        return scaleLength - 1 - down;
+    }
 
     private void Awake()
     {
@@ -62,17 +89,8 @@ public class AudioManager: MonoBehaviour
         foreach (var cv in clipVolumes)
             if (cv != null && cv.clip != null) volumes[cv.clip] = cv.volume;
 
-        coinSources = new AudioSource[3];
-        for (int i = 0; i < coinSources.Length; i++)
-        {
-            var source = gameObject.AddComponent<AudioSource>();
-            source.playOnAwake = false;
-            source.outputAudioMixerGroup = sfxSource.outputAudioMixerGroup;
-            source.volume = sfxSource.volume;
-            source.priority = sfxSource.priority;
-            source.mute = SfxMuted;
-            coinSources[i] = source;
-        }
+        coinSources = CreateSources(3);
+        shotSources = CreateSources(3);
 
         // Una sola pista de música: si viene sonando desde el menú se adopta esa
         // (sin cortes ni copias superpuestas); si se arrancó directo en esta escena, se usa la propia.
@@ -106,6 +124,22 @@ public class AudioManager: MonoBehaviour
         if (instance == this) instance = null;
     }
 
+    private AudioSource[] CreateSources(int count)
+    {
+        var sources = new AudioSource[count];
+        for (int i = 0; i < count; i++)
+        {
+            var source = gameObject.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.outputAudioMixerGroup = sfxSource.outputAudioMixerGroup;
+            source.volume = sfxSource.volume;
+            source.priority = sfxSource.priority;
+            source.mute = SfxMuted;
+            sources[i] = source;
+        }
+        return sources;
+    }
+
     private float VolumeOf(AudioClip clip) => volumes.TryGetValue(clip, out float v) ? v : 1f;
 
     public void PlayAudio(AudioClip sound)
@@ -121,12 +155,31 @@ public class AudioManager: MonoBehaviour
     {
         if (sound == null) return;
         float now = Time.unscaledTime; // también en el Game Over (tiempo congelado)
-        coinStep = now - lastCoinTime <= coinChainWindow ? Mathf.Min(coinStep + 1, coinScale.Length - 1) : 0;
+        coinStep = now - lastCoinTime <= coinChainWindow ? coinStep + 1 : 0;
         lastCoinTime = now;
 
         var source = coinSources[nextCoinSource];
         nextCoinSource = (nextCoinSource + 1) % coinSources.Length;
-        source.pitch = coinBasePitch * Mathf.Pow(2f, coinScale[coinStep] / 12f);
+        source.pitch = coinBasePitch * Mathf.Pow(2f, coinScale[CoinNoteIndex(coinStep, coinScale.Length, coinTopNotes)] / 12f);
+        source.PlayOneShot(sound, VolumeOf(sound));
+    }
+
+    /// <summary>Disparo con uno de los tonos de shotPitches (al azar, sin repetir el anterior).</summary>
+    public void PlayShot(AudioClip sound)
+    {
+        if (sound == null) return;
+        int index = 0;
+        if (shotPitches.Length > 1)
+        {
+            index = UnityEngine.Random.Range(0, shotPitches.Length - 1);
+            if (index >= lastShotPitch && lastShotPitch >= 0) index++;
+        }
+        lastShotPitch = index;
+        LastShotPitch = shotPitches.Length > 0 ? shotPitches[index] : 1f;
+
+        var source = shotSources[nextShotSource];
+        nextShotSource = (nextShotSource + 1) % shotSources.Length;
+        source.pitch = LastShotPitch;
         source.PlayOneShot(sound, VolumeOf(sound));
     }
 
@@ -135,6 +188,7 @@ public class AudioManager: MonoBehaviour
         SfxMuted = !SfxMuted;
         sfxSource.mute = SfxMuted;
         foreach (var source in coinSources) source.mute = SfxMuted;
+        foreach (var source in shotSources) source.mute = SfxMuted;
         SaveSystem.Data.settings.sfxMuted = SfxMuted;
         SaveSystem.Save(); // cambio poco frecuente: se guarda en el momento
     }
