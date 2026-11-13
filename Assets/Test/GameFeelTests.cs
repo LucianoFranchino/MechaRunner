@@ -249,6 +249,76 @@ public class GameFeelTests
 
 #if UNITY_EDITOR
     [Test]
+    public void Moneda_GiroSinSaltosYColisionFija()
+    {
+        var coin = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Moneda.prefab");
+        var visual = coin.transform.Find("Visual");
+        Assert.IsNotNull(visual, "El dibujo de la moneda tiene que estar en el hijo Visual");
+        Assert.IsNotNull(visual.GetComponent<Animator>());
+        Assert.IsNull(coin.GetComponent<Animator>(), "La animación no puede escalar la raíz (achicaría la colisión)");
+        var clip = UnityEditor.AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Animations/moneda.anim");
+        var sx = UnityEditor.AnimationUtility.GetEditorCurve(clip, UnityEditor.EditorCurveBinding.FloatCurve("", typeof(Transform), "m_LocalScale.x"));
+        var sprites = UnityEditor.AnimationUtility.GetObjectReferenceCurve(clip, UnityEditor.EditorCurveBinding.PPtrCurve("", typeof(SpriteRenderer), "m_Sprite"));
+        Assert.GreaterOrEqual(sprites.Length, 4, "El giro tiene que usar frente, dorso y las vistas 3/4");
+        float VisibleWidth(float t)
+        {
+            Sprite spr = (Sprite)sprites[0].value;
+            foreach (var k in sprites) if (k.time <= t + 1e-4f) spr = (Sprite)k.value;
+            return sx.Evaluate(t) * spr.rect.width;
+        }
+        float full = ((Sprite)sprites[0].value).rect.width, last = VisibleWidth(0f);
+        for (int i = 1; i <= 240; i++)
+        {
+            float w = VisibleWidth(clip.length * i / 240f);
+            Assert.Less(Mathf.Abs(w - last), full * 0.12f, $"El ancho de la moneda salta en t={clip.length * i / 240f:F3}");
+            last = w;
+        }
+    }
+
+    [Test]
+    public void Salto_SquashAndStretchYVuelveALaPoseNormal()
+    {
+        var jump = UnityEditor.AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Animations/Jump.anim");
+        var sy = UnityEditor.AnimationUtility.GetEditorCurve(jump, UnityEditor.EditorCurveBinding.FloatCurve("Cuerpo", typeof(Transform), "m_LocalScale.y"));
+        var sx = UnityEditor.AnimationUtility.GetEditorCurve(jump, UnityEditor.EditorCurveBinding.FloatCurve("Cuerpo", typeof(Transform), "m_LocalScale.x"));
+        Assert.Less(sy.Evaluate(0f), 1f, "Arranca achatado");
+        float maxY = 0f; for (float t = 0f; t < 0.15f; t += 0.01f) maxY = Mathf.Max(maxY, sy.Evaluate(t));
+        Assert.Greater(maxY, 1.05f, "Al despegar se estira");
+        Assert.AreEqual(1f, sy.Evaluate(jump.length), 1e-3f); Assert.AreEqual(1f, sx.Evaluate(jump.length), 1e-3f);
+        var land = UnityEditor.AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Animations/Land.anim");
+        Assert.IsNotNull(land, "Falta la animación de aterrizaje");
+    }
+
+    [UnityTest]
+    public IEnumerator Aterrizaje_PolvoBarrilExplotaYBalaEnCajaChispea()
+    {
+        yield return LoadAndLand();
+        int landings = player.Landings;
+        player.JumpButton();
+        for (int i = 0; i < 200 && player.Landings == landings; i++) yield return new WaitForFixedUpdate();
+        Assert.AreEqual(landings + 1, player.Landings, "No se detectó el aterrizaje");
+        Assert.Greater(ActiveFx("Fx_LandDust"), 0, "No salió polvo al aterrizar");
+
+        float ground = GameObject.Find("_plat").GetComponent<Collider2D>().bounds.max.y;
+        var barrel = PoolManager.Instance.Spawn(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Lab/Lab_ExplosiveBarrel.prefab"), new Vector3(player.transform.position.x + 8f, ground + 0.6f, 0f));
+        barrel.GetComponent<ExplosiveBarrel>().TakeDamage(1);
+        Assert.Greater(ActiveFx("Fx_BarrelExplosion"), 0, "El barril no lanzó su explosión");
+
+        var box = PoolManager.Instance.Spawn(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Obstacles/Obs_Box.prefab"), new Vector3(player.transform.position.x + 4f, ground + 0.4f, 0f));
+        Physics2D.SyncTransforms();
+        var col = box.GetComponentInChildren<Collider2D>();
+        int sparks = ActiveFx("Fx_HitSparks");
+        PoolManager.Instance.Spawn(UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Bullet.prefab"), new Vector3(col.bounds.min.x - 0.6f, col.bounds.center.y, 0f));
+        for (int i = 0; i < 30 && ActiveFx("Fx_HitSparks") == sparks; i++) yield return new WaitForFixedUpdate();
+        Assert.Greater(ActiveFx("Fx_HitSparks"), sparks, "La bala no chispeó contra la caja");
+
+        yield return new WaitForSeconds(1.6f);
+        Assert.AreEqual(0, ActiveFx("Fx_BarrelExplosion"), "La explosión del barril no volvió al pool");
+    }
+#endif
+
+#if UNITY_EDITOR
+    [Test]
     public void Animaciones_CaminataCierraElCicloYPinchosGiran360()
     {
         var walk = UnityEditor.AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Animations/EnemyMove.anim");

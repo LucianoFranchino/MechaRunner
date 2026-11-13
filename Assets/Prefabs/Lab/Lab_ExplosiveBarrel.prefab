@@ -114,6 +114,8 @@ MonoBehaviour:
   radius: 4.5
   explosionPrefab: {fileID: 2541039094619081844, guid: 0217bc412f546554fa5ccbcaf82f220f,
     type: 3}
+  barrelExplosionPrefab: {fileID: 2311321545755447798, guid: dfb4dd53dcd04ff4aa431292a1e2cb16,
+    type: 3}
   coinPrefab: {fileID: 315509876435490909, guid: 8d9f1a0b750dc4a4e8ff346ec193ed4e,
     type: 3}
   coins: 3

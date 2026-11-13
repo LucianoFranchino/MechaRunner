@@ -32,8 +32,13 @@ public class Player : MonoBehaviour
 
     [Header("Animación (opcional)")]
     [SerializeField] private Animator animator;
+    [Tooltip("Polvo al tocar el piso después de un salto o una caída (opcional).")]
+    [SerializeField] private GameObject landingDust;
+    [Tooltip("Segundos mínimos en el aire para que el aterrizaje tenga squash y polvo.")]
+    [SerializeField] private float minAirTimeForLanding = 0.15f;
 
     private static readonly int JumpState = Animator.StringToHash("Jump");
+    private static readonly int LandState = Animator.StringToHash("Land");
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -42,6 +47,11 @@ public class Player : MonoBehaviour
     private float lastGroundedTime = float.NegativeInfinity;
     private float jumpBufferedUntil = float.NegativeInfinity;
     private bool groundJumpUsed;
+    private bool wasGrounded = true;
+    private float leftGroundTime;
+
+    /// <summary>Cantidad de aterrizajes con squash y polvo (para tests).</summary>
+    public int Landings { get; private set; }
     private Vector2 swipeStartPos;
     private Vector2 swipeEndPos;
     private bool isSwiping;
@@ -90,6 +100,9 @@ public class Player : MonoBehaviour
     private void Update()
     {
         CheckGround();
+        if (wasGrounded && !isGrounded) leftGroundTime = Time.time;
+        if (!wasGrounded && isGrounded && rb.linearVelocity.y <= 0.01f && Time.time - leftGroundTime >= minAirTimeForLanding) OnLanded();
+        wasGrounded = isGrounded;
 
         if (isGrounded)
         {
@@ -191,6 +204,15 @@ public class Player : MonoBehaviour
                     $"pos={transform.position} sobreHueco={LevelRules.PlayerOverPit} esquema={ControlScheme}");
 #endif
         }
+    }
+
+    // Aterrizaje: squash del cuerpo (estado Land) y un poco de polvo a los pies
+    private void OnLanded()
+    {
+        Landings++;
+        if (animator != null && animator.HasState(0, LandState)) animator.Play(LandState, 0, 0f);
+        if (landingDust != null && PoolManager.Instance != null)
+            PoolManager.Instance.Spawn(landingDust, groundCheck.position);
     }
 
     private void PlayJumpAnimation()

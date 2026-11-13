@@ -967,6 +967,9 @@ MonoBehaviour:
   coyoteTime: 0.1
   jumpBufferTime: 0.12
   animator: {fileID: 5518105268755204030}
+  landingDust: {fileID: 6317742163779973091, guid: e673995514a001849a93da3bf940aada,
+    type: 3}
+  minAirTimeForLanding: 0.15
 --- !u!114 &5518105268755204025
 MonoBehaviour:
   m_ObjectHideFlags: 0
